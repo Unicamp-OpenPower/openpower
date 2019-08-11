@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/authors/lcnzg/</loc>
+    <lastmod>2019-08-04T17:30:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/</loc>
+    <lastmod>2019-08-04T17:30:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/talk/minicloud-linuxdevbr2019/minicloud-linuxdevbr2019/</loc>
+    <lastmod>2019-08-04T17:30:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-08-04T17:30:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/talk/</loc>
+    <lastmod>2019-08-04T17:30:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/gsalibi/</loc>
+    <lastmod>2019-08-04T17:20:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/power-builds-linuxdevbr2019/power-builds-linuxdevbr2019/</loc>
+    <lastmod>2019-08-04T17:20:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/installing-spacy-power/</loc>
+    <lastmod>2019-05-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2019-05-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/how-use-scikit-learn-and-jupyter-remotely/</loc>
+    <lastmod>2019-04-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/installing-bazel-power-other-architectures-systems/</loc>
+    <lastmod>2018-11-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/opensuse-tutorial/</loc>
+    <lastmod>2018-11-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/ftp-server-setup-with-acl-and-quota/</loc>
+    <lastmod>2018-11-05T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/building-tensorflow-on-power/</loc>
+    <lastmod>2018-01-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/integrating-openstack-ansible-with-lets-encrypt/</loc>
+    <lastmod>2017-12-17T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/buildbot-tutorial/</loc>
+    <lastmod>2017-09-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/opencl2cuda/</loc>
+    <lastmod>2017-06-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/powergraph/</loc>
+    <lastmod>2017-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/power9/</loc>
+    <lastmod>2017-05-11T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/external_docker/</loc>
+    <lastmod>2017-03-14T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/hhvm/</loc>
+    <lastmod>2016-12-01T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/sdaccel/</loc>
+    <lastmod>2016-10-06T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/newcomers-oss-community/</loc>
+    <lastmod>2016-09-29T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/git/</loc>
+    <lastmod>2016-09-22T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/supervessel/</loc>
+    <lastmod>2016-08-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/building-a-continuous-integration-platform-using-jenkins-and-github/</loc>
+    <lastmod>2016-06-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/porting-to-power/</loc>
+    <lastmod>2016-06-08T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/sdk/</loc>
+    <lastmod>2016-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/sdk_opt/</loc>
+    <lastmod>2016-05-30T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/ic/</loc>
+    <lastmod>2016-05-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/power/</loc>
+    <lastmod>2016-05-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/deep-learning/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/demo/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/project/external-project/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/internal-project/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/project/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/talk/opensource-development/</loc>
+    <lastmod>2015-09-21T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/openstack_setup_4/</loc>
+    <lastmod>2015-09-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/openstack_setup_3/</loc>
+    <lastmod>2015-09-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/openstack_setup_2/</loc>
+    <lastmod>2015-08-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/openstack_setup_1/</loc>
+    <lastmod>2015-08-20T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/debian_gateway/</loc>
+    <lastmod>2015-08-08T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/digital-signature/</loc>
+    <lastmod>2015-06-12T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/openpower-research/</loc>
+    <lastmod>2015-05-08T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/power-architecture/</loc>
+    <lastmod>2015-04-09T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/talk/openstack/</loc>
+    <lastmod>2015-04-09T18:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/authors/admin/</loc>
+  </url>
+  
+  <url>
+    <loc>/authors/klauskiwi/</loc>
+  </url>
+  
+  <url>
+    <loc>/authors/lfwanner/</loc>
+  </url>
+  
+  <url>
+    <loc>/authors/rpsene/</loc>
+  </url>
+  
+  <url>
+    <loc>/authors/srigo/</loc>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/publication_types/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

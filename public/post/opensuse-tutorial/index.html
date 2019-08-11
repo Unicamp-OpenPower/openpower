@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This tutorial I will show how create a openstack image (.qcow2) of opensuse from a ISO image using qemu. In this tutorial will be used opensuse Tumbleweed ppc64 le (because it&rsquo;s the most challenging), but similiar process can be done for leap (15 and 42.3) and Tumbleweed ppc64be.
+Preparing environment First we need download opensuse image from repository (Tumbleweed, leap 15 and leap 42.3) and sha256 of respective image.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/opensuse-tutorial/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.dd629241ea9333c62c071f4a25f829ff.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/opensuse-tutorial/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="OpenPOWER@UNICAMP">
+  <meta property="og:url" content="/post/opensuse-tutorial/">
+  <meta property="og:title" content="Building a opensuse openstack image | OpenPOWER@UNICAMP">
+  <meta property="og:description" content="This tutorial I will show how create a openstack image (.qcow2) of opensuse from a ISO image using qemu. In this tutorial will be used opensuse Tumbleweed ppc64 le (because it&rsquo;s the most challenging), but similiar process can be done for leap (15 and 42.3) and Tumbleweed ppc64be.
+Preparing environment First we need download opensuse image from repository (Tumbleweed, leap 15 and leap 42.3) and sha256 of respective image."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-11-06T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2018-11-06T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Building a opensuse openstack image | OpenPOWER@UNICAMP</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">OpenPOWER@UNICAMP</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpower.ic.unicamp.br/minicloud/" target="_blank" rel="noopener"><span>Minicloud</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="https://oplab9.parqtec.unicamp.br/" target="_blank" rel="noopener"><span>FTP</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpowerfoundation.org/" target="_blank" rel="noopener"><span>OpenPOWER Foundation</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Building a opensuse openstack image</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2018-11-06 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2018-11-06 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Nov 6, 2018</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    4 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/opensuse-tutorial/&amp;text=Building%20a%20opensuse%20openstack%20image" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/opensuse-tutorial/&amp;t=Building%20a%20opensuse%20openstack%20image" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Building%20a%20opensuse%20openstack%20image&amp;body=/post/opensuse-tutorial/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/opensuse-tutorial/&amp;title=Building%20a%20opensuse%20openstack%20image" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Building%20a%20opensuse%20openstack%20image%20/post/opensuse-tutorial/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/opensuse-tutorial/&amp;title=Building%20a%20opensuse%20openstack%20image" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<p>This tutorial I will show how create a openstack image (.qcow2) of opensuse from a ISO image using qemu.
+In this tutorial will be used opensuse Tumbleweed ppc64 le (because it&rsquo;s the most challenging), but similiar process can be done for leap (15 and 42.3) and Tumbleweed ppc64be.</p>
+
+<h2 id="preparing-environment">Preparing environment</h2>
+
+<p>First we need download opensuse image from repository (<a href="https://software.opensuse.org/distributions/tumbleweed" target="_blank">Tumbleweed</a>, <a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/opensuse/" target="_blank"> leap 15</a> and  <a href="http://download.opensuse.org/ports/ppc/distribution/leap/42.3/iso/" target="_blank">leap 42.3</a>) and sha256 of respective image.</p>
+
+<p>Execute sha256:</p>
+
+<pre><code class="language-bash">sha256sum openSUSE-Tumbleweed-DVD-ppc64le-Current.iso
+</code></pre>
+
+<p>Compare sha256sum output with sha256 downloaded:</p>
+
+<pre><code class="language-bash">715d9f89d90eb795b6a64ffe856aa5b7f3a64c7195a9ede8abea14a9d4f69e67
+</code></pre>
+
+<p>Install qemu using:</p>
+
+<pre><code class="language-bash">sudo apt update
+sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system -y
+</code></pre>
+
+<p>Now we need create a disk .qcow2 to install our O.S. with this command:</p>
+
+<pre><code class="language-bash">qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 5G
+</code></pre>
+
+<p>Execute qemu to run the instaler:</p>
+
+<pre><code class="language-bash">sudo qemu-system-ppc64le -enable-kvm -m 1024 -cdrom openSUSE-Tumbleweed-DVD-ppc64le-Current.iso -drive file=openSUSE-Tumbleweed-ppc64le.qcow2,media=disk,if=virtio -nographic -smp cores=1,threads=1 -monitor pty -serial stdio -nodefaults -netdev user,id=enp0s1 -device virtio-net-pci,netdev=enp0s1 -boot order=d
+</code></pre>
+
+<h2 id="installing-opensuse">Installing openSUSE</h2>
+
+<p>Select your language (using tab and arrows):
+<img src="Language-selection-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 1: Language selection screen </p></p>
+
+<p>Select te most suitable bundle for your goal:
+<img src="Bundle-selector-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 2: Bundle selector screen </p></p>
+
+<p>Select expert partitioner:
+<img src="Partioner-selection-screen.png" width="100%"/></p>
+
+<p><img src="Partioner-selection-screen2.png" width="100%"/>
+<p style="text-align: center;"> Figure 3-4: Partioner selection screen </p></p>
+
+<p>Select the hard drive that you want install opensuse:
+<img src="Drive-selector-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 5: Drive selector screen </p></p>
+
+<p>Add new partition selecting <code>add</code> button:
+<img src="Partition-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 6: Partition screen </p></p>
+
+<p>Set <code>partition size</code> to <code>8 MiB</code>:
+<img src="Partition-size-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 7: Partition size screen (Boot)</p></p>
+
+<p>Select <code>raw partition</code>:
+<img src="Partition-role-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 8: Partition role screen (Boot)</p></p>
+
+<p>Select file system as <code>Ext4</code> (or other filesystem of your preference):
+<img src="File-System-type.png" width="100%"/>
+<p style="text-align: center;"> Figure 9: File System type (Boot)</p></p>
+
+<p>Select partition as <code>PReP Boot Partition</code> and <code>next</code>:
+<img src="Partition-type.png" width="100%"/>
+<p style="text-align: center;"> Figure 10: Partition type (Boot)</p></p>
+
+<p>The boot partition was create and now we will create O.S. partition, select <code>add</code> and inside Patition size screen select <code>Maximum Size</code>:
+<img src="Partition-size-screen-2.png" width="100%"/>
+<p style="text-align: center;"> Figure 11: Partition size screen (O.S) </p></p>
+
+<p>Select <code>Operating System</code> option:
+<img src="Partition-role-screen-2.png" width="100%"/>
+<p style="text-align: center;"> Figure 12: Partition role screen (O.S) </p></p>
+
+<p>Select file system as <code>Ext4</code> again (or other filesystem of your preference):
+<img src="File-System-type-2.png" width="100%"/>
+<p style="text-align: center;"> Figure 13: File System type (O.S) </p></p>
+
+<p>Left selected <code>Linux Native</code>:
+<img src="Partition-type-2.png" width="100%"/>
+<p style="text-align: center;"> Figure 14: Partition type (O.S) </p></p>
+
+<p>Left <code>Mount device</code> as <code>/</code> and select <code>next</code>:
+<img src="Mount-point.png" width="100%"/>
+<p style="text-align: center;"> Figure 15: Mount point </p></p>
+
+<p>Partition configuration will look like this:
+<img src="Final-partion-configuration.png" width="100%"/>
+<p style="text-align: center;"> Figure 16: Final partion configuration </p></p>
+
+<p>We will receive warning message but we can ignore it and select <code>yes</code>:
+<img src="Warning-message.png" width="100%"/>
+<p style="text-align: center;"> Figure 17: Warning message </p></p>
+
+<p><code>Next</code> again:
+<img src="Sumary-partition-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 18: Sumary partition screen </p></p>
+
+<p>Select your clock and time zone:
+<img src="Clock-and-time-zone-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 19: Clock and time zone screen </p></p>
+
+<p>Put you username and password:
+<img src="Clock-and-time-zone-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 20: Local user screen </p></p>
+
+<p>Accept instalation and install:
+<img src="Summary-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 21: Summary screen </p></p>
+
+<p><img src="Instalation-screen.png" width="100%"/>
+<p style="text-align: center;"> Figure 22: Instalation screen </p></p>
+
+<h2 id="preparing-image">Preparing image</h2>
+
+<p>Update all packages and install necessary ones (you can also uninstall unnecessary packages):</p>
+
+<pre><code class="language-bash">sudo zypper update
+sudo zypper install cloud-init growpart yast2-network yast2-services-manager acpid
+</code></pre>
+
+<p>Remove hard-coded MAC address:</p>
+
+<pre><code class="language-bash">sudo cat /dev/null &gt; /etc/udev/rules.d/70-persistent-net.rules
+</code></pre>
+
+<p>Enable ssh and cloud-init:</p>
+
+<pre><code class="language-bash">sudo systemctl enable cloud-init
+sudo systemctl enable sshd
+</code></pre>
+
+<p>Disable firewall:</p>
+
+<pre><code class="language-bash">sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+</code></pre>
+
+<p>Inside <code>/etc/default/grub</code> file, set grub timeout to 0:</p>
+
+<pre><code>GRUB_TIMEOUT=0
+</code></pre>
+
+<p><img src="Grub-configuration.png" width="100%"/>
+<p style="text-align: center;"> Figure 23: Grub configuration </p></p>
+
+<p>Update grub:</p>
+
+<pre><code>sudo exec grub2-mkconfig -o /boot/grub2/grub.cfg &quot;$@&quot;
+</code></pre>
+
+<h2 id="only-for-opensuse-tumbleweed-le-be">Only for openSUSE Tumbleweed Le/Be</h2>
+
+<p>Opensuse Tumbleweed ppc64 Le/Be lacks some parameters on cloud-init.service, this causes instability on boot, which, sometimes, causes network connection errors. This problem was <a href="https://bugzilla.opensuse.org/show_bug.cgi?id=1111441" target="_blank">reported</a> and hopefully will be solved when you read this tutorial.</p>
+
+<p>Edit <code>cloud-init.service</code> file:</p>
+
+<pre><code class="language-bash">sudo vim /etc/systemd/system/cloud-init.target.wants/cloud-init.service
+</code></pre>
+
+<p>Add lines bellow after <code>After=systemd-networkd-wait-online.service</code> line:</p>
+
+<pre><code class="language-bash">Requires=wicked.service
+After=wicked.service
+After=dbus.service
+Conflicts=shutdown.target
+</code></pre>
+
+<p><img src="Configuration-of-cloud-init.service.png" width="100%"/>
+<p style="text-align: center;"> Figure 24: Configuration of cloud-init.service </p></p>
+
+<p>Reload cloud-init service:</p>
+
+<pre><code class="language-bash">sudo systemctl restart cloud-init
+sudo systemctl daemon-reload
+</code></pre>
+
+<p>Because Leap 42.3 ppc64Le&rsquo;s configuration fits better for a cloud role, so we will replace cloud.cfg of Tumbleweed by Leap42.3&rsquo;s cloud.cfg:</p>
+
+<pre><code class="language-bash">sudo vim /etc/cloud/cloud.cfg
+</code></pre>
+
+<script src="https://gist.github.com/Igortorrente/6d770e47d589db89fe2f1b49218f1c58.js"></script>
+
+<h2 id="cleaning-image">Cleaning image</h2>
+
+<p>Now delete all remaining data:</p>
+
+<pre><code class="language-bash">cat /dev/null &gt; ~/.bash_history &amp;&amp; history -c &amp;&amp; sudo su
+cat /dev/null &gt; /var/log/wtmp
+cat /dev/null &gt; /var/log/btmp
+cat /dev/null &gt; /var/log/lastlog
+cat /dev/null &gt; /var/run/utmp
+cat /dev/null &gt; /var/log/auth.log
+cat /dev/null &gt; /var/log/kern.log
+cat /dev/null &gt; ~/.bash_history &amp;&amp; history -c &amp;&amp; sudo poweroff
+</code></pre>
+
+<h2 id="adding-to-openstack">Adding to openstack</h2>
+
+<p>And finaly add image to openstack:</p>
+
+<pre><code class="language-bash">glance image-create --file openSUSE-Tumbleweed-ppc64le.qcow2 --container-format bare --disk-format qcow2 --property hw_video_model=vga --name &quot;openSUSE Tumbleweed ppc64le&quot;
+</code></pre>
+
+<p>If all the steps worked, you should see these messages at the next boot.
+<img src="Boot.png" width="100%"/></p>
+
+    </div>
+
+    
+
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
