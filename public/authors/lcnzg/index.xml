@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OpenPOWER@UNICAMP</title>
+    <link>/authors/lcnzg/</link>
+      <atom:link href="/authors/lcnzg/index.xml" rel="self" type="application/rss+xml" />
+    <description>OpenPOWER@UNICAMP</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 04 Aug 2019 17:30:00 +0000</lastBuildDate>
+    <image>
+      <url>/img/icon-192.png</url>
+      <title>OpenPOWER@UNICAMP</title>
+      <link>/authors/lcnzg/</link>
+    </image>
+    
+    <item>
+      <title>Minicloud</title>
+      <link>/talk/minicloud-linuxdevbr2019/minicloud-linuxdevbr2019/</link>
+      <pubDate>Sun, 04 Aug 2019 17:30:00 +0000</pubDate>
+      <guid>/talk/minicloud-linuxdevbr2019/minicloud-linuxdevbr2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Setting up a FTP Server with Access List and Disk Quota</title>
+      <link>/post/ftp-server-setup-with-acl-and-quota/</link>
+      <pubDate>Mon, 05 Nov 2018 00:00:00 +0000</pubDate>
+      <guid>/post/ftp-server-setup-with-acl-and-quota/</guid>
+      <description>
+
+&lt;p&gt;In this guide, we will show how to setup a public FTP server with directory access control and disk quota per-user.
+We used Ubuntu Server 16.04, running on ppc64le architecture, but it should work on other architectures as well, because no exclusive software was used, only open source software.&lt;/p&gt;
+
+&lt;h1 id=&#34;disk-space&#34;&gt;Disk space&lt;/h1&gt;
+
+&lt;p&gt;You will need an &lt;code&gt;ext4&lt;/code&gt; partition with enough space, that can be mounted on &lt;code&gt;/&lt;/code&gt; or on &lt;code&gt;/var/www&lt;/code&gt;. If you need help, look at &lt;a href=&#34;https://www.howtogeek.com/106873/how-to-use-fdisk-to-manage-partitions-on-linux/&#34; target=&#34;_blank&#34;&gt;this tutorial&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;After that, create the directories that will be used in the web and ftp servers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo mkdir /var/www/html
+sudo mkdir /var/www/html/pub
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Set the permissions to these directories:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo chown nobody:nogroup /var/www/html
+sudo chmod a-w /var/www/html
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;http-server-apache&#34;&gt;HTTP Server (apache)&lt;/h1&gt;
+
+&lt;p&gt;We intend that our files can be accessed through a web browser. In that case, we will need a HTTP Server, like Apache.&lt;/p&gt;
+
+&lt;h2 id=&#34;installation&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Install the package &lt;code&gt;apache2&lt;/code&gt;, with the following commands:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+sudo apt-get install apache2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Restart the service to make sure that the web server works:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo systemctl restart apache2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;content&#34;&gt;Content&lt;/h2&gt;
+
+&lt;p&gt;You can create a welcome page in HTML with links to &lt;code&gt;/pub&lt;/code&gt; folder, to show the files though the browser. Your page &lt;code&gt;index.html&lt;/code&gt; need to be in the directory &lt;code&gt;/var/www/html&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;For reference, you can look at our web page in &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/&#34; target=&#34;_blank&#34;&gt;this link&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1 id=&#34;ssl-certificate-certbot&#34;&gt;SSL Certificate (certbot)&lt;/h1&gt;
+
+&lt;p&gt;Certbot is a client that deploy free SSL certificates from Let&amp;rsquo;s Encrypt to any web server.
+If you already have a SSL certificate, you can &lt;a href=&#34;#firewall-ufw&#34;&gt;&lt;em&gt;skip this part&lt;/em&gt;&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;installation-1&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Run these commands to install the package &lt;code&gt;certbot&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python-certbot-apache
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configuration&#34;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;We need to configure the web server to work with the certificate. Run this command to use the Certbot certificate with the Apache web server:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo certbot --apache
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The certificate expires in 90 days, so you need to renew this certificate periodically. To schedule the execution of &lt;code&gt;certobot renew&lt;/code&gt; command, we will use &lt;code&gt;cronjob&lt;/code&gt;, a time-base job scheduler. To use the scheduler, run this command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo crontab -e
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And add the following line in the end of the file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;0 0 * * * sudo certbot renew
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Save the file.
+After that, the renew command is scheduled to run everyday.&lt;/p&gt;
+
+&lt;h1 id=&#34;firewall-ufw&#34;&gt;Firewall (ufw)&lt;/h1&gt;
+
+&lt;p&gt;The UFW is an easy frontend interface for iptables. We need to configure the firewall to work with the other installed software.&lt;/p&gt;
+
+&lt;h2 id=&#34;installation-2&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Install the package &lt;code&gt;ufw&lt;/code&gt; to manage the firewall, with the following commands:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get update
+sudo apt-get install ufw
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configuration-1&#34;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;Forwarding the ports:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo ufw allow 20/tcp
+sudo ufw allow 21/tcp
+sudo ufw allow 990/tcp
+sudo ufw allow 60000:60500/tcp
+sudo ufw allow ssh
+sudo ufw allow &#39;Apache Full&#39;
+sudo ufw status
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Restart to conclude the steps:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo ufw disable
+sudo ufw enable
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;ftp-server-vsftpd&#34;&gt;FTP Server (vsftpd)&lt;/h1&gt;
+
+&lt;p&gt;We will use the vsftpd software to run the FTP server, the default in the Ubuntu, CentOS, Fedora, NimbleX, Slackware and RHEL Linux distributions.&lt;/p&gt;
+
+&lt;h2 id=&#34;installation-3&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Install the package &lt;code&gt;vsftpd&lt;/code&gt; with the following command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-get install vsftpd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configuration-2&#34;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;Backup your original file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo cp /etc/vsftpd.conf /etc/vsftpd.orig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Edit the configuration file with the following command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo nano /etc/vsftpd.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Example config file:
+&lt;script src=&#34;https://gist.github.com/lcnzg/233a7b406f2528cb0d517fc6fbeed5c9.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;In the previous config, we allowed read permission for anonymous.&lt;/p&gt;
+
+&lt;p&gt;To create the userlist that have permission to access the FTP server, and allow the anonymous user, use the following commands:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo touch /etc/vsftpd.userlist
+sudo echo &amp;quot;anonymous&amp;quot; &amp;gt;&amp;gt; /etc/vsftpd.userlist
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;disabling-shell-for-ftp-users&#34;&gt;Disabling shell for ftp users&lt;/h2&gt;
+
+&lt;p&gt;With these commands, we will create a new shell with no functionalities, to restrict the access of the FTP users:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo touch /bin/ftponly
+sudo echo -e &#39;#!/bin/sh\necho &amp;quot;This account is limited to FTP access only.&amp;quot;&#39; &amp;gt;&amp;gt; /bin/ftponly
+sudo chmod a+x /bin/ftponly
+sudo echo &amp;quot;/bin/ftponly&amp;quot; &amp;gt;&amp;gt; /etc/shells
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Restart the FTP server service:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo systemctl restart vsftpd
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;disk-quota&#34;&gt;Disk Quota&lt;/h1&gt;
+
+&lt;p&gt;We will use a disk quota to limit the disk space used by the FTP users.&lt;/p&gt;
+
+&lt;h2 id=&#34;installation-4&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Install the package &lt;code&gt;quota&lt;/code&gt; with the following command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt install quota
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configuration-3&#34;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;Edit the &lt;code&gt;fstab&lt;/code&gt; file and add &lt;code&gt;usrquota&lt;/code&gt; option in the partition you chose earlier:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo nano /etc/fstab
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Remount partition and enable the quota:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo mount -o remount /var/www
+sudo quotacheck -cum /var/www
+sudo quotaon /var/www
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;defining-a-default-quota&#34;&gt;Defining a default quota&lt;/h2&gt;
+
+&lt;p&gt;Create a new user to copy the quota settings for the new users:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo adduser ftpuser
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Insert a password.&lt;/p&gt;
+
+&lt;p&gt;After that, you will need to edit the quota of &lt;code&gt;ftpuser&lt;/code&gt; with this command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo edquota ftpuser
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Put the values of soft and hard quota in these columns.&lt;/p&gt;
+
+&lt;p&gt;Example: 10GB: 10000000 and 10485760 in block quota session.&lt;/p&gt;
+
+&lt;p&gt;Let 0 if you don&amp;rsquo;t want to have a limit.&lt;/p&gt;
+
+&lt;p&gt;Set the default quota user as &lt;code&gt;ftpuser&lt;/code&gt; to copy a quota for the new users:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo sed -i -e &#39;s/.*QUOTAUSER=&amp;quot;&amp;quot;.*/QUOTAUSER=&amp;quot;ftpuser&amp;quot;/&#39; /etc/adduser.conf
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;commands&#34;&gt;Commands&lt;/h2&gt;
+
+&lt;p&gt;There are a few commands useful for controlling the quota:
+- &lt;code&gt;quota user&lt;/code&gt; shows the &lt;code&gt;user&lt;/code&gt; quota.
+- &lt;code&gt;repquota -a&lt;/code&gt; shows the general quota report.
+- &lt;code&gt;edquota user&lt;/code&gt; to edit &lt;code&gt;user&lt;/code&gt; quota.&lt;/p&gt;
+
+&lt;h1 id=&#34;access-list-acl&#34;&gt;Access List (acl)&lt;/h1&gt;
+
+&lt;p&gt;We will use Access List Control, or ACL, to have a better control of file permissions. With ACL we can set different file permissions, in different directories, to each FTP user.&lt;/p&gt;
+
+&lt;h2 id=&#34;installation-5&#34;&gt;Installation&lt;/h2&gt;
+
+&lt;p&gt;Install the package &lt;code&gt;acl&lt;/code&gt; with the following command:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt install acl
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configuration-4&#34;&gt;Configuration&lt;/h2&gt;
+
+&lt;p&gt;Edit the &lt;code&gt;fstab&lt;/code&gt; file and add &lt;code&gt;acl&lt;/code&gt; option in the &lt;code&gt;/var/www&lt;/code&gt; partition:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo nano /etc/fstab
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Remount the partition to apply the changes:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo mount -o remount /var/www
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;commands-1&#34;&gt;Commands&lt;/h2&gt;
+
+&lt;p&gt;The commands used to enable write permission to &lt;code&gt;$USER&lt;/code&gt; in &lt;code&gt;$DIRECTORY&lt;/code&gt; were:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;setfacl -d -R -m u:$USER:rwX $DIRECTORY
+setfacl -R -m u:$USER:rwX $DIRECTORY
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;adding-new-users&#34;&gt;Adding new users&lt;/h1&gt;
+
+&lt;p&gt;We created the following script to manage the creation of new users:
+&lt;script src=&#34;https://gist.github.com/lcnzg/54a44d87babcf3f33523fbcae152c47f.js&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chmod +x create_user.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Add new users by running the script this way:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo ./create_user.sh &#39;user&#39; &#39;pass&#39; &#39;directory&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Directory instructions:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;for the root of FTP directory, use &lt;code&gt;.&lt;/code&gt; .&lt;/li&gt;
+&lt;li&gt;for other directories, don&amp;rsquo;t write the initial and final slashes (ex: ppc64el/debian for /www/html/pub/ppc64el/debian/).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Should any problem with file permissions ocurr, use the &lt;code&gt;fix_acl.sh&lt;/code&gt; script, that will remake the permissions based on &lt;code&gt;acl.list&lt;/code&gt; file.&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/lcnzg/51258738564989bc8e2b0b7d25397b02.js&#34;&gt;&lt;/script&gt;
+
+&lt;p&gt;Add execute permission to the script:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;chmod +x fix_acl.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Run the script with sudo, this way:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo ./fix_acl.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;references&#34;&gt;References&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-16-04&#34; target=&#34;_blank&#34;&gt;https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-16-04&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server&#34; target=&#34;_blank&#34;&gt;https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04&#34; target=&#34;_blank&#34;&gt;https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/authors/lcnzg/</link>
+      <pubDate>Sun, 04 Aug 2019 17:30:00 +0000</pubDate>
+      <guid>/authors/lcnzg/</guid>
+      <description>&lt;p&gt;Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.&lt;/p&gt;
+
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

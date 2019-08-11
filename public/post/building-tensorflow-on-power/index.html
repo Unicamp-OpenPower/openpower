@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="[data-text] { } [data-text]::after { content: attr(data-text); }  TensorFlow is a widespread software library for numerical computation using data flow graphs. It is very common on machine learning and deep neural networks projects. Therefore, today we are going to see how to install it on POWER with CPU only configuration.
+
+Before installing TensorFlow, there are a couple of details we have to pay attention to: 1. Due to Bazel, one of TF dependencies, the operating system must be Ubuntu 14.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="/post/building-tensorflow-on-power/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.dd629241ea9333c62c071f4a25f829ff.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="/post/building-tensorflow-on-power/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="OpenPOWER@UNICAMP">
+  <meta property="og:url" content="/post/building-tensorflow-on-power/">
+  <meta property="og:title" content="Building Tensorflow on POWER - CPU only | OpenPOWER@UNICAMP">
+  <meta property="og:description" content="[data-text] { } [data-text]::after { content: attr(data-text); }  TensorFlow is a widespread software library for numerical computation using data flow graphs. It is very common on machine learning and deep neural networks projects. Therefore, today we are going to see how to install it on POWER with CPU only configuration.
+
+Before installing TensorFlow, there are a couple of details we have to pay attention to: 1. Due to Bazel, one of TF dependencies, the operating system must be Ubuntu 14."><meta property="og:image" content="/img/icon-192.png">
+  <meta property="twitter:image" content="/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-01-16T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2018-01-16T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Building Tensorflow on POWER - CPU only | OpenPOWER@UNICAMP</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">OpenPOWER@UNICAMP</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpower.ic.unicamp.br/minicloud/" target="_blank" rel="noopener"><span>Minicloud</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="https://oplab9.parqtec.unicamp.br/" target="_blank" rel="noopener"><span>FTP</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpowerfoundation.org/" target="_blank" rel="noopener"><span>OpenPOWER Foundation</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Building Tensorflow on POWER - CPU only</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2018-01-16 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2018-01-16 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Jan 16, 2018</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=/post/building-tensorflow-on-power/&amp;text=Building%20Tensorflow%20on%20POWER%20-%20CPU%20only" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=/post/building-tensorflow-on-power/&amp;t=Building%20Tensorflow%20on%20POWER%20-%20CPU%20only" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Building%20Tensorflow%20on%20POWER%20-%20CPU%20only&amp;body=/post/building-tensorflow-on-power/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=/post/building-tensorflow-on-power/&amp;title=Building%20Tensorflow%20on%20POWER%20-%20CPU%20only" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Building%20Tensorflow%20on%20POWER%20-%20CPU%20only%20/post/building-tensorflow-on-power/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=/post/building-tensorflow-on-power/&amp;title=Building%20Tensorflow%20on%20POWER%20-%20CPU%20only" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      
+
+<style>
+    [data-text] {
+    }
+    [data-text]::after {
+      content: attr(data-text);
+    }
+</style>
+
+<p>TensorFlow is a widespread software library for numerical computation using data flow graphs. It is very common on machine learning and deep neural networks projects. Therefore, today we are going to see how to install it on POWER with CPU only configuration.</p>
+
+<p><center><img src="tf-logo.png" style="padding: 25px 0px"/></center></p>
+
+<p>Before installing TensorFlow, there are a couple of details we have to pay attention to:
+1. Due to Bazel, one of TF dependencies, the operating system must be Ubuntu 14.04 or Ubuntu 16.04.
+2. We are going to use Python 2.7, since TF doesn&rsquo;t seem to be supported by Python 3.5 <strong>on POWER</strong>.</p>
+
+<h1 id="tensorflow-dependencies">Tensorflow Dependencies</h1>
+
+<p>You can use the commands below to solve most of the dependencies:</p>
+
+<div class="codehilite"><pre><span></span><span data-text="# "></span>apt-get update
+<span data-text="# "></span>apt-get install python-numpy python-dev python-pip python-wheel
+</pre></div>
+
+<h1 id="bazel-installation">Bazel installation</h1>
+
+<p>Bazel is one of the TF dependencies, but its installation is less intuitive than the others due to its community not officially supporting POWER architecture. That said, we must compile it from the Source. First of all, we need to install its own dependencies by the following commands:</p>
+
+<div class="codehilite"><pre><span></span><span data-text="# "></span>apt-get update
+<span data-text="# "></span>apt-get install unzip build-essential python openjdk-8-jdk protobuf-compiler zip g++ zlib1g-dev
+</pre></div>
+
+<p>It is also important to add enviroment variables on .bashrc for JDK.</p>
+
+<div class="codehilite"><pre><span></span><span data-text="# "></span>vi .bashrc
+    export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-ppc64el
+    export JRE_HOME=${JAVA_HOME}/jre
+    export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+    export PATH=${JAVA_HOME}/bin:$PATH
+</pre></div>
+
+<p>For compiling Bazel, we are going to download and unpack its distribution archive (the zip file from the release page <a href="https://github.com/bazelbuild/bazel/releases" target="_blank">https://github.com/bazelbuild/bazel/releases</a>. The .sh is not compatible with ppc64le) and compile it.</p>
+
+<div class="codehilite"><pre><span></span><span data-text="# "></span>mkdir bazel
+<span data-text="# "></span>cd bazel
+<span data-text="# "></span>wget -c https://github.com/bazelbuild/bazel/releases/download/0.11.1/bazel-0.11.1-dist.zip #if you want to download other version of bazel, this link must be switched by the one you are intenting to use.
+<span data-text="# "></span>unzip bazel-0.11.1-dist.zip
+<span data-text="# "></span>./compile.sh
+</pre></div>
+
+<p>As we can see, this tutorial was tested with bazel 0.11.1, but feel free to try other version and see if it works properly.</p>
+
+<p>Also, if you are having any trouble about lack of resources, you can take a look on &lsquo;Build issues and Support Websites&rsquo; to see if there&rsquo;s any link that could help you. Anticipating: if you don&rsquo;t have memory enough and your Bazel can&rsquo;t complete the compile step, you might have a problem with the garbage collector of JAVA (and there&rsquo;s a link which explains how to deal with it).</p>
+
+<h1 id="installing-tensorflow">Installing Tensorflow</h1>
+
+<p>Since we are going to use the current version of TF, we need to clone it from the official GitHub and execute the configuration script.</p>
+
+<div class="codehilite"><pre><span></span><span data-text="# "></span>git clone https://github.com/tensorflow/tensorflow
+<span data-text="# "></span>cd ~/tensorflow
+<span data-text="# "></span>./configure
+</pre></div>
+
+<p>On this step, we have to specify the pathname of all relevant TF dependencies and other build configuration options. On most of them we can use the answers suggested on each question. Here, I will show how it was done for this tutorial. (Yours might be a little different, depending on the pathnames)</p>
+
+<div class="codehilite"><pre><span></span>Please specify the location of python. [Default is /usr/bin/python]: <strong>/usr/bin/python2.7</strong>
+Found possible Python library paths:
+  /usr/local/lib/python2.7/dist-packages
+  /usr/lib/python2.7/dist-packages
+Please input the desired Python library path to use.  Default is [/usr/lib/python2.7/dist-packages]:<strong> /usr/lib/python2.7/dist-packages </strong>
+
+Using python library path: /usr/local/lib/python2.7/dist-packages
+
+#Y/N Answers given: All of them as suggested in each question.
+
+Please specify optimization flags to use during compilation when bazel option "--config=opt" is specified [Default is -march=native]: <strong>-mcpu=native</strong>
+Configuration finished
+</pre></div>
+
+<p>To build and install TF, we use:</p>
+
+<div class="codehilite"><pre><span></span><span data-text="# "></span>bazel build --copt="-mcpu=native" --jobs 1 --local_resources 2048,0.5,1.0 //tensorflow/tools/pip_package:build_pip_package
+<span data-text="# "></span>bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg #creates the pip package
+<span data-text="# "></span>pip install /tmp/tensorflow_pkg/tensorflow-1.5.0rc0-cp27-cp27mu-linux_ppc64le.whl #installs the pip package. This name depends on your operating system, Python version and CPU only vs. GPU support. Therefore, check it out its name before this step.
+</pre></div>
+
+<p>By this moment, your TF must be working. Remember not to import it into its own directory: you have to chance directory before executing Python.</p>
+
+<h1 id="build-issues-and-support-websites">Build Issues and Support Websites:</h1>
+
+<p>While testing this tutorial, I could separate some useful issues reports and links to help some of the troubles you might have on the way.</p>
+
+<ol>
+<li><a href="https://github.com/tensorflow/tensorflow/issues/14540" target="_blank">https://github.com/tensorflow/tensorflow/issues/14540</a> It solves a protobuf problem I had. It seems pretty common on PPC TF installation.</li>
+<li><a href="https://github.com/tensorflow/tensorflow/issues/349" target="_blank">https://github.com/tensorflow/tensorflow/issues/349</a> This one is about local resources. If you are running out of memory (your build fails on C++ compilation rules), you have to specify your resources on the command line when you build TF. On the tutorial, it is already done.</li>
+<li><a href="https://www.tensorflow.org/install/install_sources" target="_blank">https://www.tensorflow.org/install/install_sources</a> An official tutorial about how to install TF from Sources</li>
+<li><a href="https://docs.bazel.build/versions/master/install-compile-source.html" target="_blank">https://docs.bazel.build/versions/master/install-compile-source.html</a> An official tutorial about how to install Bazel from Sources.</li>
+<li><a href="https://www.ibm.com/developerworks/community/blogs/fe313521-2e95-46f2-817d-44a4f27eba32/entry/Building_TensorFlow_on_OpenPOWER_Linux_Systems?lang=en" target="_blank">https://www.ibm.com/developerworks/community/blogs/fe313521-2e95-46f2-817d-44a4f27eba32/entry/Building_TensorFlow_on_OpenPOWER_Linux_Systems?lang=en</a> IBM source about Tensorflow installation. Provides interesting information about bazel installation on PPC and how to install TF with GPU support. It also points to an IBM Bazel modified to PPC (which we are not using in this tutorial, but you can take a look on it).</li>
+<li><a href="https://github.com/tensorflow/tensorflow/issues/7979#issuecomment-283559640" target="_blank">https://github.com/tensorflow/tensorflow/issues/7979#issuecomment-283559640</a> An issue about enviroment variables: on the configuration step, if it does not recognize some of the TF variables, this might help you to solve the problem.</li>
+<li><a href="https://github.com/bazelbuild/bazel/issues/1308" target="_blank">https://github.com/bazelbuild/bazel/issues/1308</a> An issue about Bazel: &ldquo;The system is out of resources&rdquo;. You might need to add a command line on compile file to change the garbage collector size. On the issue on git, it&rsquo;s suggested to change it to 384, but, at least on one of the computers I tried to compile, I needed to change it to 512 (in other words, change -J-Xmx384m on the solution line to -J-Xmx512m). It&rsquo;s important to see that ideally we should not have to change the source code, but it solves the problem. Another option is to increase the memory of your system if it&rsquo;s possible (recommended).</li>
+</ol>
+
+    </div>
+
+    
+
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.16bbb3750feb7244c9bc409a5a4fe678.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
