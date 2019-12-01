@@ -4,24 +4,29 @@ layout: page
 date:
 ---
 
-A Universidade Estadual de Campinas (Unicamp) e a IBM firmaram importantes parcerias para desenvolvimento da comunidade acadêmica na área de tecnologia da informação. As iniciativas envolvem dois projetos: uma Minicloud pública da Unicamp com infraestrutura da IBM Power Systems® e participação da universidade no consórcio OpenPOWER Foundation.
+Campinas Public University (Unicamp) and IBM have estabilished important partnerships for the development of the academic community in the area of ​​information technology. The initiatives involves two projects: a public minicloud within Unicamp with IBM Power Systems® infrastructure and Unicamp's participation in the OpenPOWER Foundation's consortium.
 
-A [Minicloud](http://openpower.ic.unicamp.br/minicloud) da Unicamp oferece acesso gratuito às máquinas virtuais IBM Power Systems® para usuários acadêmicos e da comunidade Open Source. Este ambiente está disponível para desenvolvimento, testes ou migração de aplicações para o servidor da IBM. A Minicloud utiliza o IBM PowerKVM™, que é uma solução de virtualização aberta que suporta a execução de um grande número de máquinas virtuais em um único servidor com sistema operacional Linux.
+Unicamp's [Minicloud] (http://openpower.ic.unicamp.br/minicloud) provides free access to IBM Power Systems® virtual machines for academic users and for the Open Source community. The environment is available for developing, testing and migrating applications to the IBM server. Minicloud uses IBM PowerKVM ™, which is an open virtualization solution that supports running a large number of virtual machines on a single server running Linux operating system.
 
-Já o [OpenPOWER](https://openpowerfoundation.org/) é uma comunidade aberta e colaborativa para desenvolvimento do processador IBM POWER. No final de 2013, a IBM abriu para o mercado a tecnologia do chip do processador POWER com o objetivo de gerar inovação e criar um ecossistema na plataforma. A Unicamp é a primeira instituição brasileira a participar do consórcio que, hoje, já conta com mais de 87 membros em todo mundo, entre empresas de hardware, software, computação técnica, data centers e universidades.
+[OpenPOWER] (https://openpowerfoundation.org/) is an open and collaborative community for the development of the IBM POWER processor. In late 2013, IBM opened the POWER processor chip technology to the market to drive innovation and create an ecosystem on the platform. Unicamp is the first Brazilian institution to participate in the consortium, which today has more than 87 members worldwide, including hardware, software, technical computing, data centers and universities.
 
-A adesão da Unicamp como membro do OpenPower Foundation estreita a parceria entre as instituições para desenvolvimento em ambiente Linux. No final de 2003, a Unicamp iniciou a parceria com o Linux Technology Center Brazil (LTC) da IBM e, desde lá, ambas já trabalham em conjunto no desenvolvimento de soluções e pesquisa na plataforma POWER, tanto na comunidade Open Source quanto na academia. Hoje, o LTC possui um laboratório no campus da universidade onde são desenvolvidos trabalhos em conjunto com professores e estudantes de graduação e mestrado.
+Unicamp's membership of the OpenPower Foundation strengthens the partnership between institutions for development in the Linux environment. In late 2003, Unicamp began partnering with IBM's Linux Technology Center Brazil (LTC), and since then both have been working together on developing solutions and research on the POWER platform, both in the Open Source community and in academia. Today, LTC has a laboratory on the university campus where the work is carried out jointly with professors, undergraduate and master students.
 
-“Parcerias como esta são muito importantes para a Unicamp, pois propiciam o envolvimento dos alunos bolsistas em um ambiente de trabalho e na execução de projetos que extrapolam o ambiente acadêmico, complementando a experiência em sala de aula de modo que a universidade cumpra sua principal função de formar recursos humanos altamente qualificados”, destacam os professores Sandro Rigo e Rodolfo Azevedo, do Instituto de Computação da Unicamp.
+“Partnerships like this one are very important to Unicamp, as they enable scholarship students to be involved in a work environment and in the execution of projects that go beyond the academic environment, complementing the student's experience so that the university fulfills its main function. to train highly qualified human resources”, emphasizes the Professors Sandro Rigo and Rodolfo Azevedo, from the Unicamp Computing Institute.
 
-“A adesão da Unicamp como membro acadêmico do OpenPower Foundation proporcionará a troca de experiências e conhecimento entre grupos de trabalho em diversas áreas, favorecendo o desenvolvimento do ecossistema ao redor dos servidores Linux on POWER”, comenta Aníbal Strianese, executivo de Vendas de Servidores da IBM Brasil.
+“Unicamp's OpenPower Foundation membership will enable workgroups to exchange experience and knowledge across diverse areas, enabling the development of the ecosystem around Linux on POWER servers,” says Aníbal Strianese, Server Sales Executive at OpenPower Foundation. IBM Brazil.
 
-**Sobre a Unicamp**
+**About Unicamp**
 
-A Universidade Estadual de Campinas (Unicamp) foi, oficialmente, fundada em 5 de outubro de 1966. Hoje, considerada uma das principais instituições de educação e pesquisa do País. Possui três campus localizados nas cidades de Campinas, Piracicaba e Limeira e também 24 unidades de ensino e pesquisa. Sua produção acadêmica corresponde por 15% da pesquisa no Brasil. Ao dar ênfase à investigação científica, a Unicamp parte do princípio de que a pesquisa, servindo prioritariamente à qualidade do ensino, pode ser também uma atividade econômica. Motivo que leva a naturalidade de suas relações com a indústria, fácil diálogo com as agências de fomento e rápida inserção no processo produtivo. Para mais informações sobre a Unicamp, visite http://www.unicamp.br.
+The University of Campinas (Unicamp) was officially founded on October 5, 1966. Today is considered one of the leading educational and research institutions in the country. It has three campuses located in the cities of Campinas, Piracicaba and Limeira, and also 24 teaching and research institutes. It's academic production corresponds to 15% of the research in Brazil. Unicamp considers scientific research primarily as a component in the quality of education, but also as an economic activity. This leads to natural relationships with the industry, easy dialogue with funding agencies and quick insertion into the production process. For more information about Unicamp, visit http://www.unicamp.br.
 
-**Sobre a IBM**
+**About IBM**
 
-Para mais informações sobre a IBM, visite http://www.ibm.com/br IBM no Twitter: http://twitter.com/ibmbrasil Acompanhe www.timaissimples.com.br, o blog que descomplica a tecnologia.
+For more information about IBM, visit http://www.ibm.com/
+IBM on Twitter: http://twitter.com/ibmbrasil 
+Follow www.timaissimples.com.br, the blog that makes technology simple.
 
-Assessoria de Imprensa IBM Brasil – In Press Brodeur Atendimento: Kelly Bassi – kelly.bassi@brodeur.com.br - (11) 3323-1603 Gerente de Atendimento: Mariana Lima – mariana.lima@brodeur.com.br - (11) 3323-1607 Relacionamento com Imprensa – IBM Gerência: Vanessa Garcia Xavier - vaneg@br.ibm.com / (11) 2132-2218
+Press Office IBM Brazil: 
+- In Press Brodeur Customer Service: Kelly Bassi - kelly.bassi@brodeur.com.br - (11) 3323-1603 
+- Customer Service Manager: Mariana Lima - mariana.lima@brodeur.com.br - (11) 3323-1607 
+- Press Relations - IBM Management: Vanessa Garcia Xavier - vaneg@br.ibm.com / (11) 2132-2218

@@ -53,6 +53,6 @@ subtitle = ""
   icon = "info"
 +++
 
-**Unicamp e IBM consolidam parcerias para comunidade acadêmica**
+**Unicamp and IBM estabilishes partnership**
 
-A Universidade Estadual de Campinas (Unicamp) e a IBM firmaram importantes parcerias para desenvolvimento da comunidade acadêmica na área de tecnologia da informação. As iniciativas envolvem dois projetos: uma Minicloud pública da Unicamp com infraestrutura da IBM Power Systems® e participação da universidade no consórcio OpenPOWER Foundation.
+Campinas Public University (Unicamp) and IBM have estabilished important partnerships for the development of the academic community in the area of ​​information technology. The initiatives involves two projects: a public minicloud within Unicamp with IBM Power Systems® infrastructure and Unicamp's participation in the OpenPOWER Foundation's consortium.
