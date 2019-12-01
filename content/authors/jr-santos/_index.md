@@ -10,7 +10,7 @@ authors:
 superuser: false
 
 # Role/position
-role: Computer Engineering undergrad student
+role: Computer Science undergrad student
 
 # Organizations/Affiliations
 organizations:
@@ -18,7 +18,7 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: I'm an undergrad student in Computer Engineering at UNICAMP.
+bio: I'm an undergrad student in Computer Science at UNICAMP.
 
 #interests:
 #- Artificial Intelligence
@@ -60,4 +60,4 @@ user_groups:
 - Students
 ---
 
-I'm an undergrad student in Computer Engineering at UNICAMP.
+I'm an undergrad student in Computer Science at UNICAMP.
