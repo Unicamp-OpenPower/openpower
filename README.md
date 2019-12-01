@@ -6,6 +6,7 @@ This website is mantained with Hugo.
 - Install the latest Hugo Extended from GitHub (https://github.com/gohugoio/hugo/releases)
 - Clone this repository `git clone https://github.com/Unicamp-OpenPower/openpower/`
 - Enter the new directory `cd openpower`
+- Update git submodules `git submodule update --init --recursive`
 - Run the local server `hugo server -D`
 
 ## Remote server setup
