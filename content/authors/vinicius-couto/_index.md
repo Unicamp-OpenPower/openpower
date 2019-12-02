@@ -1,25 +1,25 @@
 ---
 # Display name
-name: Klaus Kiwi
-title: Klaus Kiwi
+name: Vinicius Couto
+title: Vinicius Couto
 
 # Username (this should match the folder name)
 authors:
-- klauskiwi
+- vinicius-couto
 
 # Is this the primary user of the site?
 superuser: false
 
 # Role/position
-role: works for the Linux Technology Center
+role: Computer Engineering undergrad student
 
 # Organizations/Affiliations
 organizations:
-- name: IBM
+- name: UNICAMP
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: 
+bio: I'm an undergrad student in Computer Engineering at UNICAMP.
 
 #interests:
 #- Artificial Intelligence
@@ -45,7 +45,7 @@ bio:
 social:
 - icon: github
   icon_pack: fab
-  link: https://github.com/klauskiwi
+  link: https://github.com/sitio-couto
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.  
 # - icon: cv
@@ -58,6 +58,7 @@ email: ""
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.  
 user_groups:
-- IBM
+- Students
 ---
 
+I'm an undergrad student in Computer Engineering at UNICAMP.

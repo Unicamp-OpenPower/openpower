@@ -1,6 +1,7 @@
 ---
 # Display name
 name: Luciano Zago
+title: Luciano Zago
 
 # Username (this should match the folder name)
 authors:

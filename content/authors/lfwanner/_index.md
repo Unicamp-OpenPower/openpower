@@ -1,6 +1,7 @@
 ---
 # Display name
 name: Lucas Wanner
+title: Lucas Wanner
 
 # Username (this should match the folder name)
 authors:
