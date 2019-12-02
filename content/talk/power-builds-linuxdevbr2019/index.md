@@ -32,7 +32,7 @@ links:
 #  url: 
 url_code: ""
 url_pdf: ""
-url_slides: "https://unicamp-openpower.github.io/talks/pdf/power-builds-linuxdevbr2019.pdf"
+url_slides: "/pdf/power-builds-linuxdevbr2019.pdf"
 url_video: ""
 
 # Markdown Slides (optional).
