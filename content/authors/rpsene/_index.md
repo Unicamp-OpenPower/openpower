@@ -1,6 +1,7 @@
 ---
 # Display name
 name: Rafael Sene
+title: Rafael Sene
 
 # Username (this should match the folder name)
 authors:

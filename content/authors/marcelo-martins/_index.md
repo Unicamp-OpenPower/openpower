@@ -1,6 +1,7 @@
 ---
 # Display name
 name: Marcelo Martins
+title: Marcelo Martins
 
 # Username (this should match the folder name)
 authors:

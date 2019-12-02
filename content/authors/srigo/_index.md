@@ -1,6 +1,7 @@
 ---
 # Display name
 name: Sandro Rigo
+title: Sandro Rigo
 
 # Username (this should match the folder name)
 authors:
