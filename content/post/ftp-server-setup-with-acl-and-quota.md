@@ -133,7 +133,7 @@ Edit the configuration file with the following command:
 sudo nano /etc/vsftpd.conf
 ```
 Example config file:
-<script src="https://gist.github.com/lcnzg/233a7b406f2528cb0d517fc6fbeed5c9.js"></script>
+{{< gist lcnzg 233a7b406f2528cb0d517fc6fbeed5c9 >}}
 
 In the previous config, we allowed read permission for anonymous.
 
@@ -238,7 +238,7 @@ setfacl -R -m u:$USER:rwX $DIRECTORY
 
 # Adding new users
 We created the following script to manage the creation of new users:
-<script src="https://gist.github.com/lcnzg/54a44d87babcf3f33523fbcae152c47f.js"></script>
+{{< gist lcnzg 54a44d87babcf3f33523fbcae152c47f >}}
 
 ```
 chmod +x create_user.sh
@@ -255,7 +255,7 @@ sudo ./create_user.sh 'user' 'pass' 'directory'
 
 Should any problem with file permissions ocurr, use the ```fix_acl.sh``` script, that will remake the permissions based on ```acl.list``` file.
 
-<script src="https://gist.github.com/lcnzg/51258738564989bc8e2b0b7d25397b02.js"></script>
+{{< gist lcnzg 51258738564989bc8e2b0b7d25397b02 >}}
 
 Add execute permission to the script:
 ```

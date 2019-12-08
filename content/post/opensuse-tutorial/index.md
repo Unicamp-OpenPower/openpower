@@ -215,7 +215,7 @@ Because Leap 42.3 ppc64Le's configuration fits better for a cloud role, so we wi
 ```bash
 sudo vim /etc/cloud/cloud.cfg
 ```
-<script src="https://gist.github.com/Igortorrente/6d770e47d589db89fe2f1b49218f1c58.js"></script>
+{{< gist Igortorrente 6d770e47d589db89fe2f1b49218f1c58 >}}
 
 
 ## Cleaning image
