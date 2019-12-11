@@ -30,19 +30,20 @@ Our infrastructure is being used to validate several Open Source projects.
 
 # Open-source projects
 
-|Project|FTP Link (ppc64le binaries)|
-|---|---|
-| [Bazel](https://bazel.build) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel](https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/)
-| [Containerd](https://containerd.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd](https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd/)
-| [Docker CE](https://docs.docker.com/install) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker](https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker)
-| [Glide](https://glide.sh) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide](https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide)
-| [Grafana](https://grafana.com) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana](https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana)
-| [Kiali](https://www.kiali.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali](https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali)
-| [Minikube](https://kubernetes.io/docs/setup/minikube) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
-| [Minio](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
-| [Minio-MC](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
-| [Restic](https://restic.net) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic](https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic)
-| [Terraform](https://www.terraform.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform](https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform)
+
+|Status|Project|FTP Link (ppc64le binaries)|
+|---|---|---|
+| ![](https://travis-ci.org/Unicamp-OpenPower/bazel-releases.png) | [Bazel](https://bazel.build) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel](https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/)
+| ![](https://travis-ci.org/Unicamp-OpenPower/containerd-releases.png) | [Containerd](https://containerd.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd](https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd/)
+| ![](https://travis-ci.org/Unicamp-OpenPower/docker-ce-releases.png) | [Docker CE](https://docs.docker.com/install) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker](https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker)
+| ![](https://travis-ci.org/Unicamp-OpenPower/glide-releases.png) | [Glide](https://glide.sh) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide](https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide)
+| ![](https://travis-ci.org/Unicamp-OpenPower/grafana-releases.png) | [Grafana](https://grafana.com) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana](https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana)
+| ![](https://travis-ci.org/Unicamp-OpenPower/kiali-releases.png) | [Kiali](https://www.kiali.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali](https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali)
+| ![](https://travis-ci.org/Unicamp-OpenPower/minikube-releases.png) | [Minikube](https://kubernetes.io/docs/setup/minikube) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
+| ![](https://travis-ci.org/Unicamp-OpenPower/minio-releases.png) | [Minio](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
+| ![](https://travis-ci.org/Unicamp-OpenPower/minio-mc-releases.png) | [Minio-MC](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
+| ![](https://travis-ci.org/Unicamp-OpenPower/restic-releases.png) | [Restic](https://restic.net) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic](https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic)
+| ![](https://travis-ci.org/Unicamp-OpenPower/terraform-releases.png) | [Terraform](https://www.terraform.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform](https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform)
 
 <!---  *********** OLD PROJECTS ***********
 | Glibc | The GNU C Library is used as the C library in the GNU system and in GNU/Linux systems, as well as many other systems that use Linux as the kernel. 
