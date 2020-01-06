@@ -2,7 +2,7 @@
 title: Introducing Power Architecture's Assembly Language
 layout: page
 date: 2019-12-18
-author: [vinicius-couto] 
+author: [vcouto]
 
 aliases: [/blog/assembly_introduction.html]
 
