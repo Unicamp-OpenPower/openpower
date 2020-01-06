@@ -1,7 +1,7 @@
 ---
 # Display name
-name: Vinicius Couto
-title: Vinicius Couto
+name: Vinicius Couto Espindola
+title: Vinicius Couto Espindola
 
 # Username (this should match the folder name)
 authors:
