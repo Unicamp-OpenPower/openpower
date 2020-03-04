@@ -56,144 +56,19 @@ The following settings can be used to set a service with _systemd_ which will di
 
 |Steps to Execute|Controller|Compute|
 |---|---|---|
-|[Host networking](https://docs.openstack.org/install-guide/environment-networking.html)|||
-|[Network Time Protocol (NTP)](https://docs.openstack.org/install-guide/environment-ntp.html)|||
-|[OpenStack packages](https://docs.openstack.org/install-guide/environment-packages.html)|||
-|[SQL database](https://docs.openstack.org/install-guide/environment-sql-database.html)|||
-|[Message queue](https://docs.openstack.org/install-guide/environment-messaging.html)|||
-|[Memcached](https://docs.openstack.org/install-guide/environment-memcached.html)|<img src="check.png" height="10%"/><element width="10%">||
-|[Etcd](https://docs.openstack.org/install-guide/environment-etcd.html)|||
-|[keystone](https://docs.openstack.org/keystone/train/install/)|||
-|[glance](https://docs.openstack.org/glance/train/install/)|||
-|[placement](https://docs.openstack.org/placement/train/install/)|||
-|[nova](https://docs.openstack.org/nova/train/install/)|||
-|[neutron](https://docs.openstack.org/neutron/train/install/)|||
-|[horizon](https://docs.openstack.org/horizon/train/install/)|||
-
-
-<table>
-  <tr>
-   <td><strong>Steps to Execute</strong>
-   </td>
-   <td><strong>Controller</strong>
-   </td>
-   <td><strong>Compute</strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/environment-networking.html">Host networking</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/environment-ntp.html">Network Time Protocol (NTP)</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/environment-packages.html">OpenStack packages</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/environment-sql-database.html">SQL database</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/environment-messaging.html">Message queue</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/environment-memcached.html">Memcached</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/environment-etcd.html">Etcd</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/keystone/train/install/">keystone installation for Train</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/glance/train/install/">glance installation for Train </a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/placement/train/install/">placement installation for Train</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/nova/train/install/">nova installation for Train</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/neutron/train/install/">neutron installation for Train</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/horizon/train/install/">horizon installation for Train</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="cross.png" height="8.5%"/></strong>
-   </td>
-  </tr>
-  <tr>
-   <td><a href="https://docs.openstack.org/install-guide/launch-instance.html">Launch an instance</a>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-   <td><strong><img src="check.png" height="10%"/></strong></strong>
-   </td>
-  </tr>
-</table>
-
+|[Host networking](https://docs.openstack.org/install-guide/environment-networking.html)|![](check.png)|![](check.png)|
+|[Network Time Protocol (NTP)](https://docs.openstack.org/install-guide/environment-ntp.html)|![](check.png)|![](check.png)|
+|[OpenStack packages](https://docs.openstack.org/install-guide/environment-packages.html)|![](check.png)|![](check.png)|
+|[SQL database](https://docs.openstack.org/install-guide/environment-sql-database.html)|![](check.png)|![](cross.png)|
+|[Message queue](https://docs.openstack.org/install-guide/environment-messaging.html)|![](check.png)|![](cross.png)|
+|[Memcached](https://docs.openstack.org/install-guide/environment-memcached.html)|![](check.png)|![](cross.png)|
+|[Etcd](https://docs.openstack.org/install-guide/environment-etcd.html)|![](check.png)|![](cross.png)|
+|[keystone](https://docs.openstack.org/keystone/train/install/)|![](check.png)|![](cross.png)|
+|[glance](https://docs.openstack.org/glance/train/install/)|![](check.png)|![](cross.png)|
+|[placement](https://docs.openstack.org/placement/train/install/)|![](check.png)|![](check.png)|
+|[nova](https://docs.openstack.org/nova/train/install/)|![](check.png)|![](check.png)|
+|[neutron](https://docs.openstack.org/neutron/train/install/)|![](check.png)|![](cross.png)|
+|[horizon](https://docs.openstack.org/horizon/train/install/)|![](check.png)|![](check.png)|
 
 **Troubleshooting:**
 
