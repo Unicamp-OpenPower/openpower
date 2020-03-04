@@ -1,7 +1,7 @@
 ---
 title: Upgrading to OpenStack Train
 layout: page
-date: 2019-03-04
+date: 2020-03-04
 authors: [vcouto, marcelo-martins, jr-santos]
 
 aliases: [/blog/upgrading_to_openstack_train.html]
