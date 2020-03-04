@@ -54,6 +54,22 @@ The following settings can be used to set a service with _systemd_ which will di
 
 **Installation Checklist:** Here’s a helpful step by step installation checklist for an environment with multiple node:
 
+|Steps to Execute|Controller|Compute|
+|---|---|---|
+|[Host networking](https://docs.openstack.org/install-guide/environment-networking.html)|||
+|[Network Time Protocol (NTP)](https://docs.openstack.org/install-guide/environment-ntp.html)|||
+|[OpenStack packages](https://docs.openstack.org/install-guide/environment-packages.html)|||
+|[SQL database](https://docs.openstack.org/install-guide/environment-sql-database.html)|||
+|[Message queue](https://docs.openstack.org/install-guide/environment-messaging.html)|||
+|[Memcached](https://docs.openstack.org/install-guide/environment-memcached.html)|<img src="check.png" height="10%"/><element width="10%">||
+|[Etcd](https://docs.openstack.org/install-guide/environment-etcd.html)|||
+|[keystone](https://docs.openstack.org/keystone/train/install/)|||
+|[glance](https://docs.openstack.org/glance/train/install/)|||
+|[placement](https://docs.openstack.org/placement/train/install/)|||
+|[nova](https://docs.openstack.org/nova/train/install/)|||
+|[neutron](https://docs.openstack.org/neutron/train/install/)|||
+|[horizon](https://docs.openstack.org/horizon/train/install/)|||
+
 
 <table>
   <tr>
