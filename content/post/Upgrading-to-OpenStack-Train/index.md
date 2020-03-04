@@ -1,3 +1,13 @@
+---
+title: Upgrading to OpenStack Train
+layout: page
+date: 2019-03-04
+authors: [vcouto, marcelo-martins, jr-santos]
+
+aliases: [/blog/upgrading_to_openstack_train.html]
+
+---
+
 # Upgrading to OpenStack Train
 
 Recently, we’ve upgraded Minicloud’s (a Power architecture based server) Openstack environment to it’s latest version (Openstack Train), and this post aims to tackle some of the issues which we’ve faced.
