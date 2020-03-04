@@ -185,5 +185,5 @@ A small change to Horizon from the previous OpenStack release was the dashboard 
 When attempting to create a VM, the following error was presented by the Nova module: *VirtualInterfaceCreateException: Virtual Interface creation failed.*\
 To fix this, we[ followed the instructions from a post](https://ask.openstack.org/en/question/26938/virtualinterfacecreateexception-virtual-interface-creation-failed/) in which two lines of configurations are added to the _nova.conf_ file: **vif_plugging_is_fatal: false** and **vif_plugging_timeout: 0.**
 
-
+Good luck upgrading.
 <!-- Docs to Markdown version 1.0β18 -->
