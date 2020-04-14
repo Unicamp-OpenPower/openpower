@@ -42,7 +42,7 @@ The inline assembly tool in C aims to avert some of these problems by delegating
 
 **Constraints:** Every input/output operand must have a constraint which, as the name implies, constrains the contents and location of an operand as well as it’s access. Since the idea is to leave the least amount of work possible for the compiler, using them can be helpful. Constraints can be generic or machine specific, [there’s a whole list of these](https://gcc.gnu.org/onlinedocs/gccint/Constraints.html).
 
-![Input and Output Operands naming conventions.](naming_operands.png)
+![Input and Output Operands naming conventions.](naming_operands.PNG)
 *Figure 1 - Input and Output Operands naming conventions.*
 
 ***Note:*** *You can check out some PowerPC asm examples [here](https://www.ibm.com/support/knowledgecenter/SSGH3R_16.1.0/com.ibm.xlcpp161.aix.doc/language_ref/asm_example.html#asm_example__Example5TheFollowingExampleShowsTh-027B19F3).*
