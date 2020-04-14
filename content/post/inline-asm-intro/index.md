@@ -2,7 +2,7 @@
 title: Introducing Inline Assembly with PowerPC
 layout: page
 date: 2020-04-14
-authors: vcouto
+authors: [vcouto]
 
 aliases: [/blog/inline-asm-intro.html]
 
@@ -45,7 +45,7 @@ The inline assembly tool in C aims to avert some of these problems by delegating
 ![Input and Output Operands naming conventions.](naming_operands.png)
 *Figure 1 - Input and Output Operands naming conventions.*
 
-***Note:*** *You can check out some PowerPC asmexamples [here](https://www.ibm.com/support/knowledgecenter/SSGH3R_16.1.0/com.ibm.xlcpp161.aix.doc/language_ref/asm_example.html#asm_example__Example5TheFollowingExampleShowsTh-027B19F3).*
+***Note:*** *You can check out some PowerPC asm examples [here](https://www.ibm.com/support/knowledgecenter/SSGH3R_16.1.0/com.ibm.xlcpp161.aix.doc/language_ref/asm_example.html#asm_example__Example5TheFollowingExampleShowsTh-027B19F3).*
 
 ## Max Element With Inline Assembly
 As for a practical example, let’s create an *asm* call that finds the maximum value within an integer array.
@@ -84,7 +84,7 @@ Before we start dissecting the code, let’s take a look at two special purpose 
 **Special Purpose Registers:** The Condition Register (CR) holds the results of comparisons. It consists of 8 bitfields (blocks of 4 bits) that can be individually accessed through indexes, also, it can be implicitly altered when the cmp instruction is called. The Counter Register (CTR) is mainly used for loops. Besides being an integer counter, it has special instructions to facilitate assertions (CTR==0? or CTR!=0?) and incrementation/decrementation.
 
 ![CR's bitfield diagram](cr_bitfield.PNG)
-*Figure 2 - Condition register bitfield diagram*
+*Figure 2 - Condition register bitfields diagram*
 
 **More About Comparisons:** The compare instruction is actually a subtraction that identifies if the result is negative, zero or positive. For example, if we have “cmpd A, B”, the operation realized is “A-B”. If the result is negative, the bit 0 of bitfield X is set. if 0, the bit 1of bitfield X is set. If positive, bit 3 is set. So, if we want to branch when ”A<B” we can use blt (checks if bit 0 from *bitfield* 0 is set). Note that the order of the registers A and B is paramount.
 
