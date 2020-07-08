@@ -11,7 +11,7 @@ authors:
 superuser: false
 
 # Role/position
-role: 
+role: works for the Linux Technology Center
 
 # Organizations/Affiliations
 organizations:
@@ -19,7 +19,7 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: 
+bio:
 
 #interests:
 #- Artificial Intelligence
@@ -43,12 +43,12 @@ bio:
 #   For an email link, use "fas" icon pack, "envelope" icon, and a link in the
 #   form "mailto:your-email@example.com" or "#contact" for contact widget.
 social:
-- icon: link
-  icon_pack: fas
-  link: https://rpsene.com/
+- icon: linkedin
+  icon_pack: fab
+  link: https://www.linkedin.com/in/pdrocaldeira/
 - icon: github
   icon_pack: fab
-  link: https://github.com/rpsene
+  link: https://github.com/pdrocaldeira
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.  
 # - icon: cv
@@ -57,10 +57,9 @@ social:
 
 # Enter email to display Gravatar (if Gravatar enabled in Config)
 email: ""
-  
+
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.  
 user_groups:
-- Students
+- IBM
 ---
-
