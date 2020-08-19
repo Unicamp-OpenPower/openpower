@@ -2,7 +2,7 @@
 title: Upgrading to OpenStack Train
 layout: page
 date: 2020-03-04
-authors: [vcouto, marcelo-martins, jr-santos]
+authors: [lcnzg, vcouto, marcelo-martins, jr-santos]
 
 aliases: [/blog/upgrading_to_openstack_train.html]
 
@@ -78,7 +78,7 @@ In this section we’ll share some of the errors we had during installation and 
 Some SQL commands were failing due to unknown reasons even with the correct dependencies. A solution we found for this issue was bumping our mariaDB version from 10.2 to 10.4.
 
 #### Apache & Horizon Login:
-A small change to Horizon from the previous OpenStack release was the dashboard login page URL settings. Simply using **<IP address>/horizon** would redirect to the login page in previous versions. This might require some redirection tweaks in the Apache server configuration file. 
+A small change to Horizon from the previous OpenStack release was the dashboard login page URL settings. Simply using **<IP address>/horizon** would redirect to the login page in previous versions. This might require some redirection tweaks in the Apache server configuration file.
 
 #### Virtual Interface Exception:
 When attempting to create a VM, the following error was presented by the Nova module: *VirtualInterfaceCreateException: Virtual Interface creation failed.*\
