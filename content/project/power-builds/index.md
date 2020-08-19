@@ -37,7 +37,7 @@ Our infrastructure is being used to validate several Open Source projects.
 | ![](https://travis-ci.org/Unicamp-OpenPower/containerd-releases.png) | [Containerd](https://containerd.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd](https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd/)
 | ![](http://minicloud.parqtec.unicamp.br:60000/job/docker-ce-releases/badge/icon?) | [Docker CE](https://docs.docker.com/install) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker](https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker)
 | ![](https://travis-ci.org/Unicamp-OpenPower/glide-releases.png) | [Glide](https://glide.sh) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide](https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide)
-| ![](https://travis-ci.org/Unicamp-OpenPower/grafana-releases.png) | [Grafana](https://grafana.com) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana](https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana)
+| ![](http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases/badge/icon?) | [Grafana](https://grafana.com) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana](https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana)
 | ![](https://travis-ci.org/Unicamp-OpenPower/kiali-releases.png) | [Kiali](https://www.kiali.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali](https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali)
 | ![](https://travis-ci.org/Unicamp-OpenPower/minikube-releases.png) | [Minikube](https://kubernetes.io/docs/setup/minikube) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
 | ![](https://travis-ci.org/Unicamp-OpenPower/minio-releases.png) | [Minio](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
@@ -48,10 +48,10 @@ Our infrastructure is being used to validate several Open Source projects.
 | ![](https://api.travis-ci.org/Unicamp-OpenPower/rclone-releases.png) | [Rclone](https://rclone.org/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone](https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone)
 
 <!---  *********** OLD PROJECTS ***********
-| Glibc | The GNU C Library is used as the C library in the GNU system and in GNU/Linux systems, as well as many other systems that use Linux as the kernel. 
+| Glibc | The GNU C Library is used as the C library in the GNU system and in GNU/Linux systems, as well as many other systems that use Linux as the kernel.
 | GDB   | The GNU Project debugger, allows you to see what is going on `inside' another program while it executes -- or what another program was doing at the moment it crashed.
 | Go    | Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.
-| LLVM  | The LLVM Project is a collection of modular and reusable compiler and toolchain technologies. 
+| LLVM  | The LLVM Project is a collection of modular and reusable compiler and toolchain technologies.
 | Open CASCADE | A 3D modeling kernel that consists of reusable C++ object libraries that are available as Open Source.
 | Computing on Linear Algebra | Blast library
 | Openjdk | an open-source implementation of the Java Platform, Standard Edition, and related projects
