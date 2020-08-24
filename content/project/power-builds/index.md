@@ -35,6 +35,7 @@ Our infrastructure is being used to validate several Open Source projects.
 |---|---|---|
 | ![](https://travis-ci.org/Unicamp-OpenPower/bazel-releases.png) | [Bazel](https://bazel.build) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel](https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/)
 | ![](https://travis-ci.org/Unicamp-OpenPower/containerd-releases.png) | [Containerd](https://containerd.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd](https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd/)
+| ![](http://minicloud.parqtec.unicamp.br:60000/job/containerd-cri-release/badge/icon?) | [Containerd-cri](https://github.com/containerd/cri) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri](https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri/)
 | ![](http://minicloud.parqtec.unicamp.br:60000/job/docker-ce-releases/badge/icon?) | [Docker CE](https://docs.docker.com/install) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker](https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker)
 | ![](https://travis-ci.org/Unicamp-OpenPower/glide-releases.png) | [Glide](https://glide.sh) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide](https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide)
 | ![](http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases/badge/icon?) | [Grafana](https://grafana.com) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana](https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana)
