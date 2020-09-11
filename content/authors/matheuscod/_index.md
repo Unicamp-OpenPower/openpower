@@ -1,17 +1,17 @@
 ---
 # Display name
-name: Júnior Santos
-title: Júnior Santos
+name: Matheus Fernandes
+title: Matheus Fernandes
 
 # Username (this should match the folder name)
 authors:
-- jr-santos
+- matheuscod
 
 # Is this the primary user of the site?
 superuser: false
 
 # Role/position
-role: Computer Science undergrad student
+role: Computer Engineering undergrad student
 
 # Organizations/Affiliations
 organizations:
@@ -19,7 +19,7 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: I'm an undergrad student in Computer Science at UNICAMP.
+bio: I'm an undergrad student in Computer Engineering at UNICAMP.
 
 #interests:
 #- Artificial Intelligence
@@ -45,10 +45,10 @@ bio: I'm an undergrad student in Computer Science at UNICAMP.
 social:
 - icon: linkedin
   icon_pack: fab
-  link: https://www.linkedin.com/in/c-santos-jr/
+  link: https://www.linkedin.com/in/matheusfernandesdev/
 - icon: github
   icon_pack: fab
-  link: https://github.com/jr-santos98
+  link: https://github.com/MatheusCod
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.  
 # - icon: cv
@@ -64,4 +64,4 @@ user_groups:
 - Students
 ---
 
-I'm an undergrad student in Computer Science at UNICAMP.
+I'm an undergrad student in Computer Engineering at UNICAMP.
