@@ -14,7 +14,7 @@ image:
   caption:
   focal_point: Smart
 ---
-We created a repository with all the open source projects that we validate for Power.
+We created a repository with all the open source projects that we build on Power.
 
 # Open-source packages
 
