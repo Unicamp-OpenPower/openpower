@@ -36,6 +36,7 @@ We created a repository with all the open source projects that we build on Power
 | [Restic](https://restic.net) | restic | Fast, secure, efficient backup program.
 | [Terraform](https://www.terraform.io) | terraform | Use Infrastructure as Code to provision and manage any cloud, infrastructure, or service.
 | [Rclone](https://rclone.org/) | rclone | "rsync for cloud storage" - Google Drive, Amazon Drive, and more.
+| [Matchbox](https://matchbox.psdn.io/) | matchbox | Matchbox is a service that matches bare-metal machines to profiles that PXE boot and provision clusters.
 
 
 ## Add the repository and install some package
