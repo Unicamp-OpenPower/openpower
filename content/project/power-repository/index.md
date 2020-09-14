@@ -1,6 +1,6 @@
 ---
 title: POWER Repository
-summary: Open Source packages validations on POWER
+summary: Open Source packages build on POWER
 tags:
 - Repository
 - Packages
