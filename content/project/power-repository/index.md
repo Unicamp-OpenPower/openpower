@@ -26,7 +26,7 @@ We created a repository with all the open source projects that we build on Power
 | [Containerd-cri](https://github.com/containerd/cri) | containerd-cri-cni | Containerd Plugin for Kubernetes Container Runtime Interface.
 | [Docker CE](https://docs.docker.com/install) | docker-ce | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
 | [Docker CE](https://docs.docker.com/install) | docker-ce-cli | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
-| [Glide](https://glide.sh) | glide | Package Management for Go
+| [Glide](https://glide.sh) | glide | Package Management for Go.
 | [Grafana](https://grafana.com) | grafana-cli | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
 | [Grafana](https://grafana.com) | grafana-server | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
 | [Kiali](https://www.kiali.io) | kiali | Service mesh management for Istio.
