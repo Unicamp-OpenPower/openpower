@@ -32,7 +32,7 @@ We created a repository with all the open source projects that we build on Power
 | [Kiali](https://www.kiali.io) | kiali | Service mesh management for Istio.
 | [Minikube](https://kubernetes.io/docs/setup/minikube) | minikube | Minikube is a tool that makes it easy to run Kubernetes locally.
 | [Minio](https://min.io) | minio | High Performance, Kubernetes Native Object Storage.
-| [Minio-MC](https://min.io) | minio-mc | MinIO Client is a replacement for ls, cp, mkdir, diff and rsync commands for filesystems and object storage.
+| [Minio-MC](https://min.io) | mc | MinIO Client is a replacement for ls, cp, mkdir, diff and rsync commands for filesystems and object storage.
 | [Restic](https://restic.net) | restic | Fast, secure, efficient backup program.
 | [Terraform](https://www.terraform.io) | terraform | Use Infrastructure as Code to provision and manage any cloud, infrastructure, or service.
 | [Rclone](https://rclone.org/) | rclone | "rsync for cloud storage" - Google Drive, Amazon Drive, and more.
