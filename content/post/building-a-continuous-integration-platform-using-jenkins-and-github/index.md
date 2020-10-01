@@ -25,7 +25,7 @@ To install git, simply execute:
 
 Access Jenkins through http://localhost:8080 and follow the instructions for the initial setup. Choose **Install suggested plugins** when asked.
 
-<img src="plugins.png" width="100%"/>
+![Plugins](plugins.png)
 
 # Step 2: Creating a job
 
@@ -57,7 +57,7 @@ Complete the job creating by adding a build step (e.g. a shell script to compile
 
 The test input and expected output should be in the repository.
 
-<img src="job_configuration.png" width="100%"/>
+![Job Configuration](job_configuration.png)
 
 # Step 3: Configuring GitHub plugin - Skip if building periodically
 
@@ -67,13 +67,13 @@ A new sub-section will appear right above.
 
 Select **From login and password**, fill your login and password from GitHub and press **Create token credentials**
 
-<img src="create_token.png" width="100%"/>
+![Create Token](create_token.png)
 
 Above this sub-section, click **Add GitHub server**. Keep the **API URL** unchanged.
 
 Under **Credentials** dropdown menu, select the token just created and test your connection.
 
-<img src="github_server.png" width="100%"/>
+![Github Server](github_server.png)
 
 # Step 4: Testing it
 
@@ -81,7 +81,7 @@ If using periodical build, click the **Build now** icon to test. If the test fai
 
 If using GitHub trigger, change a file in the repository. The build should start automatically in a few seconds.
 
-#Step 5: Adding slave machines - Optional
+# Step 5: Adding slave machines - Optional
 
 As your projects grow, you may run out of resources in your machine. A possible solution is to add one or more slave machines, which will be responsible for building your projects, while the current machine will become the master and manage everything (the master will still be able to run jobs if desired).
 
@@ -118,14 +118,14 @@ Simply enter your host and create a credential using your username and password,
 
 Press **Save**
 
-<img src="slave_node.png" width="100%"/>
+![Slave Node](slave_node.png)
 
-##Step 5.1: Restricting machines where projects can be run
+## Step 5.1: Restricting machines where projects can be run
 
 If your slaves have different environments, your should restrict the machines where each project will run.
 
 Under the **project** settings, check **Restrict where this project can be run** and type the machine name, use a label, or even use a more complex rule using logical operators (click the **?** for more information)
 
-<img src="restrict_where_this_project_can_be_run.png" width="100%"/>
+![Restrict where this project can be run](restrict_where_this_project_can_be_run.png)
 
 To prevent the master machine to run projects, go to **Manage Jenkins** → **Manage Nodes** → **master** → **Configure** → **# of executors** and set to 0.

@@ -1,5 +1,5 @@
 ---
-title: Building a opensuse openstack image 
+title: Building a opensuse openstack image
 layout: page
 date: 2018-11-06
 author: Igor Matheus Andrade Torrente
@@ -8,7 +8,7 @@ aliases: [/blog/opensuse-tutorial.html]
 
 ---
 
-This tutorial I will show how create a openstack image (.qcow2) of opensuse from a ISO image using qemu. 
+This tutorial I will show how create a openstack image (.qcow2) of opensuse from a ISO image using qemu.
 In this tutorial will be used opensuse Tumbleweed ppc64 le (because it's the most challenging), but similiar process can be done for leap (15 and 42.3) and Tumbleweed ppc64be.
 
 ## Preparing environment
@@ -32,7 +32,7 @@ sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system -y
 ```
 
 Now we need create a disk .qcow2 to install our O.S. with this command:
-```bash 
+```bash
 qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 5G
 ```
 
@@ -44,108 +44,107 @@ sudo qemu-system-ppc64le -enable-kvm -m 1024 -cdrom openSUSE-Tumbleweed-DVD-ppc6
 ## Installing openSUSE
 
 Select your language (using tab and arrows):
-<img src="Language-selection-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 1: Language selection screen </p>
+![Language selection screen](Language-selection-screen.png)
+> Figure 1: Language selection screen
 
 
 Select te most suitable bundle for your goal:
-<img src="Bundle-selector-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 2: Bundle selector screen </p>
+![Bundle selector screen](Bundle-selector-screen.png)
+> Figure 2: Bundle selector screen
 
 
 Select expert partitioner:
-<img src="Partioner-selection-screen.png" width="100%"/>
-
-<img src="Partioner-selection-screen2.png" width="100%"/>
-<p style="text-align: center;"> Figure 3-4: Partioner selection screen </p>
+![Partioner selection screen 1](Partioner-selection-screen.png)
+![Partioner selection screen 2](Partioner-selection-screen2.png)
+> Figure 3-4: Partioner selection screen
 
 
 Select the hard drive that you want install opensuse:
-<img src="Drive-selector-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 5: Drive selector screen </p>
+![Drive selector screen](Drive-selector-screen.png)
+> Figure 5: Drive selector screen
 
 
 Add new partition selecting `add` button:
-<img src="Partition-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 6: Partition screen </p>
+![Partition screen](Partition-screen.png)
+> Figure 6: Partition screen
 
 
 Set `partition size` to `8 MiB`:
-<img src="Partition-size-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 7: Partition size screen (Boot)</p>
+![Partition size screen (Boot)](Partition-size-screen.png)
+> Figure 7: Partition size screen (Boot)
 
 
 Select `raw partition`:
-<img src="Partition-role-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 8: Partition role screen (Boot)</p>
+![Partition role screen (Boot)](Partition-role-screen.png)
+> Figure 8: Partition role screen (Boot)
 
 
 Select file system as `Ext4` (or other filesystem of your preference):
-<img src="File-System-type.png" width="100%"/>
-<p style="text-align: center;"> Figure 9: File System type (Boot)</p>
+![File System type (Boot)](File-System-type.png)
+> Figure 9: File System type (Boot)
 
 
 Select partition as `PReP Boot Partition` and `next`:
-<img src="Partition-type.png" width="100%"/>
-<p style="text-align: center;"> Figure 10: Partition type (Boot)</p>
+![Partition type (Boot)](Partition-type.png)
+> Figure 10: Partition type (Boot)
 
 
 The boot partition was create and now we will create O.S. partition, select `add` and inside Patition size screen select `Maximum Size`:
-<img src="Partition-size-screen-2.png" width="100%"/>
-<p style="text-align: center;"> Figure 11: Partition size screen (O.S) </p>
+![Partition size screen (O.S)](Partition-size-screen-2.png)
+> Figure 11: Partition size screen (O.S)
 
 
 Select `Operating System` option:
-<img src="Partition-role-screen-2.png" width="100%"/>
-<p style="text-align: center;"> Figure 12: Partition role screen (O.S) </p>
+![Partition role screen (O.S)](Partition-role-screen-2.png)
+> Figure 12: Partition role screen (O.S)
 
 
 Select file system as `Ext4` again (or other filesystem of your preference):
-<img src="File-System-type-2.png" width="100%"/>
-<p style="text-align: center;"> Figure 13: File System type (O.S) </p>
+![File System type (O.S)](File-System-type-2.png)
+> Figure 13: File System type (O.S)
 
 
 Left selected `Linux Native`:
-<img src="Partition-type-2.png" width="100%"/>
-<p style="text-align: center;"> Figure 14: Partition type (O.S) </p>
+![Partition type (O.S)](Partition-type-2.png)
+> Figure 14: Partition type (O.S)
 
 
 Left `Mount device` as `/` and select `next`:
-<img src="Mount-point.png" width="100%"/>
-<p style="text-align: center;"> Figure 15: Mount point </p>
+![Mount point](Mount-point.png)
+> Figure 15: Mount point
 
 
 Partition configuration will look like this:
-<img src="Final-partion-configuration.png" width="100%"/>
-<p style="text-align: center;"> Figure 16: Final partion configuration </p>
+![Final partion configuration](Final-partion-configuration.png)
+> Figure 16: Final partion configuration
 
 
 We will receive warning message but we can ignore it and select `yes`:
-<img src="Warning-message.png" width="100%"/>
-<p style="text-align: center;"> Figure 17: Warning message </p>
+![Warning message](Warning-message.png)
+> Figure 17: Warning message
 
 
 `Next` again:
-<img src="Sumary-partition-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 18: Sumary partition screen </p>
+![Sumary partition screen](Sumary-partition-screen.png)
+> Figure 18: Sumary partition screen
 
 
 Select your clock and time zone:
-<img src="Clock-and-time-zone-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 19: Clock and time zone screen </p>
+![Clock and time zone screen](Clock-and-time-zone-screen.png)
+> Figure 19: Clock and time zone screen
 
 
 Put you username and password:
-<img src="Clock-and-time-zone-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 20: Local user screen </p>
+![Local user screen](Clock-and-time-zone-screen.png)
+> Figure 20: Local user screen
 
 
 Accept instalation and install:
-<img src="Summary-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 21: Summary screen </p>
+![Summary screen](Summary-screen.png)
+> Figure 21: Summary screen
 
-<img src="Instalation-screen.png" width="100%"/>
-<p style="text-align: center;"> Figure 22: Instalation screen </p>
+![Instalation screen](Instalation-screen.png)
+> Figure 22: Instalation screen
 
 
 ## Preparing image
@@ -177,8 +176,9 @@ Inside `/etc/default/grub` file, set grub timeout to 0:
 ```
 GRUB_TIMEOUT=0
 ```
-<img src="Grub-configuration.png" width="100%"/>
-<p style="text-align: center;"> Figure 23: Grub configuration </p>
+
+![Grub configuration](Grub-configuration.png)
+> Figure 23: Grub configuration
 
 
 Update grub:
@@ -202,8 +202,8 @@ After=wicked.service
 After=dbus.service
 Conflicts=shutdown.target
 ```
-<img src="Configuration-of-cloud-init.service.png" width="100%"/>
-<p style="text-align: center;"> Figure 24: Configuration of cloud-init.service </p>
+![Configuration of cloud-init.service](Configuration-of-cloud-init.service.png)
+> Figure 24: Configuration of cloud-init.service
 
 Reload cloud-init service:
 ```bash
@@ -239,4 +239,5 @@ And finaly add image to openstack:
 glance image-create --file openSUSE-Tumbleweed-ppc64le.qcow2 --container-format bare --disk-format qcow2 --property hw_video_model=vga --name "openSUSE Tumbleweed ppc64le"
 ```
 If all the steps worked, you should see these messages at the next boot.
-<img src="Boot.png" width="100%"/>
+![Boot](Boot.png)
+> Figura 25: Boot

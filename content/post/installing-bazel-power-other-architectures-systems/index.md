@@ -5,13 +5,11 @@ date: 2018-11-07
 author: Gustavo Salibi
 authors: [gsalibi]
 
-aliases: [/blog/Installing-Bazel-Power-Other-Architectures-Systems.html]
+aliases: [/blog/installing-bazel-power-other-architectures-systems.html]
 
 ---
 
-<center><img src="bazel-logo.svg" alt="Bazel Logo" width="40%"/></center>
-
-<br>
+![Bazel Logo](bazel-logo2.jpg)
 
 Bazel is a free software tool that allows for the automation of building and testing of software. Similar to build tools like Make, Maven, and Gradle, Bazel builds software applications from source code using a set of rules.
 
@@ -22,8 +20,6 @@ In designing Bazel, emphasis has been placed on build speed, correctness, and re
 Bazel must have Power support in the future, making its installation possible through community-supported methods. However, currently, if you want to install on Power or other architectures or systems that do not have support, you need compiling Bazel from source.
 
 <div id="building">So let's see how to install Bazel on architectures and systems not officially supported. I will use Ubuntu 14.04 as the basis of this tutorial, but it can be easily adapted to other Linux systems.</div>
-
-<br><br>
 
 ------------
 # Building Bazel from scratch (bootstrapping)
@@ -44,10 +40,8 @@ Python (versions 2 and 3 are supported, installing one of them is enough)
 # apt-get install pkg-config zip unzip g++ zlib1g-dev openjdk-8-jdk python  
 ```
 
-<br>  
-
 * **Next, download the Bazel binary installer named bazel-<version>-dist.zip from the [Bazel releases page on GitHub](https://github.com/bazelbuild/bazel/releases):**  
-  
+
 ```
   wget https://github.com/bazelbuild/bazel/releases/download/<version>/bazel-<version>-dist.zip
 ```
@@ -55,15 +49,11 @@ There is a single architecture-independent distribution archive. There are no ar
 
 You have to use the distribution archive to bootstrap Bazel. You cannot use a source tree cloned from GitHub (the distribution archive contains generated source files that are required for bootstrapping and are not part of the normal Git source tree).
 
-<br>
-
 * **Unpack the zip file somewhere on disk:**
 
 ```
   unzip bazel-<version>-dist.zip
 ```
-
-<br>
 
 * **Run the compilation script:**
 
@@ -71,17 +61,11 @@ You have to use the distribution archive to bootstrap Bazel. You cannot use a so
   bash ./compile.sh
 ```
 
-<br>
-
 *This may take several minutes...*
 
-<br>
+<div id="ready">And this should be the output:  </div>
 
-<div id="ready">And this should be the output:  </div> 
-
-<img src="build-successful.png" alt="Bazel Logo" width="80%"/>
-
-<br>
+![Bazel Logo](build-successful.png)
 
 ------------
 
@@ -94,8 +78,6 @@ Make sure you have the JDK 8 installed:
   java -version
 ```
 
-<br>
-
 * **If you do not have it, you need to install it:**  
 ```
 # add-apt-repository ppa:openjdk-r/ppa
@@ -104,16 +86,12 @@ Make sure you have the JDK 8 installed:
 ```
 We have released the last 10 versions of Bazel already compiled in this link: <https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/>
 
-<br>
-
 * **Download the desired version:**
 ```
   wget https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/ubuntu_<version>/bazel_bin_<version>
 # mv bazel_bin_<version> bazel
 # chmod +x bazel
 ```
-
-<br>
 
 ------------
 
@@ -128,20 +106,14 @@ or
 # mv bazel /usr/local/bin
 ```
 
-<br>
-
 When using Bazel for the first time, it will extract the installation and prepare everything. To do this, simply use the command:  
 ```
 ```
-
-<br>
 
 From now on, Bazel is installed and to use it simply use the command:
 ```
   bazel <command> <options>
 ```
-
-<br>
 
 ------------
 
@@ -152,11 +124,8 @@ Once installed, you can use Bazel itself to compile a new version. To do this, s
   Bazel build //src:bazel
 ```
 
-<br>
-
 ------------
 
 ### References  
 * <https://docs.bazel.build/>
-<br>
 ------------

@@ -5,13 +5,11 @@ date: 2019-05-19
 author: Gustavo Salibi
 authors: [gsalibi]
 
-aliases: [/blog/Installing-spaCy-Power.html]
+aliases: [/blog/installing-spacy-power.html]
 
 ---
 
-<center><img src="SpaCy_logo.svg" alt="Bazel Logo" width="40%"/></center>
-
-<br>
+![SpaCy Logo](SpaCy_logo.jpg)
 
 [spaCy](https://spacy.io) is an open-source software library for advanced Natural Language Processing, written in Python and Cython. The library is published under the MIT license and currently offers statistical neural network models for English, German, Spanish, Portuguese, French, Italian, Dutch and multi-language NER, as well as tokenization for various other languages.
 
