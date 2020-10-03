@@ -37,6 +37,9 @@ We created a repository with all the open source projects that we build on Power
 | [Terraform](https://www.terraform.io) | terraform | Use Infrastructure as Code to provision and manage any cloud, infrastructure, or service.
 | [Rclone](https://rclone.org/) | rclone | "rsync for cloud storage" - Google Drive, Amazon Drive, and more.
 | [Matchbox](https://matchbox.psdn.io/) | matchbox | Matchbox is a service that matches bare-metal machines to profiles that PXE boot and provision clusters.
+| [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) | kubeadm | The command to bootstrap the cluster.
+| [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) | kubectl | The command line util to talk to your cluster.
+| [Kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) | kubelet | The component that runs on all of the machines in your cluster and does things like starting pods and containers.
 
 
 ## Add the repository and install some package
