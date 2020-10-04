@@ -2,7 +2,7 @@
 title: Building a opensuse openstack image
 layout: page
 date: 2018-11-06
-author: Igor Matheus Andrade Torrente
+authors: [Igor Matheus Andrade Torrente, Julios Kiyoshi]
 
 aliases: [/blog/opensuse-tutorial.html]
 
@@ -35,10 +35,18 @@ Now we need create a disk .qcow2 to install our O.S. with this command:
 ```bash
 qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 5G
 ```
+>*Update 09/2020*: this comand above may cause problems try this command:
+```bash
+qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 6G
+```
 
 Execute qemu to run the instaler:
 ```bash
 sudo qemu-system-ppc64le -enable-kvm -m 1024 -cdrom openSUSE-Tumbleweed-DVD-ppc64le-Current.iso -drive file=openSUSE-Tumbleweed-ppc64le.qcow2,media=disk,if=virtio -nographic -smp cores=1,threads=1 -monitor pty -serial stdio -nodefaults -netdev user,id=enp0s1 -device virtio-net-pci,netdev=enp0s1 -boot order=d
+```
+>*Update 09/2020*: this comand above may not work, try this command:
+```bash
+sudo qemu-system-ppc64le -machine cap-htm=off -m 1024 -cdrom openSUSE-Tumbleweed-DVD-ppc64le-Current.iso -drive file=openSUSE-Tumbleweed-ppc64le.qcow2,media=disk,if=virtio -nographic -smp cores=1,threads=1 -monitor pty -serial stdio -nodefaults -netdev user,id=enp0s1 -device virtio-net-pci,netdev=enp0s1 -boot order=d
 ```
 
 ## Installing openSUSE
