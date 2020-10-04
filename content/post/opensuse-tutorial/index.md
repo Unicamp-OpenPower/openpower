@@ -35,7 +35,7 @@ Now we need create a disk .qcow2 to install our O.S. with this command:
 ```bash
 qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 5G
 ```
->*Update 09/2020*: this comand above may cause problems try this command:
+>*Update 09/2020*: this comand above may cause problem, try this command:
 ```bash
 qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 6G
 ```
