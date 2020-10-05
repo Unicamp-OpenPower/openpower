@@ -40,16 +40,17 @@ Our infrastructure is being used to validate several Open Source projects.
 | ![](https://travis-ci.org/Unicamp-OpenPower/glide-releases.png) | [Glide](https://glide.sh) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide](https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide)
 | ![](http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases/badge/icon?) | [Grafana](https://grafana.com) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana](https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana)
 | ![](https://travis-ci.org/Unicamp-OpenPower/kiali-releases.png) | [Kiali](https://www.kiali.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali](https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali)
-| ![](https://travis-ci.org/Unicamp-OpenPower/minikube-releases.png) | [Minikube](https://kubernetes.io/docs/setup/minikube) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
-| ![](https://travis-ci.org/Unicamp-OpenPower/minio-releases.png) | [Minio](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
-| ![](https://travis-ci.org/Unicamp-OpenPower/minio-mc-releases.png) | [Minio-MC](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
-| ![](https://travis-ci.org/Unicamp-OpenPower/restic-releases.png) | [Restic](https://restic.net) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic](https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic)
-| ![](https://travis-ci.org/Unicamp-OpenPower/terraform-releases.png) | [Terraform](https://www.terraform.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform](https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform)
-| ![](https://api.travis-ci.org/Unicamp-OpenPower/matchbox-releases.png) | [Matchbox](https://matchbox.psdn.io/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox](https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox)
-| ![](https://api.travis-ci.org/Unicamp-OpenPower/rclone-releases.png) | [Rclone](https://rclone.org/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone](https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone)
 | ![](https://travis-ci.org/Unicamp-OpenPower/kubeadm-releases.png) | [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubeadm](https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubeadm)
 | ![](https://travis-ci.org/Unicamp-OpenPower/kubectl-releases.png) | [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubectl](https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubectl)
 | ![](https://travis-ci.org/Unicamp-OpenPower/kubelet-releases.png) | [Kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubelet](https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubelet)
+| ![](https://api.travis-ci.org/Unicamp-OpenPower/matchbox-releases.png) | [Matchbox](https://matchbox.psdn.io/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox](https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox)
+| ![](https://travis-ci.org/Unicamp-OpenPower/minikube-releases.png) | [Minikube](https://kubernetes.io/docs/setup/minikube) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
+| ![](https://travis-ci.org/Unicamp-OpenPower/minio-releases.png) | [Minio](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
+| ![](https://travis-ci.org/Unicamp-OpenPower/minio-mc-releases.png) | [Minio-MC](https://min.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc](https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube)
+| ![](https://api.travis-ci.org/Unicamp-OpenPower/rclone-releases.png) | [Rclone](https://rclone.org/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone](https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone)
+| ![](https://travis-ci.org/Unicamp-OpenPower/restic-releases.png) | [Restic](https://restic.net) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic](https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic)
+| ![](https://travis-ci.org/Unicamp-OpenPower/terraform-releases.png) | [Terraform](https://www.terraform.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform](https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform)
+
 
 <!---  *********** OLD PROJECTS ***********
 | Glibc | The GNU C Library is used as the C library in the GNU system and in GNU/Linux systems, as well as many other systems that use Linux as the kernel.
