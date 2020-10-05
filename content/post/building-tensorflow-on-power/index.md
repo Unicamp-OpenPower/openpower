@@ -2,7 +2,7 @@
 title: Building Tensorflow on POWER - CPU only
 layout: page
 date: 2018-01-16
-author: Nathalia Harumi Kuromiya
+authors: [Nathalia Harumi Kuromiya, jr-santos]
 
 aliases: [/blog/building-tensorflow-on-power.html]
 

@@ -2,7 +2,7 @@
 title: Building a opensuse openstack image
 layout: page
 date: 2018-11-06
-authors: [Igor Matheus Andrade Torrente, Julios Kiyoshi]
+authors: [Igor Matheus Andrade Torrente, juliokiyoshi]
 
 aliases: [/blog/opensuse-tutorial.html]
 

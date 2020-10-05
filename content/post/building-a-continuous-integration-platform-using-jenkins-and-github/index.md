@@ -2,7 +2,7 @@
 title: Building a continuous integration platform using Jenkins and GitHub
 layout: page
 date: 2016-06-15
-author: Guilherme Tiaki Sato
+authors: [Guilherme Tiaki Sato]
 
 aliases: [/blog/building-a-continuous-integration-platform-using-jenkins-and-github.html]
 

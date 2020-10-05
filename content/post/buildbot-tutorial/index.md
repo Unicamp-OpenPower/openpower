@@ -2,7 +2,7 @@
 title: Install and initial configuration Buildbot on Fedora, Ubuntu and Debian
 layout: page
 date: 2017-09-22
-author: Igor Matheus Andrade Torrente
+authors: [Igor Matheus Andrade Torrente]
 
 aliases: [/blog/buildbot-tutorial.html]
 

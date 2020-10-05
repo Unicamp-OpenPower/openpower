@@ -2,7 +2,7 @@
 title: How use scikit-learn and Jupyter remotely
 layout: page
 date: 2019-04-01
-author: Igor Matheus Andrade Torrente
+authors: [Igor Matheus Andrade Torrente]
 
 aliases: [/blog/how-use-scikit-learn-and-jupyter-remotely.html]
 ---

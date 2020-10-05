@@ -2,7 +2,7 @@
 title: Integrating OpenStack Ansible with Let’s Encrypt
 layout: page
 date: 2017-12-17
-author: Guilherme Tiaki Sato
+authors: [Guilherme Tiaki Sato]
 
 aliases: [/blog/integrating-openstack-ansible-with-lets-encrypt.html]
 
