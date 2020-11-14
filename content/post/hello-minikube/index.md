@@ -79,6 +79,8 @@ There are two structures in Kubernetes: Pod and Deployment. Pod can be a group o
 sudo kubectl create deployment hello-node --image=minicloud/node-server
 ```
 
+> *[minicloud/node-server](https://hub.docker.com/r/minicloud/node-server)*: is a public docker image created for the ppc64le architecture. The files used to build the image are in the [GitHub](https://github.com/Unicamp-OpenPower/nodeServer).
+
 2. View the Deployment:
 
 ```bash
