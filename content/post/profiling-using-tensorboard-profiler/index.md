@@ -28,7 +28,7 @@ Installing keras using pip:
   
 ``` 
 
-Now we're able to install tensorflow 2.2. For this, access the site (https://github.com/tensorflow/tensorflow) to download .whl file (this file is used to install tensorflow using pip comand). First go in Community Supported Builds Section, and click in Artifacts release 2.x of Linux ppc64le CPU Stable Release. 
+Now we are able to install tensorflow 2.2. For this, access the site (https://github.com/tensorflow/tensorflow) to download .whl file (this file is used to install tensorflow using pip comand). First go in Community Supported Builds Section, and click in Artifacts release 2.x of Linux ppc64le CPU Stable Release. 
 
 ![Tensorflow installation](gitTensorflow.png)
 > Figure 1: Tensorflow 2.2 cpu- only installation.
