@@ -6,7 +6,7 @@ authors: [juliokiyoshi,matheuscod]
 
 aliases: [/blog/profiling-using-tensorboard-profiler.html]
 ---
-This blog post will show how to install tensorflow 2.2 in POWER, how to use profiler and make a comparison beteween different architectures ( x86, POWER 8 and 9).
+This blog post will show how to install tensorflow 2.2 in POWER, how to use profiler and make a comparison between different architectures ( x86, POWER 8 and 9).
 
 # Prerequisites
 In this part I'll show how to setup your Virtual Machine (VM) and install tensorflow 2.2 in POWER. My PIP version is 20.3 and my version of python is 3.8.
