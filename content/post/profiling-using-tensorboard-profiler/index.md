@@ -58,7 +58,7 @@ Now we need to install tensorboard, tensorboard-plugin-profiler and tensorflow-d
     pip3 install -U tensorboard_plugin_profile
 ``` 
 
-## Get acess to POWER 8 VM in minicloud
+## Get access to POWER 8 VM in minicloud
 Here is a brief tutorial on how to access POWER 8 virtual machine in minicloud, first access https://openpower.ic.unicamp.br/minicloud/ and click in **Request Access**  and answer the google forms to get access. Here is a link that may help you to get access to an instance on minicloud https://github.com/Unicamp-OpenPower/minicloud/wiki. In the next section I'll show to access tensorboard by terminal.
 
 ## SSH connection
