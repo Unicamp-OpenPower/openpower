@@ -105,7 +105,7 @@ python3 sensorsIPMI.py 1000 pwr.csv Total\ Power CPU1\ Power CPU2\ Power PCIE\ C
   
 In order to plot the data, a jupyter notebook was used.  
 Which is available here:  
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Unicamp-OpenPower/openpower/blob/master/content/post/ai-profiling-for-power/pwrAnalysis.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Unicamp-OpenPower/openpower/blob/master/content/post/power-consumption-on-power/pwrAnalysis.ipynb)
 
 The following graphs were ploted in the notebook:
 All sensors:  
