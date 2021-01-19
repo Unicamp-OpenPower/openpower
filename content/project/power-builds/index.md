@@ -34,8 +34,11 @@ Our infrastructure is being used to validate several Open Source projects.
 |Status|Project|FTP Link (ppc64le binaries)|
 |---|---|---|
 | ![](https://travis-ci.org/Unicamp-OpenPower/bazel-releases.png) | [Bazel](https://bazel.build) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel](https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/)
+| ![](https://travis-ci.org/Unicamp-OpenPower/conmon-releases.png) | [Conmon](https://github.com/containers/conmon) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/conmon](https://oplab9.parqtec.unicamp.br/pub/ppc64el/conmon/)
 | ![](https://travis-ci.org/Unicamp-OpenPower/containerd-releases.png) | [Containerd](https://containerd.io) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd](https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd/)
 | ![](http://minicloud.parqtec.unicamp.br:60000/job/containerd-cri-release/badge/icon?) | [Containerd-cri](https://github.com/containerd/cri) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri](https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri/)
+| ![](https://travis-ci.org/Unicamp-OpenPower/crio-releases.png) | [Crio](https://cri-o.io/) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio](https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio/)
+| ![](https://travis-ci.org/Unicamp-OpenPower/crun-releases.png) | [Crun](https://github.com/containers/crun) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/crun](https://oplab9.parqtec.unicamp.br/pub/ppc64el/crun/)
 | ![](http://minicloud.parqtec.unicamp.br:60000/job/docker-ce-releases/badge/icon?) | [Docker CE](https://docs.docker.com/install) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker](https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker)
 | ![](https://travis-ci.org/Unicamp-OpenPower/glide-releases.png) | [Glide](https://glide.sh) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide](https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide)
 | ![](http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases/badge/icon?) | [Grafana](https://grafana.com) | [https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana](https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana)
