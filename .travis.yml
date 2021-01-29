@@ -5,7 +5,7 @@ language: minimal
 
 # Install Hugo
 install:
-  - sudo snap install hugo
+  - sudo snap install hugo --channel=extended
 
 script:
   - git submodule update --remote static/minicloud
