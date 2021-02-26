@@ -19,7 +19,7 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: I'm an undergrad student in Computer Science at UNICAMP.
+bio: I'm an undergrad student in Computer Science at UNICAMP that loves GNU/Linux and programming.
 
 #interests:
 #- Artificial Intelligence
@@ -64,4 +64,6 @@ user_groups:
 - Students
 ---
 
-I'm an undergrad student in Computer Science at UNICAMP.
+I'm an undergrad student in Computer Science at UNICAMP that loves GNU/Linux and programming.
+
+I work with Open Souce software portability for the Power architecture, As well as making these packages available to the OpenPower community. I also worked with OpenStack, configuring and installing a public cloud service called Minicloud.
