@@ -12,44 +12,11 @@ TensorFlow is a widespread software library for numerical computation using data
 
 ![tf logo](tf-logo.png)
 
-## *Update 09/2020*
-There is a easier way to install TensorFlow by using Anaconda and IBM Watson Machine Learning Edition, which will be taught in this tutorial.
-
-### Download and Install Anaconda package manager:  
-Download: https://www.anaconda.com/products/individual  
-Remember to check the script sha256sum: https://docs.anaconda.com/anaconda/install/hashes/  
-To install Anaconda Individual Edition, you just need to run the script downloaded and follow the inscructions that it provides.
-### Add WMLCE Channel to Anaconda
-After the installation, add WMLCE (IBM Watson Machine Learning Community Edition) channel:
-```bash
-conda config --prepend channels \ 
-https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/
-```
-Create an Anaconda Python3.6 environment for WMLCE and activate it:
-> Currently (09/2020) WMLCE only works with python version 3.6
-```bash
-conda create --name wmlce_env python=3.6 
-conda activate wmlce_env 
-```
-### Install TensorFlow
-For CPU-only use, install TensorFlow with:
-```bash
-conda install tensorflow
-```
-
-TF is now installed and ready for use.
-
-## Reference:  
-Anaconda:  
-https://www.anaconda.com/products/individual  
-IBM Watson Machine Learning Community Edition:  
-https://www.ibm.com/support/knowledgecenter/SS5SF7_1.6.1/navigation/welcome.html  
-WMLCE softwares list:  
-https://www.ibm.com/support/knowledgecenter/SS5SF7_1.6.1/navigation/wmlce_software_pkgs.html  
-
+## *Update 03/2021*
+If you only want to install TensorFlow on POWER (and not build it), there is an easier way which is taught in the following tutorial: https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power
 
 ### *OUTDATED* :
-> *OUTDATED 09/2020* The following tutorial is an outdated way of installing TensorFlow on Power. If you still want to build TensorFlow from source by following this tutorial, proceed with caution. 
+> *OUTDATED 09/2020* The following tutorial is an outdated way of building TensorFlow on Power. If you still want to build TensorFlow from source by following this tutorial, proceed with caution. 
 
 Before installing TensorFlow, there are a couple of details we have to pay attention to:
 1. Due to Bazel, one of TF dependencies, the operating system must be Ubuntu 14.04 or Ubuntu 16.04.

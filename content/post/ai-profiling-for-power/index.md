@@ -152,7 +152,11 @@ Which is going to give you the output:
 ```
 
 This command was executed continuosly for 1500 seconds using a python script that would parse the results into a csv file.
-The data was used to plot the following graph:
+
+Altough the sampling period was used for reference in order to plot the following graph, it does not represent an accurate time series in the x axis.
+For a better undertanding of power consumption profiling on POWER with ML algorithms, see the following post: https://openpower.ic.unicamp.br/post/power-consumption-on-power/
+
+That said, the data was used to plot the following graph:
 
 ![Energy Consumption](powerConsumption.png)
 
