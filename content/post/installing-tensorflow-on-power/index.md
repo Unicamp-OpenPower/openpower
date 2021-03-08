@@ -17,6 +17,13 @@ On the TensorFlow repository README on GitHub (https://github.com/tensorflow/ten
     
 We will be using the links available on there to install TensorFlow on POWER.
 
+### Before Installation
+Install the build-essential package with:
+```bash
+sudo apt-get update
+sudo apt-get build-essential
+```
+
 ### Download and Install Anaconda package manager:  
 We'll use Anacona to install TensorFlow within a virtual environment.
 
