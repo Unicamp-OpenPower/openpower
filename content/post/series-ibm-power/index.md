@@ -27,7 +27,7 @@ As well as mainly for the cloud computing area.
 
 ## POWER8
 
-Power8 was launched by IBM in 2014. There, IBM made several improvements over its previous version.
+Power8 was presented by IBM in 2014. There, IBM made several improvements over its previous version.
 The machines that were created with this chip, had the provision of 6 to 12 cores, in addition to a clock that varies from 2.5 GHz to 5 GHz.
 Power8 has 32 KB for instructions + 64 KB for data in L1 cache, 512 KB for SRAM type in L2 cache, 96 MB for eDRAM type in L3 cache and 128 MB for eDRAM type in L4 cache.
 
@@ -45,7 +45,7 @@ In addition, it has support for simultaneous multithreading with eight cores per
 
 ## POWER9
 
-Power9 was launched by IBM in 2017. This version has improved core and hardware, the chip is smaller resulting in an optimization in energy consumption.
+Power9 was presented by IBM in 2017. This version has improved core and hardware, the chip is smaller resulting in an optimization in energy consumption.
 The number of cores doubled to 24, the clock was set at 4 GHz.
 Power9 has 32 KB for instructions + 32 KB for data in L1 cache, 512 KB for SRAM type in L2 cache, 128 MB for eDRAM type in L3 cache.
 
@@ -68,7 +68,7 @@ All of these improvements were made with the prospect of creating a more optimiz
 
 ## POWER10
 
-Power10 was launched by IBM in 2020. The chip has been enhanced for faster processing speed and greater capacity for intensive calculations.
+Power10 was presented by IBM in 2020. The chip has been enhanced for faster processing speed and greater capacity for intensive calculations.
 The number of cores can vary from 15 to 30, with a clock that varies from 4.5 GHz to 4 GHz.
 Power10 has 32 KB for instructions + 32 KB for data in the L1 cache, 2 MB type SRAM in the L2 cache, 128 MB type eDRAM in the L3 cache.
 
