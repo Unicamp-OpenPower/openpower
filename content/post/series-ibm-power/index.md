@@ -1,5 +1,5 @@
 ---
-title: Series IBM Power - Power8, Power9 and Power10
+title: IBM Power Systems - Power8, Power9 and Power10
 layout: page
 date: 2021-03-05
 authors: [jr-santos]
@@ -75,6 +75,10 @@ Power10 has 32 KB for instructions + 32 KB for data in the L1 cache, 2 MB type S
 | Core | CPU | L1 cache | L2 cache | L3 cache |
 | --- | --- | --- | --- | --- |
 | 15 to 30 | 3.5 GHz to 4 GHz | 32 KB + 32 KB | 2 MB | 128 MB |
+
+Power10 is designed to achieve a high degree of performance in existing encryption standards and in future encryption standards.
+Power10 has implemented a mathematical matrix accelerator in its cores.
+This resulted in an AI 10x, 15x, 20x faster inference for FP32, BFloat16 and INT8 calculations, respectively, compared to Power9.
 
 Several changes have been made compared to its predecessor.
 Power10 had its reading hardware optimized, support for DDR5 memories was added,
