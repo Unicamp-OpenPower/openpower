@@ -78,7 +78,7 @@ print(tf.__version__)
 ```
 
 ## *[ALTERNATIVE] Installing TensorFlow with Watson Machine Learning Community Edition*
-IBM Watson Machine Learning Edition also provides a TensorFlow installation through Anaconda, which will be taught in this tutorial.
+IBM Watson Machine Learning Community Edition also provides a TensorFlow installation through Anaconda, which will be taught in this tutorial.
 
 ### Download and Install Anaconda package manager:  
 Download: https://www.anaconda.com/products/individual  
