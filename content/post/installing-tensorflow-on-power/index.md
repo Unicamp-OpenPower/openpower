@@ -73,7 +73,8 @@ pip install tensorflow_cpu-2.2.0-cp36-cp36m-linux_ppc64le.whl
 ```
 
 After the installation is completed, check TensorFlow within a python shell with:
-```python
+```python3
+import tensorflow as tf
 print(tf.__version__)
 ```
 
