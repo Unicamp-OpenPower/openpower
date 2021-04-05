@@ -2,7 +2,7 @@
 title: Installing Tensorflow on POWER
 layout: page
 date: 2021-03-07
-authors: [matheuscod]
+authors: [matheuscod, juliokiyoshi]
 
 aliases: [/blog/installing-tensorflow-on-power.html]
 
@@ -73,7 +73,7 @@ pip install tensorflow_cpu-2.2.0-cp36-cp36m-linux_ppc64le.whl
 ```
 
 After the installation is completed, check TensorFlow within a python shell with:
-```python3
+```python
 import tensorflow as tf
 print(tf.__version__)
 ```
