@@ -21,7 +21,7 @@ We will be using the links available on there to install TensorFlow on POWER.
 Install the build-essential package with:
 ```bash
 sudo apt-get update
-sudo apt-get build-essential
+sudo apt-get install build-essential
 ```
 
 ### Download and Install Anaconda package manager:  
