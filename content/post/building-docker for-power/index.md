@@ -11,7 +11,6 @@ aliases: [/blog/building-docker-for-power.html]
 This blogpost aims to teach how to build and create a Docker .deb and .rpm packages starting from Docker 20.10 release, considering that since that version the Docker Engine and Docker CLI are built directly from the source repositories.  
 
 ![tf logo](Moby-logo.png)
-<img src="./Moby-logo.png">
 
 ## *Requirements*
 We used Ubuntu 20.04 for this tutorial for both .deb and .rpm builds.  
@@ -20,6 +19,7 @@ You can install then with:
 ```bash
 sudo apt install git
 sudo apt install make
+sudo apt install unzip
 ```
 After that, we need to install Docker-CE. To do that, just add our POWER packages repository to your machine:  
 
@@ -41,26 +41,30 @@ More information about our repository in: [POWER Repository](https://openpower.i
 
 # Build and Packaging
 
-We'll need to clone the repositories from docker-cli, moby, scan-cli-plugin and docker-ce-packaging.  
+We'll need to download docker-cli and moby (current name of the docker engine) and clone the repositories from scan-cli-plugin and docker-ce-packaging.  
 Clone the following docker repositories:
 ```bash
-git clone https://github.com/docker/cli.git
-git clone https://github.com/moby/moby.git
 git clone https://github.com/docker/scan-cli-plugin.git
 git clone https://github.com/docker/docker-ce-packaging.git
 ```
 
-Checkout the desired version (we'll use 20.10.6) of the cli and moby by acessing the downloaded folder of their respective repository and use *git checkout*, just like:
+Download the desired version (we'll use 20.10.6) of the cli and moby by downloading its releases (you can use `git clone` to build the master branch too):
 ```bash
-# Enter cli repository folder and checkout the version
-cd cli
-git checkout v20.10.6
-cd ..
+# Download the cli source code and change its zip name
+wget https://github.com/docker/cli/archive/refs/tags/v20.10.6.zip
+mv v20.10.6.zip cli.zip
 
-# Enter moby repository folder and checkout the version
-cd moby
-git checkout v20.10.6
-cd ..
+# Download the moby source code and change its zip name
+wget https://github.com/moby/moby/archive/refs/tags/v20.10.6.zip
+mv v20.10.6.zip moby.zip
+
+# Unzip the downloaded source-codes
+unzip cli.zip
+unzip moby.zip
+
+Change the folders name.
+mv cli-20.10.6 cli
+mv moby-20.10.6 moby
 ```
 
 Because the Docker Build uses containerd.io, we need to modify two files on docker-ce-packaging in order to use the community version of the same software, which is probably already installed on your machine if you installed Docker-CE from our repository([POWER Repository](https://openpower.ic.unicamp.br/project/power-repository/)).  
@@ -136,7 +140,7 @@ In our example, the .deb files will be at
 ## Making .rpm packages
 
 Edit the file `docker-ce-packaging/rpm/gen-rpm-ver`  
-changing the characters `||` to `&&` in line 46  
+by changing the characters `||` to `&&` in line 46  
 
 Systems available:  
 **CentOS:**  
