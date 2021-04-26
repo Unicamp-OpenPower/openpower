@@ -62,7 +62,7 @@ mv v20.10.6.zip moby.zip
 unzip cli.zip
 unzip moby.zip
 
-Change the folders name.
+#Change the folders name
 mv cli-20.10.6 cli
 mv moby-20.10.6 moby
 ```
