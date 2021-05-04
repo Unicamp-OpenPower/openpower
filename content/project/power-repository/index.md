@@ -29,6 +29,7 @@ We created a repository with all the open source projects that we build on Power
 | [Crun](https://github.com/containers/crun) | crun | A fast and lightweight fully featured OCI runtime and C library for running containers.
 | [Docker CE](https://docs.docker.com/install) | docker-ce | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
 | [Docker CE](https://docs.docker.com/install) | docker-ce-cli | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
+| [Docker CE](https://docs.docker.com/install) | docker-ce-rootless-extras | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
 | [Glide](https://glide.sh) | glide | Package Management for Go.
 | [Grafana](https://grafana.com) | grafana-cli | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
 | [Grafana](https://grafana.com) | grafana-server | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
