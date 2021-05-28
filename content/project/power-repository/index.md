@@ -30,6 +30,7 @@ We created a repository with all the open source projects that we build on Power
 | [Docker CE](https://docs.docker.com/install) | docker-ce | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
 | [Docker CE](https://docs.docker.com/install) | docker-ce-cli | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
 | [Docker CE](https://docs.docker.com/install) | docker-ce-rootless-extras | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
+| [Docker Machine](https://gitlab.com/gitlab-org/ci-cd/docker-machine) | docker-machine | Machine management for a container-centric world.
 | [Glide](https://glide.sh) | glide | Package Management for Go.
 | [Grafana](https://grafana.com) | grafana-cli | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
 | [Grafana](https://grafana.com) | grafana-server | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
