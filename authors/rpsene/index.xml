@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rafael Sene | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/rpsene/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/rpsene/index.xml" rel="self" type="application/rss+xml" />
+    <description>Rafael Sene</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 19 Aug 2019 13:05:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Rafael Sene</title>
+      <link>https://openpower.ic.unicamp.br/authors/rpsene/</link>
+    </image>
+    
+    <item>
+      <title>The POWER of supercomputers at your fingertips</title>
+      <link>https://openpower.ic.unicamp.br/talk/power-fingertips/</link>
+      <pubDate>Mon, 19 Aug 2019 13:05:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/talk/power-fingertips/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
