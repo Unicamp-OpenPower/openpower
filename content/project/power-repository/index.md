@@ -31,7 +31,7 @@ We created a repository with all the open source projects that we build on Power
 | [Docker CE](https://docs.docker.com/install) | docker-ce-cli | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
 | [Docker CE](https://docs.docker.com/install) | docker-ce-rootless-extras | Docker Engine is the industry’s de facto container runtime that runs on various operating systems.
 | [Docker Machine](https://gitlab.com/gitlab-org/ci-cd/docker-machine) | docker-machine | Machine management for a container-centric world.
-| [Glide](https://glide.sh) | glide | Package Management for Go.
+| [Glide](https://github.com/Masterminds/glide) | glide | Package Management for Go.
 | [Grafana](https://grafana.com) | grafana-cli | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
 | [Grafana](https://grafana.com) | grafana-server | The tool for beautiful monitoring and metric analytics & dashboards for Graphite, InfluxDB & Prometheus & More.
 | [Kiali](https://www.kiali.io) | kiali | Service mesh management for Istio.
@@ -39,7 +39,7 @@ We created a repository with all the open source projects that we build on Power
 | [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) | kubectl | The command line util to talk to your cluster.
 | [Kubelet](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/) | kubelet | The component that runs on all of the machines in your cluster and does things like starting pods and containers.
 | [Matchbox](https://matchbox.psdn.io/) | poseidon-matchbox (apt) \ matchbox (rpm) | Matchbox is a service that matches bare-metal machines to profiles that PXE boot and provision clusters.
-| [Minikube](https://kubernetes.io/docs/setup/minikube) | minikube | Minikube is a tool that makes it easy to run Kubernetes locally.
+| [Minikube](https://kubernetes.io/docs/tasks/tools/#minikube) | minikube | Minikube is a tool that makes it easy to run Kubernetes locally.
 | [Minio](https://min.io) | minio | High Performance, Kubernetes Native Object Storage.
 | [Minio-MC](https://min.io) | mc | MinIO Client is a replacement for ls, cp, mkdir, diff and rsync commands for filesystems and object storage.
 | [Rclone](https://rclone.org/) | rclone | "rsync for cloud storage" - Google Drive, Amazon Drive, and more.
