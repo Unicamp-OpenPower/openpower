@@ -23,10 +23,5 @@ The University of Campinas (Unicamp) was officially founded on October 5, 1966. 
 **About IBM**
 
 For more information about IBM, visit http://www.ibm.com/
-IBM on Twitter: http://twitter.com/ibmbrasil 
+IBM on Twitter: http://twitter.com/ibmbrasil
 Follow www.timaissimples.com.br, the blog that makes technology simple.
-
-Press Office IBM Brazil: 
-- In Press Brodeur Customer Service: Kelly Bassi - kelly.bassi@brodeur.com.br - (11) 3323-1603 
-- Customer Service Manager: Mariana Lima - mariana.lima@brodeur.com.br - (11) 3323-1607 
-- Press Relations - IBM Management: Vanessa Garcia Xavier - vaneg@br.ibm.com / (11) 2132-2218
