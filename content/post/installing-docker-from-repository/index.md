@@ -35,4 +35,4 @@ wget https://oplab9.parqtec.unicamp.br/pub/repository/rpm/open-power-unicamp.rep
 
 > wget requirement.
 
-> To install using other means or other packages, see [Project Power Repository](project/power-repository/) or [Project Power Builds](/project/power-builds/).
+> To install using other means or other packages, see [Project Power Repository](/project/power-repository/) or [Project Power Builds](/project/power-builds/).
