@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Guilherme Dobins | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/guilhermedobins/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/guilhermedobins/index.xml" rel="self" type="application/rss+xml" />
+    <description>Guilherme Dobins</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 19 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Guilherme Dobins</title>
+      <link>https://openpower.ic.unicamp.br/authors/guilhermedobins/</link>
+    </image>
+    
+    <item>
+      <title>Using GitLab CI with GitHub repositories</title>
+      <link>https://openpower.ic.unicamp.br/post/gitlab-ci-with-github-repo/</link>
+      <pubDate>Sun, 19 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/gitlab-ci-with-github-repo/</guid>
+      <description>&lt;p&gt;Despite GitHub offering some options for CI-CD platforms, such as Travis and Actions, you may want to try out GitLab’s alternatives, but feel turned off by the fact you might need to take your codes to a different platform. To avoid this problem, using these two platforms together sounds like a good idea. The goal of this tutorial is to show you how to configure a GitLab runner, a pipeline, and use the GitLab-CI to run your GitHub pipelines, without the need for premium services.&lt;/p&gt;
+&lt;p&gt;For this tutorial, you will need to be registered to GitHub and GitLab, and also a computer where the GitLab-runner will be installed.&lt;/p&gt;
+&lt;h2 id=&#34;configuring-the-gitlab-repo&#34;&gt;Configuring the GitLab repo&lt;/h2&gt;
+&lt;p&gt;The first thing you need to do is to create a repository on GitLab. In this repository, the only thing you have to do is to create a file called &amp;ldquo;.gitlab-ci.yml&amp;rdquo;. This file works as a &amp;ldquo;travis.yml&amp;rdquo; file and is responsible for the configuration of the pipeline, such as the steps to be executed, installing the prerequisites&amp;hellip; You can find more information about it in the &lt;a href=&#34;https://docs.gitlab.com/ee/ci/yaml/gitlab_ci_yaml.html&#34;&gt;gitlab documentation&lt;/a&gt;. For this tutorial, the goal is to use this file to retrieve the contents of the GitHub repository. The easiest way of doing this is to clone the repository before running the script.&lt;/p&gt;
+&lt;p&gt;To make it clear, suppose your GitHub repository contains a &amp;ldquo;build.sh&amp;rdquo; file, and your pipeline consists of running this script. Then, your .gitlab-ci.yml would look something like this:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;default:
+  tags:
+    - *your_runner_tag* #This tag is used to select a runner
+
+stages:
+  - build
+
+before_script:
+  - git clone *your_github_repo_url*
+
+build:
+  stage: build
+  script: 
+    - bash github_repo/build.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;setting-up-a-gitlab-runner&#34;&gt;Setting up a GitLab-runner&lt;/h2&gt;
+&lt;p&gt;The next part of the configuration is to set up a runner. To do so,  you will need a computer where the runner will be installed. One suggestion is to use a &lt;a href=&#34;https://openpower.ic.unicamp.br/minicloud/&#34;&gt;minicloud VM&lt;/a&gt; for this purpose.
+After connecting to the VM, the next step is to install the runner. To do that, you can follow the steps described below. For more details, you can check the &lt;a href=&#34;https://docs.gitlab.com/runner/install/linux-manually.html#using-binary-file&#34;&gt;gitlab documentation&lt;/a&gt;.
+First, download the runner&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo curl -L --output /usr/local/bin/gitlab-runner &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-ppc64le&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo chmod +x /usr/local/bin/gitlab-runner
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then, you must create a user for the runner.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo useradd --comment &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;GitLab Runner&amp;#39;&lt;/span&gt; --create-home gitlab-runner --shell /bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Note: Make sure to give this user the right permissions to execute your pipeline. For example, make sure this user is in the sudoers list if you plan to execute any sudo commands. Also, if you want the pipelines to be run as an already existing user, you can skip the previous step.&lt;/p&gt;
+&lt;p&gt;Finally, install and execute the runner&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo gitlab-runner install --user&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;gitlab-runner –working-directory&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/home/gitlab-runner
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo gitlab-runner start
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Notice that, sometimes, due to an error, the working directory might not be set to the option you wanted. To fix this, you must edit the /etc/systemd/system/gitlab-runner.service file, and change the working directory to the right one. You might need to reboot your computer to apply this change.&lt;/p&gt;
+&lt;p&gt;Now that the GitLab runner is installed, you must register it, so it will be connected to your GitLab account.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo gitlab-runner register
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After that, type in the GitLab instance URL you are using (For example, &lt;a href=&#34;https://gitlab.com/&#34;&gt;https://gitlab.com/&lt;/a&gt;)
+Then, your registration token will be required. To find it, go to the GitLab website, enter the repo you created for this CI project, and then go to “Settings” &amp;gt; “CI/CD”.  After that, click “Expand” on the right side of the “Runners” section. In the “Specific Runners” tab, you will find your registration token, copy it, and paste it to your terminal to continue the runner registration.&lt;/p&gt;
+&lt;p&gt;The next step is to name your runner, so you can identify it later. Finally, you must add tags to the runner.  These tags will make it easier for you to choose a runner for your pipelines. For example, you can install python on this runner, then add the &amp;ldquo;python&amp;rdquo; tag to it, so you can use it on pipelines where python is required.&lt;/p&gt;
+&lt;p&gt;Then, you will be asked to enter a maintenance note, but you can just hit &amp;ldquo;enter&amp;rdquo; and leave it blank.&lt;/p&gt;
+&lt;p&gt;For the final step on the runner setup, you need to choose an executor. The main ones are docker and shell. If you choose docker, you must provide a docker image on the pipeline configuration, and your pipeline will be run on a container build with said image. On the other hand, if you choose &amp;ldquo;shell&amp;rdquo;, the pipeline will be executed on the shell of the computer where the runner was installed. Notice that, in order to use the docker executor, docker must be previously installed. After this choice, the runner is completely installed.&lt;/p&gt;
+&lt;p&gt;Before you continue with the configuration, make sure to remove the &amp;ldquo;.bash_logout&amp;rdquo; file from the gitlab-runner user&amp;rsquo;s home folder, because if you don&amp;rsquo;t, an error will occur during the pipeline execution. Also, back on the GitLab website, in the Runners section you just visited, make sure to disable the &amp;ldquo;Allow shared runners for this project&amp;rdquo; option, under &amp;ldquo;Shared Runners” so your own runners will always be used.&lt;/p&gt;
+&lt;h2 id=&#34;linking-the-github-and-gitlab-repositories&#34;&gt;Linking the GitHub and GitLab repositories&lt;/h2&gt;
+&lt;p&gt;The last thing you have to do is to link both repositories so that whenever a change is made to GitHub, it will trigger the GitLab pipeline.
+First, go to the GitLab repository, then &amp;ldquo;Settings&amp;rdquo; &amp;gt; &amp;ldquo;CI/CD&amp;rdquo;. Click the &amp;ldquo;Expand&amp;rdquo; button next to &amp;ldquo;Pipeline triggers&amp;rdquo; and create a new trigger by giving it a description and pressing &amp;ldquo;Add trigger&amp;rdquo;. After that, find the &amp;ldquo;Use webhook&amp;rdquo; option under the tokens and copy this URL, but make sure to change the REF_NAME to be the branch you are using for the project (possibly the main branch), and also change the TOKEN variable to the value of the token you just created.&lt;/p&gt;
+&lt;p&gt;With this URL, head to your GitHub repository, and click &amp;ldquo;Settings&amp;rdquo; &amp;gt; &amp;ldquo;Webhooks&amp;rdquo; (under the &amp;ldquo;Code and automation&amp;rdquo; section). Click &amp;ldquo;Add webhook&amp;rdquo;, and under &amp;ldquo;Payload URL&amp;rdquo;, add the URL you got from GitLab (with the correct values for REF_NAME and TOKEN). You can leave the other options as they are and then add the webhook.&lt;/p&gt;
+&lt;p&gt;After all those steps, every time you make a change to your GitHub repository, it should trigger GitLab, and use the runner you just configured to execute a pipeline.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

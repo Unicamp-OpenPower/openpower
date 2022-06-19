@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloud | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/tags/cloud/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
+    <description>Cloud</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Cloud</title>
+      <link>https://openpower.ic.unicamp.br/tags/cloud/</link>
+    </image>
+    
+    <item>
+      <title>Minicloud</title>
+      <link>https://openpower.ic.unicamp.br/project/minicloud/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/project/minicloud/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

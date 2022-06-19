@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>APT | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/tags/apt/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/tags/apt/index.xml" rel="self" type="application/rss+xml" />
+    <description>APT</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>APT</title>
+      <link>https://openpower.ic.unicamp.br/tags/apt/</link>
+    </image>
+    
+    <item>
+      <title>POWER Repository</title>
+      <link>https://openpower.ic.unicamp.br/project/power-repository/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/project/power-repository/</guid>
+      <description>&lt;p&gt;We created a repository with all the open source projects that we build on Power.&lt;/p&gt;
+&lt;h1 id=&#34;open-source-packages&#34;&gt;Open-source packages&lt;/h1&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Project&lt;/th&gt;
+&lt;th&gt;Package&lt;/th&gt;
+&lt;th&gt;Description of package&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://bazel.build&#34;&gt;Bazel&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;bazel&lt;/td&gt;
+&lt;td&gt;Build and test software of any size, quickly and reliably.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/containers/conmon&#34;&gt;Conmon&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;conmon&lt;/td&gt;
+&lt;td&gt;An OCI container runtime monitor.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://containerd.io&#34;&gt;Containerd&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;containerd&lt;/td&gt;
+&lt;td&gt;An industry-standard container runtime with an emphasis on simplicity, robustness and portability.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/containerd/cri&#34;&gt;Containerd-cri&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;containerd-cri&lt;/td&gt;
+&lt;td&gt;Containerd Plugin for Kubernetes Container Runtime Interface.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/containerd/cri&#34;&gt;Containerd-cri&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;containerd-cri-cni&lt;/td&gt;
+&lt;td&gt;Containerd Plugin for Kubernetes Container Runtime Interface.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://cri-o.io/&#34;&gt;Crio&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;crio&lt;/td&gt;
+&lt;td&gt;Open Container Initiative-based implementation of Kubernetes Container Runtime Interface.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/containers/crun&#34;&gt;Crun&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;crun&lt;/td&gt;
+&lt;td&gt;A fast and lightweight fully featured OCI runtime and C library for running containers.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.docker.com/install&#34;&gt;Docker CE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;docker-ce&lt;/td&gt;
+&lt;td&gt;Docker Engine is the industry’s de facto container runtime that runs on various operating systems.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.docker.com/install&#34;&gt;Docker CE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;docker-ce-cli&lt;/td&gt;
+&lt;td&gt;Docker Engine is the industry’s de facto container runtime that runs on various operating systems.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.docker.com/install&#34;&gt;Docker CE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;docker-ce-rootless-extras&lt;/td&gt;
+&lt;td&gt;Docker Engine is the industry’s de facto container runtime that runs on various operating systems.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://gitlab.com/gitlab-org/ci-cd/docker-machine&#34;&gt;Docker Machine&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;docker-machine&lt;/td&gt;
+&lt;td&gt;Machine management for a container-centric world.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/Masterminds/glide&#34;&gt;Glide&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;glide&lt;/td&gt;
+&lt;td&gt;Package Management for Go.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://grafana.com&#34;&gt;Grafana&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;grafana-cli&lt;/td&gt;
+&lt;td&gt;The tool for beautiful monitoring and metric analytics &amp;amp; dashboards for Graphite, InfluxDB &amp;amp; Prometheus &amp;amp; More.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://grafana.com&#34;&gt;Grafana&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;grafana-server&lt;/td&gt;
+&lt;td&gt;The tool for beautiful monitoring and metric analytics &amp;amp; dashboards for Graphite, InfluxDB &amp;amp; Prometheus &amp;amp; More.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.kiali.io&#34;&gt;Kiali&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;kiali&lt;/td&gt;
+&lt;td&gt;Service mesh management for Istio.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/&#34;&gt;Kubeadm&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;kubeadm&lt;/td&gt;
+&lt;td&gt;The command to bootstrap the cluster.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/install-kubectl/&#34;&gt;Kubectl&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;kubectl&lt;/td&gt;
+&lt;td&gt;The command line util to talk to your cluster.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/&#34;&gt;Kubelet&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;kubelet&lt;/td&gt;
+&lt;td&gt;The component that runs on all of the machines in your cluster and does things like starting pods and containers.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://matchbox.psdn.io/&#34;&gt;Matchbox&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;poseidon-matchbox (apt) \ matchbox (rpm)&lt;/td&gt;
+&lt;td&gt;Matchbox is a service that matches bare-metal machines to profiles that PXE boot and provision clusters.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/#minikube&#34;&gt;Minikube&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;minikube&lt;/td&gt;
+&lt;td&gt;Minikube is a tool that makes it easy to run Kubernetes locally.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://min.io&#34;&gt;Minio&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;minio&lt;/td&gt;
+&lt;td&gt;High Performance, Kubernetes Native Object Storage.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://min.io&#34;&gt;Minio-MC&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;mc&lt;/td&gt;
+&lt;td&gt;MinIO Client is a replacement for ls, cp, mkdir, diff and rsync commands for filesystems and object storage.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://rclone.org/&#34;&gt;Rclone&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;rclone&lt;/td&gt;
+&lt;td&gt;&amp;ldquo;rsync for cloud storage&amp;rdquo; - Google Drive, Amazon Drive, and more.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://restic.net&#34;&gt;Restic&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;restic&lt;/td&gt;
+&lt;td&gt;Fast, secure, efficient backup program.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.terraform.io&#34;&gt;Terraform&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;terraform&lt;/td&gt;
+&lt;td&gt;Use Infrastructure as Code to provision and manage any cloud, infrastructure, or service.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;add-the-repository-and-install-some-package&#34;&gt;Add the repository and install some package&lt;/h2&gt;
+&lt;p&gt;To add the repository to the system, and to always obtain the new versions of software that we provide, follow these steps.&lt;/p&gt;
+&lt;h3 id=&#34;add-apt-repository&#34;&gt;Add APT repository&lt;/h3&gt;
+&lt;p&gt;Edit the file: &lt;em&gt;/etc/apt/sources.list&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Insert the line at the end of the file:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;deb https://oplab9.parqtec.unicamp.br/pub/repository/debian/ ./&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Download our &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc&#34;&gt;GPG key&lt;/a&gt;, and use the command below to add it to the system:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo apt-key add openpower-gpgkey-public.asc&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;After that, update the system using the command below:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo apt update&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;install-package&#34;&gt;Install package&lt;/h3&gt;
+&lt;p&gt;To install, use the command:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo apt install package&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;add-rpm-repository&#34;&gt;Add RPM repository&lt;/h3&gt;
+&lt;p&gt;Create and edit the file: &lt;em&gt;/etc/yum.repos.d/open-power.repo&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Add the text to it:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[Open-Power]
+name=Unicamp OpenPower Lab - $basearch
+baseurl=https://oplab9.parqtec.unicamp.br/pub/repository/rpm/
+enabled=1
+gpgcheck=0
+repo_gpgcheck=1
+gpgkey=https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;After that, performs the following command with super-user capabilities to update the system.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;yum update&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To be a super user, use the command: &lt;code&gt;sudo su&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;install-package-1&#34;&gt;Install Package&lt;/h3&gt;
+&lt;p&gt;To install, it use the command:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;yum install package&lt;/code&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

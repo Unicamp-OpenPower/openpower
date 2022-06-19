@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/index.xml" rel="self" type="application/rss+xml" />
+    <description>OpenPOWER@UNICAMP</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 19 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>OpenPOWER@UNICAMP</title>
+      <link>https://openpower.ic.unicamp.br/</link>
+    </image>
+    
+    <item>
+      <title>Posts</title>
+      <link>https://openpower.ic.unicamp.br/post/</link>
+      <pubDate>Sun, 19 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Privacy Policy</title>
+      <link>https://openpower.ic.unicamp.br/privacy/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/privacy/</guid>
+      <description>&lt;p&gt;This Privacy Policy describes how we collect, use, and share information. Please read it carefully.
+This Privacy Policy only applies to the information collected in respect of your account and does not apply to the content that you store on our Services. We will not access, disclose or use your content, except as stated in our Terms of Service.&lt;/p&gt;
+&lt;h2 id=&#34;information-collected-by-us-at-minicloud&#34;&gt;&lt;strong&gt;Information Collected by Us at Minicloud&lt;/strong&gt;&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Accounts:&lt;/strong&gt;  Information you provide us when you sign up for our Services, like your name, email address, and purpose of use.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Cookies and Access Information:&lt;/strong&gt; We automatically log information when you interact with us, such as IP address.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Usage:&lt;/strong&gt; System-level metrics such as memory and storage usage and network traffic information.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;how-we-use-information&#34;&gt;&lt;strong&gt;How We Use Information&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;We use the collected information to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Provide, operate and improve our Services;&lt;/li&gt;
+&lt;li&gt;Design new services;&lt;/li&gt;
+&lt;li&gt;Communicate with you;&lt;/li&gt;
+&lt;li&gt;Find and prevent fraud; and&lt;/li&gt;
+&lt;li&gt;Enforce our terms of service.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We will not use your data for any purposes unrelated to our Services, like selling it to advertisers.&lt;/p&gt;
+&lt;h2 id=&#34;how-we-share-information&#34;&gt;&lt;strong&gt;How We Share Information&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;We may share information as discussed below:
+Your Account usage data (cpu, memory and purpose) with the University of Campinas and with the Unicamp OpenPOWER Lab in order to understand how you use our Services so we can  improve it; and With third-party partners providing services for us.
+We may disclose any of your information if necessary to comply with any laws, governmental request or with your consent.&lt;/p&gt;
+&lt;h2 id=&#34;modifications-to-this-policy&#34;&gt;&lt;strong&gt;Modifications to This Policy&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;We may change this policy from time to time and will post or link the most current version on our website. If we materially change it, we will notify you.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Terms of Service</title>
+      <link>https://openpower.ic.unicamp.br/terms/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/terms/</guid>
+      <description>&lt;p&gt;Thank you for using Minicloud. These terms and conditions govern your access and use of our Services. Our Privacy Policy explains how we collect and use your information. By requesting access to Minicloud, you are agreeing to these terms and that we can use your information in accordance with our privacy policy. Please read them carefully.&lt;/p&gt;
+&lt;h2 id=&#34;your-responsibilities&#34;&gt;&lt;strong&gt;Your Responsibilities&lt;/strong&gt;&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;You are responsible for all activities that occur under your Account and for keeping your Account secure. You are solely responsible for maintaining the confidentiality and security of your Account. You agree to not share your password or private keys with third parties. Any password we provide to you is temporary and should be changed at your first successful login with it.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You agree that you will not transmit, store, promote, distribute or otherwise traffic in content that is illegal, harmful, fraudulent, infringing or offensive.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You are responsible for taking appropriate action for preserving and protect the data you store in our Services.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You agree to comply with any applicable laws and policies from the University of Campinas; not use the Services to engage in, promote or encourage illegal activity; not probe, scan, or test the vulnerability of any system or network; not distribute malicious code; and not distribute mass email.
+You shall not interfere or attempt to interfere with the proper working of the Services; breach or otherwise circumvent any security or authentication measures we may use to prevent or restrict access to the Services.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You agree to not get or pursue any direct financial benefit from your usage of our Services, including but not limited to cryptocurrency mining.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;your-content&#34;&gt;&lt;strong&gt;Your Content&lt;/strong&gt;&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;We will not access, disclose or use your Content except as necessary to maintain or provide our Services, enforce these Terms of Service, comply with any laws, governmental request or with your authorization.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You retain ownership of any intellectual property rights that you hold in the content you store in our services.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;warranty-disclaimer&#34;&gt;&lt;strong&gt;Warranty Disclaimer&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;The services and content are provided &amp;ldquo;as is&amp;rdquo;, and without warranty of merchantability, fitness for a particular purpose, non-infringement or any kind. we do not warrant that your use of the services will be secure, uninterrupted or error-free. the services are not designed or intended for production activities.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;limitation-of-liability&#34;&gt;&lt;strong&gt;Limitation of Liability&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;We will not be liable for any direct, indirect, incidental, special, consequential, punitive or exemplary damages; or any loss of use, data, business, or profits, even if a party has been advised of the possibility of such damages.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&#34;termination&#34;&gt;&lt;strong&gt;Termination&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;You can close your Account and stop using our Services at any time by providing us notice to do so. We also reserve the right to terminate your access to our Services for any reason with or without notice. Upon termination, all the rights granted to you under this Agreement immediately terminate.&lt;/p&gt;
+&lt;h2 id=&#34;modifications-to-these-terms&#34;&gt;&lt;strong&gt;Modifications to These Terms&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;We may change these terms from time to time to better reflect changes to the law, to University of Campinas policies or to our Services. We will post or link the most current version on our website. If we materially change it, we will notify you. By continuing to use our Services after any modifications to this Agreement, you agree to be bound by the modified terms. If you do not agree to the revised terms, please discontinue your use of our Services.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Recent &amp; Upcoming Talks</title>
+      <link>https://openpower.ic.unicamp.br/talk/</link>
+      <pubDate>Mon, 19 Aug 2019 13:05:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/talk/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://openpower.ic.unicamp.br/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/about/</guid>
+      <description>&lt;p&gt;Campinas Public University (Unicamp) and IBM have estabilished important partnerships for the development of the academic community in the area of ​​information technology. The initiatives involves two projects: a public minicloud within Unicamp with IBM Power Systems® infrastructure and Unicamp&amp;rsquo;s participation in the OpenPOWER Foundation&amp;rsquo;s consortium.&lt;/p&gt;
+&lt;p&gt;Unicamp&amp;rsquo;s [Minicloud] (&lt;a href=&#34;http://openpower.ic.unicamp.br/minicloud&#34;&gt;http://openpower.ic.unicamp.br/minicloud&lt;/a&gt;) provides free access to IBM Power Systems® virtual machines for academic users and for the Open Source community. The environment is available for developing, testing and migrating applications to the IBM server. Minicloud uses IBM PowerKVM ™, which is an open virtualization solution that supports running a large number of virtual machines on a single server running Linux operating system.&lt;/p&gt;
+&lt;p&gt;[OpenPOWER] (&lt;a href=&#34;https://openpowerfoundation.org/&#34;&gt;https://openpowerfoundation.org/&lt;/a&gt;) is an open and collaborative community for the development of the IBM POWER processor. In late 2013, IBM opened the POWER processor chip technology to the market to drive innovation and create an ecosystem on the platform. Unicamp is the first Brazilian institution to participate in the consortium, which today has more than 87 members worldwide, including hardware, software, technical computing, data centers and universities.&lt;/p&gt;
+&lt;p&gt;Unicamp&amp;rsquo;s membership of the OpenPower Foundation strengthens the partnership between institutions for development in the Linux environment. In late 2003, Unicamp began partnering with IBM&amp;rsquo;s Linux Technology Center Brazil (LTC), and since then both have been working together on developing solutions and research on the POWER platform, both in the Open Source community and in academia. Today, LTC has a laboratory on the university campus where the work is carried out jointly with professors, undergraduate and master students.&lt;/p&gt;
+&lt;p&gt;“Partnerships like this one are very important to Unicamp, as they enable scholarship students to be involved in a work environment and in the execution of projects that go beyond the academic environment, complementing the student&amp;rsquo;s experience so that the university fulfills its main function. to train highly qualified human resources”, emphasizes the Professors Sandro Rigo and Rodolfo Azevedo, from the Unicamp Computing Institute.&lt;/p&gt;
+&lt;p&gt;“Unicamp&amp;rsquo;s OpenPower Foundation membership will enable workgroups to exchange experience and knowledge across diverse areas, enabling the development of the ecosystem around Linux on POWER servers,” says Aníbal Strianese, Server Sales Executive at OpenPower Foundation. IBM Brazil.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;About Unicamp&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The University of Campinas (Unicamp) was officially founded on October 5, 1966. Today is considered one of the leading educational and research institutions in the country. It has three campuses located in the cities of Campinas, Piracicaba and Limeira, and also 24 teaching and research institutes. It&amp;rsquo;s academic production corresponds to 15% of the research in Brazil. Unicamp considers scientific research primarily as a component in the quality of education, but also as an economic activity. This leads to natural relationships with the industry, easy dialogue with funding agencies and quick insertion into the production process. For more information about Unicamp, visit &lt;a href=&#34;http://www.unicamp.br&#34;&gt;http://www.unicamp.br&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;About IBM&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;For more information about IBM, visit &lt;a href=&#34;http://www.ibm.com/&#34;&gt;http://www.ibm.com/&lt;/a&gt;
+IBM on Twitter: &lt;a href=&#34;http://twitter.com/ibmbrasil&#34;&gt;http://twitter.com/ibmbrasil&lt;/a&gt;
+Follow &lt;a href=&#34;https://www.timaissimples.com.br&#34;&gt;www.timaissimples.com.br&lt;/a&gt;, the blog that makes technology simple.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>https://openpower.ic.unicamp.br/project/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/project/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

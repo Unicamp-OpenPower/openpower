@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Storage | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/tags/storage/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/tags/storage/index.xml" rel="self" type="application/rss+xml" />
+    <description>Storage</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Storage</title>
+      <link>https://openpower.ic.unicamp.br/tags/storage/</link>
+    </image>
+    
+    <item>
+      <title>FTP</title>
+      <link>https://openpower.ic.unicamp.br/project/ftp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/project/ftp/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

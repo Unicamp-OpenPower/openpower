@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Igor Matheus Andrade Torrente | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/igor-matheus-andrade-torrente/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/igor-matheus-andrade-torrente/index.xml" rel="self" type="application/rss+xml" />
+    <description>Igor Matheus Andrade Torrente</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Mon, 01 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Igor Matheus Andrade Torrente</title>
+      <link>https://openpower.ic.unicamp.br/authors/igor-matheus-andrade-torrente/</link>
+    </image>
+    
+    <item>
+      <title>How use scikit-learn and Jupyter remotely</title>
+      <link>https://openpower.ic.unicamp.br/post/how-use-scikit-learn-and-jupyter-remotely/</link>
+      <pubDate>Mon, 01 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/how-use-scikit-learn-and-jupyter-remotely/</guid>
+      <description>&lt;h2 id=&#34;introduction-and-prerequisites&#34;&gt;Introduction and Prerequisites&lt;/h2&gt;
+&lt;p&gt;In this tutorial I will show how to use Jupyter in your browser to control scikit-learn running inside a VM.
+First of all you need build and connect to VM, which is showed in &lt;a href=&#34;https://github.com/Unicamp-OpenPower/minicloud/wiki/Getting-Started-with-Minicloud&#34;&gt;this tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;ssh-connection&#34;&gt;SSH connection&lt;/h2&gt;
+&lt;p&gt;Now you need connect to VM via ssh using &lt;code&gt;-L 8888:localhost:8888&lt;/code&gt; flag, which will bind your computer port 8888 to port 8888 from VM:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ssh ubuntu@minicloud.parqtec.unicamp.br -i ~/.ssh/your-key.pem -p &amp;lt;vm-port&amp;gt; -L 8888:localhost:8888&lt;/code&gt;&lt;/p&gt;
+&lt;h2 id=&#34;instalation-and-executing&#34;&gt;Instalation and executing&lt;/h2&gt;
+&lt;p&gt;Now let&amp;rsquo;s update O.S., then install jupyter and sklearn:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   sudo apt upgrade -y
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   sudo apt  sudo apt install jupyter python3-sklearn python3-pandas -y
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Initiate jupyter notebook with &lt;code&gt;&amp;amp;&lt;/code&gt; flag, which will allow jupyter run in backgroud:
+&lt;img src=&#34;jupyter-token.png&#34; alt=&#34;Jupyter Token&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;results&#34;&gt;Results&lt;/h2&gt;
+&lt;p&gt;Open link showed by jupyter on your favorite browser:
+&lt;img src=&#34;jupyter1.png&#34; alt=&#34;Jupyter&#34;&gt;&lt;/p&gt;
+&lt;p&gt;And now you are ready to use scikit-learn using jupyter remotely.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building a opensuse openstack image</title>
+      <link>https://openpower.ic.unicamp.br/post/opensuse-tutorial/</link>
+      <pubDate>Tue, 06 Nov 2018 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/opensuse-tutorial/</guid>
+      <description>&lt;p&gt;This tutorial I will show how create a openstack image (.qcow2) of opensuse from a ISO image using qemu.
+In this tutorial will be used opensuse Tumbleweed ppc64 le (because it&amp;rsquo;s the most challenging), but similiar process can be done for leap (15 and 42.3) and Tumbleweed ppc64be.&lt;/p&gt;
+&lt;h2 id=&#34;preparing-environment&#34;&gt;Preparing environment&lt;/h2&gt;
+&lt;p&gt;First we need download opensuse image from repository (&lt;a href=&#34;https://software.opensuse.org/distributions/tumbleweed&#34;&gt;Tumbleweed&lt;/a&gt;, &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/opensuse/&#34;&gt; leap 15&lt;/a&gt; and  &lt;a href=&#34;http://download.opensuse.org/ports/ppc/distribution/leap/42.3/iso/&#34;&gt;leap 42.3&lt;/a&gt;) and sha256 of respective image.&lt;/p&gt;
+&lt;p&gt;Execute sha256:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sha256sum openSUSE-Tumbleweed-DVD-ppc64le-Current.iso
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Compare sha256sum output with sha256 downloaded:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;715d9f89d90eb795b6a64ffe856aa5b7f3a64c7195a9ede8abea14a9d4f69e67
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Install qemu using:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system -y
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we need create a disk .qcow2 to install our O.S. with this command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 5G
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Update 09/2020&lt;/em&gt;: this comand above may cause problem, try this command:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 6G
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Execute qemu to run the instaler:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-system-ppc64le -enable-kvm -m &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; -cdrom openSUSE-Tumbleweed-DVD-ppc64le-Current.iso -drive file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;openSUSE-Tumbleweed-ppc64le.qcow2,media&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;disk,if&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;virtio -nographic -smp cores&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;1,threads&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; -monitor pty -serial stdio -nodefaults -netdev user,id&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -device virtio-net-pci,netdev&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -boot order&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Update 09/2020&lt;/em&gt;: this comand above may not work, try this command:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-system-ppc64le -machine cap-htm&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;off -m &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; -cdrom openSUSE-Tumbleweed-DVD-ppc64le-Current.iso -drive file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;openSUSE-Tumbleweed-ppc64le.qcow2,media&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;disk,if&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;virtio -nographic -smp cores&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;1,threads&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; -monitor pty -serial stdio -nodefaults -netdev user,id&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -device virtio-net-pci,netdev&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -boot order&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;installing-opensuse&#34;&gt;Installing openSUSE&lt;/h2&gt;
+&lt;p&gt;Select your language (using tab and arrows):
+&lt;img src=&#34;Language-selection-screen.png&#34; alt=&#34;Language selection screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 1: Language selection screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select te most suitable bundle for your goal:
+&lt;img src=&#34;Bundle-selector-screen.png&#34; alt=&#34;Bundle selector screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 2: Bundle selector screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select expert partitioner:
+&lt;img src=&#34;Partioner-selection-screen.png&#34; alt=&#34;Partioner selection screen 1&#34;&gt;
+&lt;img src=&#34;Partioner-selection-screen2.png&#34; alt=&#34;Partioner selection screen 2&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 3-4: Partioner selection screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select the hard drive that you want install opensuse:
+&lt;img src=&#34;Drive-selector-screen.png&#34; alt=&#34;Drive selector screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 5: Drive selector screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Add new partition selecting &lt;code&gt;add&lt;/code&gt; button:
+&lt;img src=&#34;Partition-screen.png&#34; alt=&#34;Partition screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 6: Partition screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Set &lt;code&gt;partition size&lt;/code&gt; to &lt;code&gt;8 MiB&lt;/code&gt;:
+&lt;img src=&#34;Partition-size-screen.png&#34; alt=&#34;Partition size screen (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 7: Partition size screen (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select &lt;code&gt;raw partition&lt;/code&gt;:
+&lt;img src=&#34;Partition-role-screen.png&#34; alt=&#34;Partition role screen (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 8: Partition role screen (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select file system as &lt;code&gt;Ext4&lt;/code&gt; (or other filesystem of your preference):
+&lt;img src=&#34;File-System-type.png&#34; alt=&#34;File System type (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 9: File System type (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select partition as &lt;code&gt;PReP Boot Partition&lt;/code&gt; and &lt;code&gt;next&lt;/code&gt;:
+&lt;img src=&#34;Partition-type.png&#34; alt=&#34;Partition type (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 10: Partition type (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The boot partition was create and now we will create O.S. partition, select &lt;code&gt;add&lt;/code&gt; and inside Patition size screen select &lt;code&gt;Maximum Size&lt;/code&gt;:
+&lt;img src=&#34;Partition-size-screen-2.png&#34; alt=&#34;Partition size screen (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 11: Partition size screen (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select &lt;code&gt;Operating System&lt;/code&gt; option:
+&lt;img src=&#34;Partition-role-screen-2.png&#34; alt=&#34;Partition role screen (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 12: Partition role screen (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select file system as &lt;code&gt;Ext4&lt;/code&gt; again (or other filesystem of your preference):
+&lt;img src=&#34;File-System-type-2.png&#34; alt=&#34;File System type (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 13: File System type (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Left selected &lt;code&gt;Linux Native&lt;/code&gt;:
+&lt;img src=&#34;Partition-type-2.png&#34; alt=&#34;Partition type (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 14: Partition type (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Left &lt;code&gt;Mount device&lt;/code&gt; as &lt;code&gt;/&lt;/code&gt; and select &lt;code&gt;next&lt;/code&gt;:
+&lt;img src=&#34;Mount-point.png&#34; alt=&#34;Mount point&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 15: Mount point&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Partition configuration will look like this:
+&lt;img src=&#34;Final-partion-configuration.png&#34; alt=&#34;Final partion configuration&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 16: Final partion configuration&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We will receive warning message but we can ignore it and select &lt;code&gt;yes&lt;/code&gt;:
+&lt;img src=&#34;Warning-message.png&#34; alt=&#34;Warning message&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 17: Warning message&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;Next&lt;/code&gt; again:
+&lt;img src=&#34;Sumary-partition-screen.png&#34; alt=&#34;Sumary partition screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 18: Sumary partition screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select your clock and time zone:
+&lt;img src=&#34;Clock-and-time-zone-screen.png&#34; alt=&#34;Clock and time zone screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 19: Clock and time zone screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Put you username and password:
+&lt;img src=&#34;Clock-and-time-zone-screen.png&#34; alt=&#34;Local user screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 20: Local user screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Accept instalation and install:
+&lt;img src=&#34;Summary-screen.png&#34; alt=&#34;Summary screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 21: Summary screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;Instalation-screen.png&#34; alt=&#34;Instalation screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 22: Instalation screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;preparing-image&#34;&gt;Preparing image&lt;/h2&gt;
+&lt;p&gt;Update all packages and install necessary ones (you can also uninstall unnecessary packages):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo zypper update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo zypper install cloud-init growpart yast2-network yast2-services-manager acpid
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Remove hard-coded MAC address:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo cat /dev/null &amp;gt; /etc/udev/rules.d/70-persistent-net.rules
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Enable ssh and cloud-init:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable cloud-init
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable sshd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Disable firewall:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl stop firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl disable firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Inside &lt;code&gt;/etc/default/grub&lt;/code&gt; file, set grub timeout to 0:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;GRUB_TIMEOUT=0
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;Grub-configuration.png&#34; alt=&#34;Grub configuration&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 23: Grub configuration&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Update grub:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo exec grub2-mkconfig -o /boot/grub2/grub.cfg &amp;#34;$@&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;only-for-opensuse-tumbleweed-lebe&#34;&gt;Only for openSUSE Tumbleweed Le/Be&lt;/h2&gt;
+&lt;p&gt;Opensuse Tumbleweed ppc64 Le/Be lacks some parameters on cloud-init.service, this causes instability on boot, which, sometimes, causes network connection errors. This problem was &lt;a href=&#34;https://bugzilla.opensuse.org/show_bug.cgi?id=1111441&#34;&gt;reported&lt;/a&gt; and hopefully will be solved when you read this tutorial.&lt;/p&gt;
+&lt;p&gt;Edit &lt;code&gt;cloud-init.service&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo vim /etc/systemd/system/cloud-init.target.wants/cloud-init.service
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Add lines bellow after &lt;code&gt;After=systemd-networkd-wait-online.service&lt;/code&gt; line:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Requires&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;wicked.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;After&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;wicked.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;After&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;dbus.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Conflicts&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;shutdown.target
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;Configuration-of-cloud-init.service.png&#34; alt=&#34;Configuration of cloud-init.service&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 24: Configuration of cloud-init.service&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Reload cloud-init service:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl restart cloud-init
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl daemon-reload
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Because Leap 42.3 ppc64Le&amp;rsquo;s configuration fits better for a cloud role, so we will replace cloud.cfg of Tumbleweed by Leap42.3&amp;rsquo;s cloud.cfg:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo vim /etc/cloud/cloud.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/Igortorrente/6d770e47d589db89fe2f1b49218f1c58.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;cleaning-image&#34;&gt;Cleaning image&lt;/h2&gt;
+&lt;p&gt;Now delete all remaining data:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; ~/.bash_history &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; history -c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo su
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/wtmp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/btmp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/lastlog
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/run/utmp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/auth.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/kern.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; ~/.bash_history &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; history -c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo poweroff
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;adding-to-openstack&#34;&gt;Adding to openstack&lt;/h2&gt;
+&lt;p&gt;And finaly add image to openstack:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;glance image-create --file openSUSE-Tumbleweed-ppc64le.qcow2 --container-format bare --disk-format qcow2 --property hw_video_model&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;vga --name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;openSUSE Tumbleweed ppc64le&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If all the steps worked, you should see these messages at the next boot.
+&lt;img src=&#34;Boot.png&#34; alt=&#34;Boot&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figura 25: Boot&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Install and initial configuration Buildbot on Fedora, Ubuntu and Debian</title>
+      <link>https://openpower.ic.unicamp.br/post/buildbot-tutorial/</link>
+      <pubDate>Fri, 22 Sep 2017 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/buildbot-tutorial/</guid>
+      <description>&lt;p&gt;Buildbot its tool to automate compilation and tests. This tutorial we will install it on three important distro and run it.&lt;/p&gt;
+&lt;h1 id=&#34;1---installation-dependencies&#34;&gt;1 - Installation dependencies:&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Installation of necessary packages to correct installation of Buildbot bundle.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;fedora-25&#34;&gt;Fedora 25:&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo dnf install python-devel python-pip redhat-rpm-config make gcc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;fedora-26&#34;&gt;Fedora 26:&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo dnf install python-pip redhat-rpm-config make gcc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ubuntu-and-debian&#34;&gt;Ubuntu and Debian:&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt-get install Python-dev build-essential python-pip
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;2---installation-without-virtualenv&#34;&gt;2 - Installation without virtualenv:&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pip install --upgrade pip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pip install &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;buildbot[bundle]&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pip install buildbot-grid-view
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pip install buildbot-worker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pip install setuptools-trial
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;25---installation-with-virtualenv-optional&#34;&gt;2.5 - Installation with virtualenv (optional):&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;First we need install virtual environment.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;fedora&#34;&gt;Fedora:&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo dnf install python-virtualenv
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ubuntu-and-debian-1&#34;&gt;Ubuntu and Debian:&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install python-virtualenv
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Now we need activate the environment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;virtualenv --no-site-packages YourSandbox
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;source YourSandbox/bin/activate
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;instalation&#34;&gt;Instalation:&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install --upgrade pip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;buildbot[bundle]&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install buildbot-grid-view
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install buildbot-worker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install setuptools-trial
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;3--initial-master-setup&#34;&gt;3- Initial Master setup:&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Creation of folder where Buildbot archives will stay:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir -p BuildBot
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd BuildBot
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Creation of Master with name&lt;code&gt;[master]&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;buildbot create-master master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;Create-master.png&#34; alt=&#34;Create Master&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The configuration of all functions of Buildbot its done in configuration file inside Master folder, to simplify we will use the sample configuration file provided in default template of Master &lt;code&gt;[master.cfg.sample]&lt;/code&gt;, but it’s needed be renamed to &lt;code&gt;[master.cfg]&lt;/code&gt; to be recognized by Buildbot:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mv master/master.cfg.sample master/master.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Here we will start Master daemon:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;buildbot start master
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;Start-master.png&#34; alt=&#34;Start Master&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;4--initial-worker-setup&#34;&gt;4- Initial Worker setup:&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Here we will create a worker (previously slave) with name &lt;code&gt;[worker]&lt;/code&gt;:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;buildbot-worker create-worker worker localhost example-worker pass
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;Create-start-Worker.png&#34; alt=&#34;Create start Worker&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;the-command-syntax&#34;&gt;The command syntax:&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;* buildbot-worker = Buildbot Worker program.
+* create-worker = Command to creation of Worker
+* worker = Name of worker folder
+* localhost = Master location on the network (This example Master are in the same VM)
+* example-worker = Name of worker
+* pass = Authentication password
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;Start of worker daemon:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    buildbot-worker start worker
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;Access address &lt;a href=&#34;http://localhost:8010/&#34;&gt;http://localhost:8010/&lt;/a&gt; on your browser.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;Buildbot-interface.png&#34; alt=&#34;Buildbot interface&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

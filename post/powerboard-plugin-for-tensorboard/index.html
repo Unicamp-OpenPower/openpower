@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Motivation First we need to talk about the motivation behind this plugin. The architecture Power was designed for use in artificial intelligence and deep learning. Investigating tools for deep learning and machine learning we found TensorBoard. TensorBoard is a tool to view models which were created in TensorFlow, the TensorBoard is a toolkit that allows graphic visualization of your models, making it easier to understand the used model, debug bottlenecks and, as a result, optimize it.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.e8b81181bd18f58d8990b40dc8a5e4b8.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="OpenPOWER@UNICAMP">
+  <meta property="og:url" content="https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/">
+  <meta property="og:title" content="PowerBoard plugin for TensorBoard | OpenPOWER@UNICAMP">
+  <meta property="og:description" content="Motivation First we need to talk about the motivation behind this plugin. The architecture Power was designed for use in artificial intelligence and deep learning. Investigating tools for deep learning and machine learning we found TensorBoard. TensorBoard is a tool to view models which were created in TensorFlow, the TensorBoard is a toolkit that allows graphic visualization of your models, making it easier to understand the used model, debug bottlenecks and, as a result, optimize it."><meta property="og:image" content="https://openpower.ic.unicamp.br/img/icon-192.png">
+  <meta property="twitter:image" content="https://openpower.ic.unicamp.br/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2021-04-09T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2021-04-09T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>PowerBoard plugin for TensorBoard | OpenPOWER@UNICAMP</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">OpenPOWER@UNICAMP</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpower.ic.unicamp.br/minicloud/" target="_blank" rel="noopener"><span>Minicloud</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="https://oplab9.parqtec.unicamp.br/" target="_blank" rel="noopener"><span>FTP</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpowerfoundation.org/" target="_blank" rel="noopener"><span>OpenPOWER Foundation</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">PowerBoard plugin for TensorBoard</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2021-04-09 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2021-04-09 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  <span itemprop="author name" itemtype="http://schema.org/Person"><a href="/authors/juliokiyoshi/">Julio Kiyoshi</a></span>, <span itemprop="author name" itemtype="http://schema.org/Person"><a href="/authors/matheuscod/">Matheus Fernandes</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Apr 9, 2021</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    6 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/&amp;text=PowerBoard%20plugin%20for%20TensorBoard" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/&amp;t=PowerBoard%20plugin%20for%20TensorBoard" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=PowerBoard%20plugin%20for%20TensorBoard&amp;body=https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/&amp;title=PowerBoard%20plugin%20for%20TensorBoard" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=PowerBoard%20plugin%20for%20TensorBoard%20https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/&amp;title=PowerBoard%20plugin%20for%20TensorBoard" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <h3 id="motivation">Motivation</h3>
+<p>First we need to talk about the motivation behind this plugin. The architecture Power was designed for use in artificial intelligence and deep learning. Investigating tools for deep learning and machine learning we found TensorBoard. TensorBoard is a tool to view models which were created in TensorFlow, the TensorBoard is a toolkit that allows graphic visualization of your models, making it easier to understand the used model, debug bottlenecks and, as a result, optimize it. In this blog post, we’ll show how to use the plugin we’ve created, which adds a new feature to the TensorBoard, this plugin assists on debugging bottlenecks in conjunction with the trace-viewer.</p>
+<h3 id="powerboard">PowerBoard</h3>
+<p>PowerBoard is a plugin designed to show the power that is consumed while the neural network is trained, doing that  allows the trace-viewer a better understanding of the model and helps to debug the bottlenecks.</p>
+<p>Prerequisites:</p>
+<ul>
+<li>Python 3.6 &gt;=</li>
+<li>TensorFlow 2.2 &gt;=</li>
+<li>TensorBoard 2.2 &gt;=</li>
+<li>Pandas 1.2.1 &gt;=</li>
+<li>ipmitool</li>
+</ul>
+<blockquote>
+<p>If you&rsquo;re having trouble installing tensorflow follow the link to a blog post that teaches you how to install tensorflow in the Power architecture:
+<a href="https://openpower.ic.unicamp.br/post/profiling-using-tensorboard-profiler/">https://openpower.ic.unicamp.br/post/profiling-using-tensorboard-profiler/</a>
+<a href="https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power/">https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power/</a></p>
+</blockquote>
+<p>For the installation of PowerBoard Plugin acess the site  <a href="https://pypi.org/project/powerboard/">https://pypi.org/project/powerboard/</a>, or use the following pip command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install powerboard
+</span></span></code></pre></div><p>Now you&rsquo;re able to use the powerboard. The powerboard possesses an implementation library called libipmi, which is responsible for accessing the low level register to obtain the power consumption. For this, do the following import:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> powerboard <span style="color:#f92672">import</span> libipmi
+</span></span></code></pre></div><h4 id="libipmi">libipmi:</h4>
+<ul>
+<li>The function <code>start() </code> : This function is responsible for measuring the power consumption and time of each aquisition.</li>
+<li>The function <code>stop() </code> : This function is responsible for stopping the aquisition of data.</li>
+<li>The function <code>dbToCSV(&lt;PATH&gt;)</code>: The implementation of the function gets the data and saves it to a database, when the database is full the implementation saves all data in a csv file. For this, the argument PATH is the path to a directory were the data will be stored. My suggestion is to default the path to &ldquo;./data&rdquo; like this:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>libipmi<span style="color:#f92672">.</span>dbToCSV(<span style="color:#e6db74">&#39;./data&#39;</span>)
+</span></span></code></pre></div><p>Now you are able to test the plugin, for this I&rsquo;ll show an example of the code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> packaging <span style="color:#f92672">import</span> version
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> tensorflow <span style="color:#66d9ef">as</span> tf
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> powerboard <span style="color:#f92672">import</span> libipmi 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> tensorflow.keras <span style="color:#f92672">import</span> datasets, layers, models
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>stamp <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>now()<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#34;%Y%m</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">-%H%M%S&#34;</span>)
+</span></span><span style="display:flex;"><span>logdir <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;logs/Nfit/</span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#39;</span> <span style="color:#f92672">%</span> stamp
+</span></span><span style="display:flex;"><span>writer <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>summary<span style="color:#f92672">.</span>create_file_writer(logdir)
+</span></span><span style="display:flex;"><span>tf<span style="color:#f92672">.</span>summary<span style="color:#f92672">.</span>trace_on(profiler<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>(train_images, train_labels), (test_images, test_labels) <span style="color:#f92672">=</span> datasets<span style="color:#f92672">.</span>cifar10<span style="color:#f92672">.</span>load_data()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Normalize pixel values to be between 0 and 1</span>
+</span></span><span style="display:flex;"><span>train_images, test_images <span style="color:#f92672">=</span> train_images <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>, test_images <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>class_names <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#39;airplane&#39;</span>, <span style="color:#e6db74">&#39;automobile&#39;</span>, <span style="color:#e6db74">&#39;bird&#39;</span>, <span style="color:#e6db74">&#39;cat&#39;</span>, <span style="color:#e6db74">&#39;deer&#39;</span>,
+</span></span><span style="display:flex;"><span>               <span style="color:#e6db74">&#39;dog&#39;</span>, <span style="color:#e6db74">&#39;frog&#39;</span>, <span style="color:#e6db74">&#39;horse&#39;</span>, <span style="color:#e6db74">&#39;ship&#39;</span>, <span style="color:#e6db74">&#39;truck&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> models<span style="color:#f92672">.</span>Sequential()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>Conv2D(<span style="color:#ae81ff">32</span>, (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>, input_shape<span style="color:#f92672">=</span>(<span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">32</span>, <span style="color:#ae81ff">3</span>)))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>MaxPooling2D((<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>Conv2D(<span style="color:#ae81ff">64</span>, (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>MaxPooling2D((<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>)))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>Conv2D(<span style="color:#ae81ff">64</span>, (<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">3</span>), activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>summary()
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>Flatten())
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">64</span>, activation<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;relu&#39;</span>))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add(layers<span style="color:#f92672">.</span>Dense(<span style="color:#ae81ff">10</span>))
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>summary()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>compile(optimizer<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;adam&#39;</span>,
+</span></span><span style="display:flex;"><span>              loss<span style="color:#f92672">=</span>tf<span style="color:#f92672">.</span>keras<span style="color:#f92672">.</span>losses<span style="color:#f92672">.</span>SparseCategoricalCrossentropy(from_logits<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>),
+</span></span><span style="display:flex;"><span>              metrics<span style="color:#f92672">=</span>[<span style="color:#e6db74">&#39;accuracy&#39;</span>])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libipmi<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>history <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>fit(train_images, train_labels, epochs<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>,batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">64</span>, 
+</span></span><span style="display:flex;"><span>                    validation_data<span style="color:#f92672">=</span>(test_images, test_labels))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>test_loss, test_acc <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>evaluate(test_images,  test_labels, verbose<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>libipmi<span style="color:#f92672">.</span>stop()
+</span></span><span style="display:flex;"><span>libipmi<span style="color:#f92672">.</span>dbToCSV(<span style="color:#e6db74">&#39;./data&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> writer<span style="color:#f92672">.</span>as_default():
+</span></span><span style="display:flex;"><span>  tf<span style="color:#f92672">.</span>summary<span style="color:#f92672">.</span>trace_export(
+</span></span><span style="display:flex;"><span>      name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;convolution&#34;</span>,
+</span></span><span style="display:flex;"><span>      step<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>      profiler_outdir<span style="color:#f92672">=</span>logdir)
+</span></span></code></pre></div><p>before you run the script let&rsquo;s make a directory in tmp files, so go to  <code>/tmp</code> by doing <code> cd /tmp</code> and make a directory inside. I&rsquo;ll create the &ldquo;teste&rdquo; directory inside of tmp, as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cd /tmp
+</span></span><span style="display:flex;"><span>mkdir teste
+</span></span></code></pre></div><p>Now go to the directory which the script was saved and run the script. Now copy the following directory into the <code>/tmp/teste</code> by doing:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp -r demo_logs /tmp/teste
+</span></span><span style="display:flex;"><span>cp -r logs /tmp/teste
+</span></span></code></pre></div><p>Now run the TensorBoard:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> tensorboard --logdir  /tmp/teste
+</span></span></code></pre></div><p>Now let&rsquo;s have some fun by cracking our heads to understand the bottlenecks using the trace-viewer and powerboard tools.
+the following image shows the powerboard.</p>
+<p><img src="power2.png" alt="powerboard"></p>
+<blockquote>
+<p>Figure 1: PowerBoard.</p>
+</blockquote>
+<p>Now I&rsquo;ll show the trace-viewer overview.
+<img src="trace-viewer2.png" alt="TRACE-VIEWER"></p>
+<blockquote>
+<p>Figure 2: Trace-viewer overview.</p>
+</blockquote>
+<p>Let&rsquo;s zoom in the image. You may control the graph by clicking in the button <code>w</code> to zoom in , <code>s</code> to zoom out, <code>d</code> to scroll right and <code>e</code> to scroll left.
+<img src="trace2.png" alt="TRACE-VIEWER"></p>
+<blockquote>
+<p>Figure 3: Trace-viewer zoom in.</p>
+</blockquote>
+<p>The trace-viewer cracks, parallels and executes all operations in CPU and/or GPU to train our neural network. If you&rsquo;re using GPU the documentation of TensorBoard says &ldquo;As a general rule of thumb, it is a good idea to always keep the device (GPU/TPU) active.
+Use the tf.data API to optimize the input pipeline. In this case, let&rsquo;s cache the training dataset and prefetch the data to ensure that there is always data available for the GPU to process. See here for more details on using tf.data to optimize your input pipelines&rdquo;. In the trace-viewer we have the trace-context to aid in a better understanding of what is happening.</p>
+<blockquote>
+<p>Go to: <a href="https://www.tensorflow.org/tensorboard/tensorboard_profiling_keras">https://www.tensorflow.org/tensorboard/tensorboard_profiling_keras</a> for a complete documentation.</p>
+</blockquote>
+<p><img src="trace-context.png" alt="TRACE-VIEWER CONTEXT"></p>
+<blockquote>
+<p>Figure 4: Trace-viewer: trace context.</p>
+</blockquote>
+<p>Click on the first occurrence of the traceContext and look at &lsquo;slice&rsquo;, this part of the trace viewer shows all the arguments of the function, such as the time spent on this function.
+<img src="traceContext.png" alt="TRACE-VIEWER CONTEXT1"></p>
+<blockquote>
+<p>Figure 5: Trace context: inside of slice.</p>
+</blockquote>
+<p>Note that we are at the epoch number &ldquo;0&rdquo; and step_name &ldquo;0&rdquo;, that is, in this part of the x-axis the graph indicates the first image to train our neural network. If we proceed to the next trace context it will follow to the next images to be trained. When the epoch value changes to 1 it means that we have finished training our neural network for the first time, and a new epoch will begin. Note that the size of the set of images is selected by the batch_size slice of our code, that is, we take the total number of images from the dataset and divide them by batch_size, in general the batch_size are powers of 2.
+<img src="traceContext2.png" alt="TRACE-VIEWER CONTEXT1"></p>
+<blockquote>
+<p>Figure 6: Trace context: the next interation.</p>
+</blockquote>
+<p>Now the next part is understanding the power consumption and relationships with the code. For this the following image shows the last interation of 1 complete epoch:</p>
+<p><img src="traceContext3.png" alt="TRACE-VIEWER CONTEXT1"></p>
+<blockquote>
+<p>Figure 7: Trace context: the last interation of epoch 0.</p>
+</blockquote>
+<p>Note that a full epoch takes about 22 seconds, as shown by the powerboard tab. Symmetry in the graph is expected, but it does not occur. Also note that between times 27.31 s and 28.78 s we have a sudden increase in power, so we will go in the trace-viewer to look at what is being carried out during this interval. In the meantime, we note that there is the following set of images from the training in epoch 1 [185-258]. Returning this set to epoch 0 it corresponds to the time interval between 9.35 s and 11.13 s.
+It is possible to conclude that theoretically the epochs should be symmetrical in terms of operations, that is, the energy expenditure should be the same, but it is noticed that something beyond the code is supplying this increase in extra power consumption by the same part of operations. Perhaps a new approach at a lower level would be needed to reach better conclusions.</p>
+
+    </div>
+
+    
+
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+  
+  
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/juliokiyoshi/avatar_hu1e3956b8b63b2cd3151edffb69840a32_152229_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/authors/juliokiyoshi/">Julio Kiyoshi</a></h5>
+      <h6 class="card-subtitle">Computer Engineering undergrad student</h6>
+      <p class="card-text" itemprop="description">I&rsquo;m an undergrad student in Computer Engineering at UNICAMP.</p>
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/juliokiyoshi" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9224c1df7774818c46d3c5196c37127b.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms of Service</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

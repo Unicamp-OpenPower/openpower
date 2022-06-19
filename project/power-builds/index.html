@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Open Source projects validations on POWER">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://openpower.ic.unicamp.br/project/power-builds/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.e8b81181bd18f58d8990b40dc8a5e4b8.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://openpower.ic.unicamp.br/project/power-builds/">
+
+  
+  
+  
+  
+    
+  
+  
+  <meta property="twitter:card" content="summary_large_image">
+  
+  <meta property="og:site_name" content="OpenPOWER@UNICAMP">
+  <meta property="og:url" content="https://openpower.ic.unicamp.br/project/power-builds/">
+  <meta property="og:title" content="POWER Builds | OpenPOWER@UNICAMP">
+  <meta property="og:description" content="Open Source projects validations on POWER"><meta property="og:image" content="https://openpower.ic.unicamp.br/project/power-builds/featured.png">
+  <meta property="twitter:image" content="https://openpower.ic.unicamp.br/project/power-builds/featured.png"><meta property="og:locale" content="en-us">
+  
+    
+    
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>POWER Builds | OpenPOWER@UNICAMP</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">OpenPOWER@UNICAMP</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpower.ic.unicamp.br/minicloud/" target="_blank" rel="noopener"><span>Minicloud</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="https://oplab9.parqtec.unicamp.br/" target="_blank" rel="noopener"><span>FTP</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpowerfoundation.org/" target="_blank" rel="noopener"><span>OpenPOWER Foundation</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article article-project" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+<div class="article-container pt-3">
+  <h1 itemprop="name">POWER Builds</h1>
+
+  
+
+  
+
+
+
+<meta content="" itemprop="datePublished">
+<meta content="" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Jan 1, 0001</time>
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://openpower.ic.unicamp.br/project/power-builds/&amp;text=POWER%20Builds" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://openpower.ic.unicamp.br/project/power-builds/&amp;t=POWER%20Builds" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=POWER%20Builds&amp;body=https://openpower.ic.unicamp.br/project/power-builds/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://openpower.ic.unicamp.br/project/power-builds/&amp;title=POWER%20Builds" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=POWER%20Builds%20https://openpower.ic.unicamp.br/project/power-builds/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://openpower.ic.unicamp.br/project/power-builds/&amp;title=POWER%20Builds" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+<div class="article-header article-container featured-image-wrapper mt-4 mb-4" style="max-width: 450px; max-height: 238px;">
+  <div style="position: relative">
+    <img src="/project/power-builds/featured.png" alt="" class="featured-image">
+    
+  </div>
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p>Our infrastructure is being used to validate several Open Source projects.</p>
+<h1 id="open-source-projects">Open-source projects</h1>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Project</th>
+<th>FTP Link (ppc64le binaries)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/bazel-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/bazel-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://bazel.build">Bazel</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/conmon-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/conmon-releases.svg?branch=main" alt="Build Status"></a></td>
+<td><a href="https://github.com/containers/conmon">Conmon</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/conmon/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/conmon</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/containerd-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/containerd-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://containerd.io">Containerd</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd</a></td>
+</tr>
+<tr>
+<td><a href="http://minicloud.parqtec.unicamp.br:60000/job/containerd-cri-release/"><img src="http://minicloud.parqtec.unicamp.br:60000/job/containerd-cri-release/badge/icon?" alt="Build Status"></a></td>
+<td><a href="https://github.com/containerd/cri">Containerd-cri</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/crio-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/crio-releases.svg?branch=main" alt="Build Status"></a></td>
+<td><a href="https://cri-o.io/">Crio</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/crun-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/crun-releases.svg?branch=main" alt="Build Status"></a></td>
+<td><a href="https://github.com/containers/crun">Crun</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/crun/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/crun</a></td>
+</tr>
+<tr>
+<td><a href="http://minicloud.parqtec.unicamp.br:60000/job/docker-ce-releases/"><img src="http://minicloud.parqtec.unicamp.br:60000/job/docker-ce-releases/badge/icon?" alt="Build Status"></a></td>
+<td><a href="https://docs.docker.com/install">Docker CE</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker">https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/docker-machine-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/docker-machine-releases.svg?branch=main" alt="Build Status"></a></td>
+<td><a href="https://gitlab.com/gitlab-org/ci-cd/docker-machine">Docker Machine</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker-machine">https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker-machine</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/glide-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/glide-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://github.com/Masterminds/glide">Glide</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide">https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide</a></td>
+</tr>
+<tr>
+<td><a href="http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases"><img src="http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases/badge/icon?" alt="Build Status"></a></td>
+<td><a href="https://grafana.com">Grafana</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana">https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/kiali-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/kiali-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://www.kiali.io">Kiali</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali">https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/kubeadm-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/kubeadm-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">Kubeadm</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubeadm">https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubeadm</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/kubectl-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/kubectl-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://kubernetes.io/docs/tasks/tools/#kubectl">Kubectl</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubectl">https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubectl</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/kubelet-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/kubelet-releases.svg?branch=main" alt="Build Status"></a></td>
+<td><a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/">Kubelet</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubelet">https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubelet</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/matchbox-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/matchbox-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://matchbox.psdn.io/">Matchbox</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox">https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/minikube-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/minikube-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://kubernetes.io/docs/tasks/tools/#minikube">Minikube</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube">https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/minio-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/minio-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://min.io">Minio</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/minio-mc-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/minio-mc-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://min.io">Minio-MC</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc/">https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/rclone-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/rclone-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://rclone.org/">Rclone</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone">https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/restic-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/restic-releases.svg?token=Tyii1MpzYjhv5qLLQWj5&amp;branch=master" alt="Build Status"></a></td>
+<td><a href="https://restic.net">Restic</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic">https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic</a></td>
+</tr>
+<tr>
+<td><a href="https://app.travis-ci.com/github/Unicamp-OpenPower/terraform-releases"><img src="https://app.travis-ci.com/Unicamp-OpenPower/terraform-releases.svg?branch=master" alt="Build Status"></a></td>
+<td><a href="https://www.terraform.io">Terraform</a></td>
+<td><a href="https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform">https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform</a></td>
+</tr>
+</tbody>
+</table>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+
+    </div>
+
+    
+
+<div class="article-tags">
+  
+  <a class="badge badge-light" href="/tags/ci/">CI</a>
+  
+  <a class="badge badge-light" href="/tags/builds/">Builds</a>
+  
+</div>
+
+
+    
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+  
+  
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/authors/"></a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+
+    
+
+
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+  </div>
+</article>
+
+
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9224c1df7774818c46d3c5196c37127b.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms of Service</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

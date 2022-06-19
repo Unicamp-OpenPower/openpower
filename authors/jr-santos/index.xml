@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Júnior Santos | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/jr-santos/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/jr-santos/index.xml" rel="self" type="application/rss+xml" />
+    <description>Júnior Santos</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 04 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Júnior Santos</title>
+      <link>https://openpower.ic.unicamp.br/authors/jr-santos/</link>
+    </image>
+    
+    <item>
+      <title>Install Docker from package</title>
+      <link>https://openpower.ic.unicamp.br/post/install-docker/</link>
+      <pubDate>Sat, 04 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/install-docker/</guid>
+      <description>&lt;p&gt;Docker is a set of systems that use virtualization to deliver software in packages, which are called containers.
+The containers are isolated from the operating system and other containers, they have unique libraries,
+as well as packages and configuration files. In addition, they can run different operating systems and
+have a lower resource cost than traditional virtualization.&lt;/p&gt;
+&lt;p&gt;We provide the &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/&#34;&gt;docker-ce&lt;/a&gt;, an edition of Docker that is free software,
+updated by the community. However, the package is officially not available for the Power architecture (ppc64 / ppc64le).
+Thus, the laboratory makes the latest versions available for installation from the package managers:
+Advanced Packaging Tool (APT) and Red Hat Package Manager (RPM).&lt;/p&gt;
+&lt;p&gt;This tutorial shows the step-by-step installation of Docker using
+the &amp;ldquo;.deb/.rpm&amp;rdquo; package. If you want to install using a package manager, read
+&lt;a href=&#34;https://openpower.ic.unicamp.br/post/installing-docker-from-repository/&#34;&gt;Installing Docker from the OpenPower Lab Repository&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;p&gt;First of all, you need to install the Docker requirements.
+You can perform this operation using one of the commands below:&lt;/p&gt;
+&lt;h3 id=&#34;to-ubuntudebian&#34;&gt;To Ubuntu/Debian:&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install -y wget libseccomp2 libc6 libdevmapper1.02.1 libsystemd0 apparmor ca-certificates git libltdl7 pigz procps xz-utils runc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;to-rhelcentosfedora&#34;&gt;To RHEL/CentOS/Fedora:&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo yum update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo yum install -y wget libseccomp glibc-utils device-mapper-libs systemd-libs ca-certificates git libtool-ltdl pigz procps xz runc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;install-docker&#34;&gt;Install Docker&lt;/h2&gt;
+&lt;p&gt;To install Docker-ce, it is necessary to download and install the packages:
+&lt;strong&gt;containerd&lt;/strong&gt;, &lt;strong&gt;docker-ce&lt;/strong&gt;, &lt;strong&gt;docker-ce-cli&lt;/strong&gt; and &lt;strong&gt;docker-ce-rootless-extras&lt;/strong&gt;.
+All these packages are available for download through our &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/&#34;&gt;FTP&lt;/a&gt;,
+use one of the commands below to perform this operation:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Containerd was used in version 1.5.7 and Docker in 20.10.6. Change package versions! For the latest versions,
+access &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/&#34;&gt;Oplab FTP&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;to-ubuntudebian-1&#34;&gt;To Ubuntu/Debian&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget https://oplab9.parqtec.unicamp.br/pub/repository/debian/ppc64el/containerd/containerd-1.5.7-ppc64le.deb https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/version-20.10.6/ubuntu-focal/docker-ce-rootless-extras_20.10.6~3-0~ubuntu-focal_ppc64el.deb https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/version-20.10.6/ubuntu-focal/docker-ce-cli_20.10.6~3-0~ubuntu-focal_ppc64el.deb https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/version-20.10.6/ubuntu-focal/docker-ce_20.10.6~3-0~ubuntu-focal_ppc64el.deb
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To install on Ubuntu, use the &lt;strong&gt;dpkg&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo dpkg -i containerd-1.5.7-ppc64le.deb docker-ce-rootless-extras_20.10.6~3-0~ubuntu-focal_ppc64el.deb docker-ce-cli_20.10.6~3-0~ubuntu-focal_ppc64el.deb docker-ce_20.10.6~3-0~ubuntu-focal_ppc64el.deb
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;to-rhelcentosfedora-1&#34;&gt;To RHEL/CentOS/Fedora:&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget https://oplab9.parqtec.unicamp.br/pub/repository/rpm/ppc64le/containerd/containerd-1.5.7-1.ppc64le.rpm https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/version-20.10.6/centos-8/docker-ce-rootless-extras-20.10.6-3.el8.ppc64le.rpm https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/version-20.10.6/centos-8/docker-ce-cli-20.10.6-3.el8.ppc64le.rpm https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/version-20.10.6/centos-8/docker-ce-20.10.6-3.el8.ppc64le.rpm
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To install on CentOS 8, use the &lt;strong&gt;yum localinstall&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo yum localinstall containerd-1.5.7-1.ppc64le.rpm docker-ce-rootless-extras-20.10.6-3.el8.ppc64le.rpm docker-ce-cli-20.10.6-3.el8.ppc64le.rpm  docker-ce-20.10.6-3.el8.ppc64le.rpm
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;enable-and-verify-docker&#34;&gt;Enable and verify Docker&lt;/h2&gt;
+&lt;p&gt;Before using Docker, you need to enable it and start it.
+This process is also used to verify that the installation was successful.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl start docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl status docker
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Expected output:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ubuntu@docker-build:~$ sudo systemctl enable docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ubuntu@docker-build:~$ sudo systemctl start docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ubuntu@docker-build:~$ sudo systemctl status docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;● docker.service - Docker Application Container Engine
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     Loaded: loaded &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;/lib/systemd/system/docker.service; enabled; vendor preset: enabled&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     Active: active &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;running&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; since Sat 2021-12-04 00:15:12 UTC; 3min 33s ago
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;TriggeredBy: ● docker.socket
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;       Docs: https://docs.docker.com
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;   Main PID: &lt;span style=&#34;color:#ae81ff&#34;&gt;88776&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;dockerd&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      Tasks: &lt;span style=&#34;color:#ae81ff&#34;&gt;16&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     Memory: 76.6M
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;     CGroup: /system.slice/docker.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;             └─88776 /usr/bin/dockerd -H fd:// --containerd&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/run/containerd/containerd.sock
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt; 00:15:10 docker-build dockerd&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;88776&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: time&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2021-12-04T00:15:10.992533127Z&amp;#34;&lt;/span&gt; level&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;warning msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Your kernel does &amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Dec 04 00:15:10 docker-build dockerd[88776]: time=&amp;#34;&lt;/span&gt;2021-12-04T00:15:10.992943323Z&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; level=warning msg=&amp;#34;&lt;/span&gt;Your kernel does &amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt; 00:15:10 docker-build dockerd&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;88776&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: time&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2021-12-04T00:15:10.993053898Z&amp;#34;&lt;/span&gt; level&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;warning msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Your kernel does &amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Dec 04 00:15:10 docker-build dockerd[88776]: time=&amp;#34;&lt;/span&gt;2021-12-04T00:15:10.993340051Z&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; level=info msg=&amp;#34;&lt;/span&gt;Loading containers: &amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt; 00:15:11 docker-build dockerd&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;88776&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: time&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2021-12-04T00:15:11.419025732Z&amp;#34;&lt;/span&gt; level&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;info msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Default bridge (dock&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Dec 04 00:15:11 docker-build dockerd[88776]: time=&amp;#34;&lt;/span&gt;2021-12-04T00:15:11.585401847Z&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; level=info msg=&amp;#34;&lt;/span&gt;Loading containers: &amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt; 00:15:12 docker-build dockerd&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;88776&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: time&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2021-12-04T00:15:12.507244532Z&amp;#34;&lt;/span&gt; level&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;info msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Docker daemon&amp;#34;&lt;/span&gt; commi&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Dec &lt;span style=&#34;color:#ae81ff&#34;&gt;04&lt;/span&gt; 00:15:12 docker-build dockerd&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;88776&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: time&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2021-12-04T00:15:12.507417125Z&amp;#34;&lt;/span&gt; level&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;info msg&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Daemon has completed&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Dec 04 00:15:12 docker-build systemd[1]: Started Docker Application Container Engine.
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;Dec 04 00:15:12 docker-build dockerd[88776]: time=&amp;#34;&lt;/span&gt;2021-12-04T00:15:12.675971607Z&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34; level=info msg=&amp;#34;&lt;/span&gt;API listen on /run/d&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If the output looks like the one above, then your Docker is installed
+and ready to use.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building Docker for POWER</title>
+      <link>https://openpower.ic.unicamp.br/post/building-docker-for-power/</link>
+      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/building-docker-for-power/</guid>
+      <description>&lt;p&gt;This blogpost aims to teach how to build and create a Docker .deb and .rpm packages starting from Docker 20.10 release, considering that since that version the Docker Engine and Docker CLI are built directly from the source repositories.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;Moby-logo.png&#34; alt=&#34;tf logo&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;&lt;em&gt;Requirements&lt;/em&gt;&lt;/h2&gt;
+&lt;p&gt;We used Ubuntu 20.04 for this tutorial for both .deb and .rpm builds.&lt;br&gt;
+First, make sure you have both &lt;em&gt;git&lt;/em&gt; and the &lt;em&gt;make&lt;/em&gt; package on your machine.&lt;br&gt;
+You can install then with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install make
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install unzip
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After that, we need to install Docker-CE. To do that, just add our POWER packages repository to your machine:&lt;/p&gt;
+&lt;p&gt;Edit the file &lt;code&gt;/etc/apt/sources.list&lt;/code&gt; by adding the following line:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;deb https://oplab9.parqtec.unicamp.br/pub/repository/debian/ ./&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Download our &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc&#34;&gt;GPG key&lt;/a&gt;, and use the command below to add it to the system:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt-key add openpower-gpgkey-public.asc
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After that, update the package list and install docker-ce:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install docker-ce
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;More information about our repository in: &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;POWER Repository&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&#34;build-and-packaging&#34;&gt;Build and Packaging&lt;/h1&gt;
+&lt;p&gt;We&amp;rsquo;ll need to download docker-cli and moby (current name of the docker engine) and clone the repositories from scan-cli-plugin and docker-ce-packaging.&lt;br&gt;
+Clone the following docker repositories:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/docker/scan-cli-plugin.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/docker/docker-ce-packaging.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Download the desired version (we&amp;rsquo;ll use 20.10.6) of the cli and moby by downloading its releases (you can use &lt;code&gt;git clone&lt;/code&gt; to build the master branch too):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Download the cli source code and change its zip name&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget https://github.com/docker/cli/archive/refs/tags/v20.10.6.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mv v20.10.6.zip cli.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Download the moby source code and change its zip name&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget https://github.com/moby/moby/archive/refs/tags/v20.10.6.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mv v20.10.6.zip moby.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Unzip the downloaded source-codes&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;unzip cli.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;unzip moby.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Change the folders name&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mv cli-20.10.6 cli
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mv moby-20.10.6 moby
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Because the Docker Build uses containerd.io, we need to modify two files on docker-ce-packaging in order to use the community version of the same software, which is probably already installed on your machine if you installed Docker-CE from our repository(&lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;POWER Repository&lt;/a&gt;).&lt;br&gt;
+Besides that&lt;/p&gt;
+&lt;p&gt;Modify the files with python3 by running the following script:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; re
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Running Patching Script...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;deb_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;docker-ce-packaging/deb/common/control&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;deb_ver &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;containerd (&amp;gt;= 1.2.1)&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rpm_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;docker-ce-packaging/rpm/SPECS/docker-ce.spec&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rpm_ver &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Requires: containerd &amp;gt;= 1.2.1&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Update debian containerd dependency&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Patching DEB...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;deb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; open(deb_path, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; deb&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;new &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sub(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;containerd.io \([^)]*\)&amp;#39;&lt;/span&gt;, deb_ver, data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; new, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Nothing was changed in the file.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;open(deb_path, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write(new)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Update rpm containerd dependency&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Patching RPM...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rpm &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; open(rpm_path, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;r&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rpm&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;read()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;new &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; re&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;sub(&lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;Requires: containerd.io [^\n]*&amp;#39;&lt;/span&gt;, rpm_ver, data)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;assert&lt;/span&gt; data &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; new, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Nothing was changed in the file.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;open(rpm_path, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;write(new)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DONE Patching&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After the patch is done, we need to create specific folders inside &lt;code&gt;docker-ce-packaging&lt;/code&gt; and copy the other cloned repositories into that folders.&lt;/p&gt;
+&lt;p&gt;From the outside of &lt;em&gt;docker-ce-packaging&lt;/em&gt;, do that with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Create the folders&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir -p docker-ce-packaging/src/github.com/docker/cli
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir -p docker-ce-packaging/src/github.com//docker/docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir -p docker-ce-packaging/src/github.com/docker/scan-cli-plugin
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Copy cli, moby and scan-cli-plugin&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo cp -r cli/* docker-ce-packaging/src/github.com/docker/cli
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo cp -r moby/* docker-ce-packaging/src/github.com/docker/docker
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo cp -r scan-cli-plugin/* docker-ce-packaging/src/github.com/docker/scan-cli-plugin
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;making-deb-packages&#34;&gt;Making .deb packages&lt;/h2&gt;
+&lt;p&gt;Systems available:&lt;br&gt;
+&lt;strong&gt;Ubuntu:&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;ubuntu-buster, ubuntu-bionic, ubuntu-focal, ubuntu-groovy, ubuntu-hirsute, ubuntu-xenial&lt;/em&gt;&lt;br&gt;
+&lt;strong&gt;Debian:&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;debian-bullseye, debian-buster&lt;/em&gt;&lt;br&gt;
+&lt;strong&gt;Raspbian:&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;raspbian-bullseye, raspbian-buster&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Make the packages with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd docker-ce-packaging/deb
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo VERSION&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;20.10.6 make ubuntu-focal
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;They will be available at: &lt;code&gt;docker-ce-packaging/deb/debbuild/&lt;/code&gt;&lt;br&gt;
+In our example, the .deb files will be at&lt;br&gt;
+&lt;code&gt;docker-ce-packaging/deb/debbuild/ubuntu-focal&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;files.png&#34; alt=&#34;deb files&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;making-rpm-packages&#34;&gt;Making .rpm packages&lt;/h2&gt;
+&lt;p&gt;Edit the file &lt;code&gt;docker-ce-packaging/rpm/gen-rpm-ver&lt;/code&gt;&lt;br&gt;
+by changing the characters &lt;code&gt;||&lt;/code&gt; to &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; in line 46&lt;/p&gt;
+&lt;p&gt;Systems available:&lt;br&gt;
+&lt;strong&gt;CentOS:&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;centos-7, centos-8&lt;/em&gt;&lt;br&gt;
+&lt;strong&gt;Fedora:&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;fedora-32, fedora-33, fedora-34&lt;/em&gt;&lt;br&gt;
+&lt;strong&gt;RHEL:&lt;/strong&gt;&lt;br&gt;
+&lt;em&gt;rhel-7&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Make the packages with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd docker-ce-packaging/rpm
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo VERSION&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;20.10.6 make centos-8
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;They will be available at: &lt;code&gt;docker-ce-packaging/rpm/rpmbuild/&lt;/code&gt;&lt;br&gt;
+In our example, the .rpm files will be at&lt;br&gt;
+&lt;code&gt;docker-ce-packaging/rpm/rpmbuild/centos-8/SRPMS&lt;/code&gt; and&lt;br&gt;
+&lt;code&gt;docker-ce-packaging/rpm/rpmbuild/centos-8/RPMS/ppc64le&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;files-rpm.png&#34; alt=&#34;rpm files&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;&lt;em&gt;References&lt;/em&gt;&lt;/h2&gt;
+&lt;p&gt;Docker CLI: &lt;a href=&#34;https://github.com/docker/cli&#34;&gt;https://github.com/docker/cli&lt;/a&gt;&lt;br&gt;
+Docker Engine: &lt;a href=&#34;https://github.com/moby/moby&#34;&gt;https://github.com/moby/moby&lt;/a&gt;&lt;br&gt;
+scan-cli-plugin: &lt;a href=&#34;https://github.com/docker/scan-cli-plugin&#34;&gt;https://github.com/docker/scan-cli-plugin&lt;/a&gt;&lt;br&gt;
+Docker-CE Packaging: &lt;a href=&#34;https://github.com/docker/docker-ce-packaging&#34;&gt;https://github.com/docker/docker-ce-packaging&lt;/a&gt;&lt;br&gt;
+OpenPOWER@UNICAMP POWER Repository: &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;https://openpower.ic.unicamp.br/project/power-repository/&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>IBM Power Systems - Power8, Power9 and Power10</title>
+      <link>https://openpower.ic.unicamp.br/post/series-ibm-power/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/series-ibm-power/</guid>
+      <description>&lt;p&gt;In a comparison between IBM Power and x86, it can be said that the best options between them will depend on their use.
+The x86 chips are intended for general use, have good scalability and high performance in almost all uses.
+On the other hand, Power chips are focused on using high-performance and high-performance servers.
+It has support to meet emerging demands, it has virtualization natively,
+with several hardware resources focused on virtualization, being the best possible choice for this type of work.&lt;/p&gt;
+&lt;p&gt;In addition, IBM Power is focused on the business line, having support plans for different business activities.
+Mainly focused on virtualization solutions, to meet massive work demands.
+In addition, the chips have resources to share jobs or pool resources, making multiple servers behave as one.&lt;/p&gt;
+&lt;p&gt;In this way, IBM Power becomes a fundamental part of the business plan of any company linked to technology or that needs a great scalability of resources to meet a massive demand for work.
+As well as mainly for the cloud computing area.&lt;/p&gt;
+&lt;h2 id=&#34;power8&#34;&gt;POWER8&lt;/h2&gt;
+&lt;p&gt;Power8 was presented by IBM in 2014. There, IBM made several improvements over its previous version.
+The machines that were created with this chip, had the provision of 6 to 12 cores, in addition to a clock that varies from 2.5 GHz to 5 GHz.
+Power8 has 32 KB for instructions + 64 KB for data in L1 cache, 512 KB for SRAM type in L2 cache, 96 MB for eDRAM type in L3 cache and 128 MB for eDRAM type in L4 cache.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Core&lt;/th&gt;
+&lt;th&gt;CPU&lt;/th&gt;
+&lt;th&gt;L1 cache&lt;/th&gt;
+&lt;th&gt;L2 cache&lt;/th&gt;
+&lt;th&gt;L3 cache&lt;/th&gt;
+&lt;th&gt;L4 cache&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;6 to 12&lt;/td&gt;
+&lt;td&gt;2.5 GHz to 5 GHz&lt;/td&gt;
+&lt;td&gt;64 KB + 32 KB&lt;/td&gt;
+&lt;td&gt;512 KB&lt;/td&gt;
+&lt;td&gt;96 MB&lt;/td&gt;
+&lt;td&gt;128 MB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;When it comes to processors, memory is a fundamental resource.
+The cache memory is faster than the main memory (RAM memory),
+because of that, its size is fundamental for better processor performance. When compared to the previous version of the chip, the L3 cache memory had its size increased.
+This resulted in part to the higher performance of the processor compared to its predecessor.&lt;/p&gt;
+&lt;p&gt;Power8 has many more features than its x86 competitors and its predecessor, being more powerful than them.
+In addition, it has support for simultaneous multithreading with eight cores per thread (SMT-8), having a very high degree of parallelism.&lt;/p&gt;
+&lt;h2 id=&#34;power9&#34;&gt;POWER9&lt;/h2&gt;
+&lt;p&gt;Power9 was presented by IBM in 2017. This version has improved core and hardware, the chip is smaller resulting in an optimization in energy consumption.
+The number of cores doubled to 24, the clock was set at 4 GHz.
+Power9 has 32 KB for instructions + 32 KB for data in L1 cache, 512 KB for SRAM type in L2 cache, 128 MB for eDRAM type in L3 cache.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Core&lt;/th&gt;
+&lt;th&gt;CPU&lt;/th&gt;
+&lt;th&gt;L1 cache&lt;/th&gt;
+&lt;th&gt;L2 cache&lt;/th&gt;
+&lt;th&gt;L3 cache&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;24&lt;/td&gt;
+&lt;td&gt;4 GHz&lt;/td&gt;
+&lt;td&gt;32 KB + 32 KB&lt;/td&gt;
+&lt;td&gt;512 KB&lt;/td&gt;
+&lt;td&gt;128 MB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The increase in the number of cores, plus the reduction in the size of the chip, with the increase of the L3 cache, optimizes and increases the processing power.
+Power9 has 1.5x better performance and 2x more memory than Power8.&lt;/p&gt;
+&lt;p&gt;Power9 has a greater acceleration than its previous versions, it had optimized the reading of memories of the type DDR4.
+Based on the acceleration, it was possible to reduce the cycle processes, the cost of hardware and increase efficiency.&lt;/p&gt;
+&lt;p&gt;The chip has been improved to have a higher bandwidth and low latency interface.
+This improvement was achieved through an interface created by NVIDIA, called NVLink.
+In addition, the architecture has also been optimized for emerging workloads.
+Improving your performance in carrying out work for high performance computing.&lt;/p&gt;
+&lt;p&gt;All of these improvements were made with the prospect of creating a more optimized processor to develop high-performance operations, from cloud computing, to large data centers and research.&lt;/p&gt;
+&lt;h2 id=&#34;power10&#34;&gt;POWER10&lt;/h2&gt;
+&lt;p&gt;Power10 was presented by IBM in 2020. The chip has been enhanced for faster processing speed and greater capacity for intensive calculations.
+The number of cores can vary from 15 to 30, with a clock that varies from 4.5 GHz to 4 GHz.
+Power10 has 32 KB for instructions + 32 KB for data in the L1 cache, 2 MB type SRAM in the L2 cache, 128 MB type eDRAM in the L3 cache.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Core&lt;/th&gt;
+&lt;th&gt;CPU&lt;/th&gt;
+&lt;th&gt;L1 cache&lt;/th&gt;
+&lt;th&gt;L2 cache&lt;/th&gt;
+&lt;th&gt;L3 cache&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;15 to 30&lt;/td&gt;
+&lt;td&gt;3.5 GHz to 4 GHz&lt;/td&gt;
+&lt;td&gt;32 KB + 32 KB&lt;/td&gt;
+&lt;td&gt;2 MB&lt;/td&gt;
+&lt;td&gt;128 MB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Power10 is designed to achieve a high degree of performance in existing encryption standards and in future encryption standards.
+Power10 has implemented a mathematical matrix accelerator in its cores.
+This resulted in an AI 10x, 15x, 20x faster inference for FP32, BFloat16 and INT8 calculations, respectively, compared to Power9.&lt;/p&gt;
+&lt;p&gt;Several changes have been made compared to its predecessor.
+Power10 had its reading hardware optimized, support for DDR5 memories was added,
+the L2 cache memory had its capacity increased, in addition to the chip which had its size reduced.
+These characteristics mean that the Power10 chip has increased performance and its optimization prepares the chip to support the newest technologies developed.&lt;/p&gt;
+&lt;p&gt;IBM implemented PowerAXON on Power10.
+It has the ability to share the main memory of a Power10 server with other Power10 servers.
+This feature can be used to allow a set of small machines to become a large machine with great processing power.&lt;/p&gt;
+&lt;p&gt;With all the features of previous versions optimized, with the addition of innovative features and with increased processing power and capacity,
+make this processor the most powerful that IBM has ever created.
+Perfect for data analysis jobs, cloud computing, high performance programming and among other jobs that need up-to-date and powerful machines.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;OpenPower Lab does not have Power10 servers within its collection.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Options for Kubernetes-CRI (Container Runtime Interface)</title>
+      <link>https://openpower.ic.unicamp.br/post/options-for-kubernetes-cri/</link>
+      <pubDate>Fri, 26 Feb 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/options-for-kubernetes-cri/</guid>
+      <description>&lt;p&gt;Docker has been used for a long time with Kubelet and Kubernetes. However, recently Docker announced that it would cut
+&lt;a href=&#34;https://www.zdnet.com/article/kubernetes-dropping-docker-is-not-that-big-of-a-deal/&#34;&gt;support for kubelet&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Because of this, this blog intends to present existing options to assume this role with Kubernetes.
+All Kubernetes needs is a Container Runtime Interface (CRI), for that there are several portable software for the IBM Power architecture (ppc64le),
+as it will be presented throughout the post.&lt;/p&gt;
+&lt;h2 id=&#34;main-runtimes&#34;&gt;Main Runtimes&lt;/h2&gt;
+&lt;p&gt;Through the Open Source community it is possible to find some packages like: &lt;a href=&#34;https://github.com/containerd/cri&#34;&gt;Containerd-CRI&lt;/a&gt;, &lt;a href=&#34;https://github.com/cri-o/cri-o&#34;&gt;Cri-O&lt;/a&gt; e &lt;a href=&#34;https://github.com/google/gvisor&#34;&gt;Gvisor&lt;/a&gt;.
+All packages have the function of providing the support that Kubernetes needs, and some of them even have extra and more specialized features.&lt;/p&gt;
+&lt;p&gt;For most of these packages it was possible to port to the Power architecture, however, as will be presented later, some were not possible to perform portability.&lt;/p&gt;
+&lt;h2 id=&#34;containerd-cri&#34;&gt;Containerd-CRI&lt;/h2&gt;
+&lt;h3 id=&#34;description-and-portability&#34;&gt;Description and Portability&lt;/h3&gt;
+&lt;p&gt;CRI is a Containerd plugin for Kubernetes, it is a Container Runtime Interface (CRI) implemented to interact with Kubelet in the creation of containers using Containerd as Runtime.&lt;/p&gt;
+&lt;p&gt;The software does not have official support for the IBM Power architecture, despite that, OpenPower Lab did a build job and made the package functional in Power. In addition, we offer the package in the following formats: binary, .rpm and .deb.&lt;/p&gt;
+&lt;h3 id=&#34;build&#34;&gt;Build&lt;/h3&gt;
+&lt;p&gt;The construction of the package was done following the recipe for CI/CD of the package, it is possible to obtain it through the &lt;a href=&#34;https://github.com/Unicamp-OpenPower/containerd-cri-releases/blob/master/build.sh&#34;&gt;GitHub&lt;/a&gt;.
+Based on it, we make the package available in binary format which can be obtained through &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri/&#34;&gt;FTP&lt;/a&gt;.
+The rest of the packages, available for Debian and RHEL based distros, can be installed through &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;OPenPower lab repository&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;cri-o&#34;&gt;Cri-O&lt;/h2&gt;
+&lt;h3 id=&#34;description-and-portability-1&#34;&gt;Description and Portability&lt;/h3&gt;
+&lt;p&gt;Cri-O is a CRI (Container Runtime Interface) implementation, being a lighter alternative to Docker as a Runtime. Since Docker is no longer an option, it becomes one of the lightest options available.&lt;/p&gt;
+&lt;p&gt;The software does not have official support for the IBM Power architecture, despite that, OpenPower Lab did a build job and made the package functional in Power. In addition, the package is available in binary version and in .deb format.
+Although it was not possible to generate the .rpm package, it is still possible to install the package with the installation of the binary.&lt;/p&gt;
+&lt;h3 id=&#34;build-1&#34;&gt;Build&lt;/h3&gt;
+&lt;p&gt;The construction of the package can be obtained through &lt;a href=&#34;https://github.com/Unicamp-OpenPower/crio-build&#34;&gt;build&lt;/a&gt;. The binary can be obtained by &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio/&#34;&gt;FTP&lt;/a&gt;, despite this, it is necessary to install the &lt;a href=&#34;https://github.com/cri-o/cri-o/blob/master/install.md#runtime-dependencies&#34;&gt;prerequisites&lt;/a&gt;.
+The .deb format can be installed via the &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;OPenPower lab repository&lt;/a&gt;.&lt;/p&gt;
+&lt;h3 id=&#34;install&#34;&gt;Install&lt;/h3&gt;
+&lt;p&gt;It was not possible to convert the binary to the RPM Package Manager, so the only way to install these systems is to install the &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio/&#34;&gt;binary&lt;/a&gt;.
+Before installing the binary it is necessary to install the &lt;a href=&#34;https://github.com/cri-o/cri-o/blob/master/install.md#runtime-dependencies&#34;&gt;prerequisites&lt;/a&gt;.
+After installing the prerequisites, just use the command below:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo tar -C / -xzvf crio-1.20.0.linux-ppc64le.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Confirm the installation by executing the command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;crio --version
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;gvisor&#34;&gt;Gvisor&lt;/h2&gt;
+&lt;h3 id=&#34;description-and-portability-2&#34;&gt;Description and Portability&lt;/h3&gt;
+&lt;p&gt;GVisor is a software widely used by the community, it is focused on integration with Docker and Kubernetes.
+The code is written in GO, uses &lt;a href=&#34;https://github.com/bazelbuild/bazel&#34;&gt;Bazel&lt;/a&gt; to build the source code and generate the binary.
+However, Bazel requires several build files, and supported architectures must be specified. However, the Gvisor only has reference to AMD (x86_64).&lt;/p&gt;
+&lt;p&gt;As such, Bazel is unable to generate the binary for IBM Power (ppc64le). Therefore, Gvisor does not have support for the Power architecture, and portability is considered as difficult and necessary reverse engineering work in the source code.&lt;/p&gt;
+&lt;h2 id=&#34;links&#34;&gt;Links&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;The OpenPower Lab repository contains several Open-Source software for Power. See the list of &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;available packages&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;See more about the lab&amp;rsquo;s work and our research by reading other &lt;a href=&#34;https://openpower.ic.unicamp.br/#posts&#34;&gt;posts&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installing Docker from the OpenPower Lab Repository</title>
+      <link>https://openpower.ic.unicamp.br/post/installing-docker-from-repository/</link>
+      <pubDate>Fri, 22 Jan 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/installing-docker-from-repository/</guid>
+      <description>&lt;p&gt;Docker is a set of systems that use virtualization to deliver software in packages, which are called containers. The containers are isolated from the operating system and other containers, they have unique libraries, as well as packages and configuration files. In addition, they can run different operating systems and have a lower resource cost than traditional virtualization.&lt;/p&gt;
+&lt;p&gt;We provide the &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker/&#34;&gt;docker-ce&lt;/a&gt;, an edition of Docker that is free software, updated by the community. However, the package is officially not available for the Power architecture (ppc64 / ppc64le). Thus, the laboratory makes the latest versions available for installation from the package managers: Advanced Packaging Tool (APT) and Red Hat Package Manager (RPM).&lt;/p&gt;
+&lt;h2 id=&#34;add-the-repository-and-install-docker&#34;&gt;Add the repository and install Docker&lt;/h2&gt;
+&lt;p&gt;To add the repository to the system, and to always obtain the new versions of software that we provide, use the command for your package manager.&lt;/p&gt;
+&lt;h3 id=&#34;add-apt-repository&#34;&gt;Add APT repository&lt;/h3&gt;
+&lt;p&gt;To install, use the command:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo echo &amp;#34;deb https://oplab9.parqtec.unicamp.br/pub/repository/debian/ ./&amp;#34; &amp;gt;&amp;gt; /etc/apt/sources.list; wget https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc; sudo apt-key add openpower-gpgkey-public.asc; sudo apt -y update; sudo apt -y install docker-ce
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;add-rpm-repository&#34;&gt;Add RPM repository&lt;/h3&gt;
+&lt;p&gt;To install, use the command:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;wget https://oplab9.parqtec.unicamp.br/pub/repository/rpm/open-power-unicamp.repo; sudo mv open-power-unicamp.repo /etc/yum.repos.d/; sudo yum -y update; sudo yum -y install docker-ce
+&lt;/code&gt;&lt;/pre&gt;&lt;blockquote&gt;
+&lt;p&gt;wget requirement.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To install using other means or other packages, see &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;Project Power Repository&lt;/a&gt; or &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-builds/&#34;&gt;Project Power Builds&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hello Minikube for ppc64le</title>
+      <link>https://openpower.ic.unicamp.br/post/hello-minikube/</link>
+      <pubDate>Wed, 11 Nov 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/hello-minikube/</guid>
+      <description>&lt;p&gt;This tutorial shows you how to create a cluster for the Power architecture (ppc64le) using Minikube.&lt;/p&gt;
+&lt;p&gt;The tutorial was performed on Ubuntu 20.10 (ppc64le), the packages were downloaded using the package repository from &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-repository/&#34;&gt;OpenPower Lab @ Unicamp&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;dependencies&#34;&gt;Dependencies&lt;/h2&gt;
+&lt;p&gt;The following packages are required:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Minikube&lt;/li&gt;
+&lt;li&gt;Kubectl&lt;/li&gt;
+&lt;li&gt;Docker-ce&lt;/li&gt;
+&lt;li&gt;Conntrack&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can use the commands below to solve the dependencies:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install docker-ce conntrack minikube kubectl
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;Optionally, Kubeadm and Kubelet can be installed.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;create-a-minikube-cluster&#34;&gt;Create a minikube cluster&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Start Minikube&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo minikube start --driver&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;none
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;The default drive is Docker, however the minikube does not recognize that Docker is available for ppc64le architecture and has an error.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;To make &amp;rsquo;none&amp;rsquo; the default drive, use the command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo minikube config set driver none
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;You may need to run the command:: &lt;code&gt;sudo sysctl fs.protected_regular=0&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Check Status&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo minikube status
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output is similar to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;minikube
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;type: Control Plane
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;host: Running
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubelet: Running
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apiserver: Running
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubeconfig: Configured
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Open the Kubernetes dashboard in a browser&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo minikube dashboard
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;create-a-deployment&#34;&gt;Create a Deployment&lt;/h2&gt;
+&lt;p&gt;There are two structures in Kubernetes: Pod and Deployment. Pod can be a group of one or more Containers, while a Deployment checks, manages and restarts the pods. That is, the deployment is recommended when it will be used in a large group of pods.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a Deployment&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo kubectl create deployment hello-node --image&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;minicloud/node-server
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&lt;a href=&#34;https://hub.docker.com/r/minicloud/node-server&#34;&gt;minicloud/node-server&lt;/a&gt;&lt;/em&gt;: is a public docker image created for the ppc64le architecture. The files used to build the image are in the &lt;a href=&#34;https://github.com/Unicamp-OpenPower/nodeServer&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;View the Deployment:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo kubectl get deployments
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output is similar to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hello-node   1/1     &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;            &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;           6m28s
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;View the Pod:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo kubectl get pods
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output is similar to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;NAME                          READY   STATUS    RESTARTS   AGE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hello-node-5dd47b76c8-l5vs2   1/1     Running   &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;          6m51s
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;create-a-service&#34;&gt;Create a Service&lt;/h2&gt;
+&lt;p&gt;In order to be able to directly access the Pod, it is necessary to create a service.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Create a Service&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo kubectl expose deployment hello-node --type&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;NodePort --port&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;8080&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;View the Service&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo kubectl get services
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The output is similar to:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;S&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;          AGE
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;hello-node   NodePort    10.102.223.224   &amp;lt;none&amp;gt;        8080:31253/TCP   8s
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubernetes   ClusterIP   10.96.0.1        &amp;lt;none&amp;gt;        443/TCP          14m
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Open the service in the browser: &lt;a href=&#34;http://localhost:8080/&#34;&gt;http://localhost:8080/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;hello-minikube.png&#34; alt=&#34;Hello Minikube in browser&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If it is not possible to access this port, change the 8080, for the 5 digit port that appears in the view. In that case it would be port 31253.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;clean-up&#34;&gt;Clean up&lt;/h2&gt;
+&lt;p&gt;Now you can clean up the resources you created in your cluster:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl delete service hello-node
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;kubectl delete deployment hello-node
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Optionally, stop the Minikube:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;minikube stop
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Optionally, delete the Minikube:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;minikube delete
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;tutorial-for-others-architectures&#34;&gt;Tutorial for others architectures&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://kubernetes.io/docs/tutorials/hello-minikube/&#34;&gt;Hello Minikube&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installing Bazel and other packages from the OpenPower Lab Repository</title>
+      <link>https://openpower.ic.unicamp.br/post/installing-bazel-from-repository/</link>
+      <pubDate>Mon, 24 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/installing-bazel-from-repository/</guid>
+      <description>&lt;p&gt;Bazel is a free software tool that allows for the automation of building and testing of software. Similar to build tools like Make, Maven, and Gradle, Bazel builds software applications from source code using a set of rules.&lt;/p&gt;
+&lt;p&gt;It is not officially supported by the Power architecture, because of that, we provide the binary and the possibility to use the package through the Advanced Packaging Tool (APT), and Red Hat Package Manager (RPM).&lt;/p&gt;
+&lt;p&gt;In order for installation via APT or YUM, the user must add our repository to his system. To do this, just do the following steps.&lt;/p&gt;
+&lt;h2 id=&#34;add-the-repository-and-install-bazel&#34;&gt;Add the repository and install Bazel&lt;/h2&gt;
+&lt;p&gt;To add the repository to the system, and to always obtain the new versions of software that we provide, follow these steps.&lt;/p&gt;
+&lt;h3 id=&#34;add-apt-repository&#34;&gt;Add APT repository&lt;/h3&gt;
+&lt;p&gt;Edit the file: &lt;em&gt;/etc/apt/sources.list&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Insert the line at the end of the file:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;deb https://oplab9.parqtec.unicamp.br/pub/repository/debian/ ./&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Download our &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc&#34;&gt;GPG key&lt;/a&gt;, and use the command below to add it to the system:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo apt-key add openpower-gpgkey-public.asc&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;After that, update the system using the command below:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo apt update&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;install-bazel&#34;&gt;Install Bazel&lt;/h3&gt;
+&lt;p&gt;To install, use the command:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;sudo apt install bazel&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;add-rpm-repository&#34;&gt;Add RPM repository&lt;/h3&gt;
+&lt;p&gt;Create and edit the file: &lt;em&gt;/etc/yum.repos.d/open-power.repo&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Add the text to it:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[Open-Power]
+name=Unicamp OpenPower Lab - $basearch
+baseurl=https://oplab9.parqtec.unicamp.br/pub/repository/rpm/
+enabled=1
+gpgcheck=0
+repo_gpgcheck=1
+gpgkey=https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;After that, performs the following command with super-user capabilities to update the system.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;yum update&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To be a super user, use the command: &lt;code&gt;sudo su&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;install-bazel-1&#34;&gt;Install Bazel&lt;/h3&gt;
+&lt;p&gt;To install, it use the command:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;yum install bazel&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To install using other means, see &lt;a href=&#34;https://openpower.ic.unicamp.br/post/installing-bazel-power-other-architectures-systems/&#34;&gt;Installing Bazel on Power and Other Unsupported Architectures/Systems&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Creating and adding a Linux repository</title>
+      <link>https://openpower.ic.unicamp.br/post/how-create-repository/</link>
+      <pubDate>Tue, 18 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/how-create-repository/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;The OpenPower@Unicamp laboratory performs &lt;a href=&#34;https://openpower.ic.unicamp.br/project/power-builds/&#34;&gt;CI/CD&lt;/a&gt; activity for several open-source programs that are not available for the Power architecture. Besides, we make the binaries generated from these programs available on our &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/&#34;&gt;FTP&lt;/a&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To add our repositories to the system, jump to &lt;a href=&#34;#step-5---adding-the-repository-to-the-system&#34;&gt;step 5&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;problem&#34;&gt;Problem&lt;/h2&gt;
+&lt;p&gt;Many of the programs we make available have frequent updates and can generate several versions within a month. Based on this, several users needed to constantly access FTP to keep their programs up to date.&lt;/p&gt;
+&lt;p&gt;As a result, we decided to create two repositories. A repository for distros which use the Advanced Packaging Tool (APT), and another for distros that use the Red Hat Package Manager (RPM).&lt;/p&gt;
+&lt;h2 id=&#34;steps&#34;&gt;Steps&lt;/h2&gt;
+&lt;h3 id=&#34;step-1---prerequisites&#34;&gt;Step 1 - Prerequisites&lt;/h3&gt;
+&lt;p&gt;To create a repository, we first need the programs to be hosted on a place with a public IP and that can be accessed by the browser from anywhere in the world.&lt;/p&gt;
+&lt;p&gt;For us, this was a simple matter, our FTP has these characteristics.&lt;/p&gt;
+&lt;h3 id=&#34;step-2---create-directory&#34;&gt;Step 2 - Create directory&lt;/h3&gt;
+&lt;p&gt;This information must be accessible to the general public through the browser, so it is necessary to establish where this information will be in the system.&lt;/p&gt;
+&lt;p&gt;FTP is a specific path of the server system. Currently, the path /pub/ppc64el is used to store programs binaries. Then we create the path /pub/repository/debian/ to store the APT repository information, and /pub/repository/rpm/ to store the RPM repository information.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The steps to create an FTP or make a server system path accessible by browsers will not be covered in this guide.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;step-3---add-programs&#34;&gt;Step 3 - Add programs&lt;/h3&gt;
+&lt;p&gt;As we are developing binaries and programs for a specific architecture, we create a folder with the architecture name. For APT, it is &lt;em&gt;ppc64el&lt;/em&gt;, and for RPM, &lt;em&gt;ppc64le&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The next step is to add all the programs into the folder with architecture name. As each of our programs has several versions, we created a folder with the name of the program, and all of its versions are inside it.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To create a program in APT format, you can see &lt;a href=&#34;https://terminalroot.com.br/2014/12/como-criar-pacotes-deb.html&#34;&gt;this tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To create a program in RPM format, you can see &lt;a href=&#34;https://opensource.com/article/18/9/how-build-rpm-packages&#34;&gt;this tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;step-4---create-compatible-file-systems&#34;&gt;Step 4 - Create compatible file systems&lt;/h3&gt;
+&lt;p&gt;For the file system to recognize the repository, it is necessary to create some files. These files contain information about the program and their path within the directory. Besides that, they can be signed with a GPG key, which serves to prove the authenticity of the programs present in the repository.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To create a gpg key, you can see &lt;a href=&#34;https://www.redhat.com/sysadmin/creating-gpg-keypairs&#34;&gt;this tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;generate-essential-apt-files&#34;&gt;Generate essential APT files&lt;/h4&gt;
+&lt;p&gt;To create the files, run the following commands inside the folder that will be the path to your directory. In our case in /pub/repository/debian/&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;dpkg-scanpackages -m . &amp;gt;&amp;gt; Packages
+gzip -c Packages &amp;gt;&amp;gt; Packages.gz
+apt-ftparchive release . &amp;gt; Release
+keyname=name-your-gpgkey
+rm -fr Release.gpg; gpg --default-key ${keyname} -abs -o Release.gpg Release
+rm -fr InRelease; gpg --default-key ${keyname} --clearsign -o InRelease Release
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&#34;generate-essential-rpm-files&#34;&gt;Generate essential RPM files&lt;/h4&gt;
+&lt;p&gt;To create the files, run the following commands inside the folder that will be the path to your directory. In our case in /pub/repository/rpm/&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;createrepo --database /pub/repository/rpm/
+gpg --detach-sign --armor repodata/repomd.xml
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;step-5---add-the-repository-to-the-system&#34;&gt;Step 5 - Add the repository to the system&lt;/h3&gt;
+&lt;p&gt;To add the repository to the system, and always stay updated on the new versions of the software we make available, follow the next steps.&lt;/p&gt;
+&lt;h4 id=&#34;add-apt-repository&#34;&gt;Add APT repository&lt;/h4&gt;
+&lt;p&gt;Edit the file: &lt;em&gt;/etc/apt/sources.list&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Insert the line at the end of the file:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;deb https://oplab9.parqtec.unicamp.br/pub/repository/debian/ ./&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Download our &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc&#34;&gt;GPG key&lt;/a&gt;, and use the command below to add it to the system:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;apt-key add openpower-gpgkey-public.asc&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Lastly, update the system and install any of the program we provide.&lt;/p&gt;
+&lt;h4 id=&#34;add-rpm-repository&#34;&gt;Add RPM repository&lt;/h4&gt;
+&lt;p&gt;Create and edit the file: &lt;em&gt;/etc/yum.repos.d/open-power.repo&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Add the text to it:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[Open-Power]
+name=Unicamp OpenPower Lab - $basearch
+baseurl=https://oplab9.parqtec.unicamp.br/pub/repository/rpm/
+enabled=1
+gpgcheck=0
+repo_gpgcheck=1
+gpgkey=https://oplab9.parqtec.unicamp.br/pub/key/openpower-gpgkey-public.asc
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Lastly, update the system and install any of the program we provide.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Upgrading to OpenStack Train</title>
+      <link>https://openpower.ic.unicamp.br/post/upgrading-to-openstack-train/</link>
+      <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/upgrading-to-openstack-train/</guid>
+      <description>&lt;p&gt;Recently, we’ve upgraded Minicloud’s (a Power architecture based server) Openstack environment to it’s latest version (Openstack Train), and this post aims to tackle some of the issues which we’ve faced.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Minicloud Environment:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Our server holds multiple machines of two Power architectures: Power8 and Power9 servers. As for our Openstack implementation, we use a Power8 to be the controller and the remaining machines are designated as compute nodes.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Preparations:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;There are some details to consider before upgrading, these mainly revolve around softwares and firmwares versions, as well as network architecture.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;As for firmware, make sure all your machines are up to date with the latest patches&lt;/strong&gt;, otherwise there can be unforeseen errors even if Openstack is correctly installed. An example of such errors is KVM’s safe cache capability which is not supported on older firmware versions.&lt;/p&gt;
+&lt;p&gt;Before starting, format all bare metal machines to make sure you’re getting a clean install (we’ve used the Ubuntu Server 18.04 as the OS for the server).** Software versions were picked considering Openstack dependencies** and the latest release available for power architecture.&lt;/p&gt;
+&lt;p&gt;As for the network, it won’t be addressed in this post, hence, if necessary, &lt;a href=&#34;https://alta3.com/&#34;&gt;Alta3 Research&lt;/a&gt; has a handy &lt;a href=&#34;https://www.youtube.com/watch?v=8FYgmM3tUCM&#34;&gt;playlist&lt;/a&gt; addressing this matter.&lt;/p&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;Note: avoid running an apt upgrade command after the environment is set, as some packages might break or lose it’s configurations, also, disable automatic package upgrades.&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Firmware Updates:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In case of Power machines, all you’ll need to realize an firmware update is located in &lt;a href=&#34;https://www.ibm.com/support/fixcentral/&#34;&gt;IBM’s Fix Central&lt;/a&gt;. Simply find the requested hardware info (&lt;em&gt;lshw&lt;/em&gt; command should do the job) and search for your machine model. After finding your model, inserting it’s serial number and selecting the latest fix, you will find a page with all software and instruction for the update.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Adjusting Simultaneous Multithreading:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;One of the main problems you’ll face with Power8 servers is the Simultaneous Multithreading (SMT) functionality. Essentially, SMT allows a better resource usage, but it can also cause errors. In our case, the SMT was completely disabled in P8 machines and set to 4 in P9 machines.&lt;/p&gt;
+&lt;p&gt;When running Openstack with SMT enabled on Power8, we dealt with VMs being allocated but remaining in a paused state as they were unable launch due to SMT configurations.&lt;/p&gt;
+&lt;p&gt;The following settings can be used to set a service with &lt;em&gt;systemd&lt;/em&gt; which will disable SMT on power machines:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=ppc64 set SMT off
+Before=libvirt-bin.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/ppc64_cpu --smt=off
+ExecStop=/usr/sbin/ppc64_cpu --smt=on
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Installation Checklist:&lt;/strong&gt; Here’s a helpful step by step installation checklist for an environment with multiple node:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Steps to Execute&lt;/th&gt;
+&lt;th&gt;Controller&lt;/th&gt;
+&lt;th&gt;Compute&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-networking.html&#34;&gt;Host networking&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-ntp.html&#34;&gt;Network Time Protocol (NTP)&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-packages.html&#34;&gt;OpenStack packages&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-sql-database.html&#34;&gt;SQL database&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-messaging.html&#34;&gt;Message queue&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-memcached.html&#34;&gt;Memcached&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-etcd.html&#34;&gt;Etcd&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/keystone/train/install/&#34;&gt;keystone&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/glance/train/install/&#34;&gt;glance&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/placement/train/install/&#34;&gt;placement&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/nova/train/install/&#34;&gt;nova&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/neutron/train/install/&#34;&gt;neutron&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/horizon/train/install/&#34;&gt;horizon&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Troubleshooting:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In this section we’ll share some of the errors we had during installation and the solutions we found to each of them. Note that these errors are not specifically of POWER architecture installations.&lt;/p&gt;
+&lt;h4 id=&#34;mariadb-note&#34;&gt;MariaDB note:&lt;/h4&gt;
+&lt;p&gt;Some SQL commands were failing due to unknown reasons even with the correct dependencies. A solution we found for this issue was bumping our mariaDB version from 10.2 to 10.4.&lt;/p&gt;
+&lt;h4 id=&#34;apache--horizon-login&#34;&gt;Apache &amp;amp; Horizon Login:&lt;/h4&gt;
+&lt;p&gt;A small change to Horizon from the previous OpenStack release was the dashboard login page URL settings. Simply using &lt;strong&gt;&lt;!-- raw HTML omitted --&gt;/horizon&lt;/strong&gt; would redirect to the login page in previous versions. This might require some redirection tweaks in the Apache server configuration file.&lt;/p&gt;
+&lt;h4 id=&#34;virtual-interface-exception&#34;&gt;Virtual Interface Exception:&lt;/h4&gt;
+&lt;p&gt;When attempting to create a VM, the following error was presented by the Nova module: &lt;em&gt;VirtualInterfaceCreateException: Virtual Interface creation failed.&lt;/em&gt;&lt;br&gt;
+To fix this, we&lt;a href=&#34;https://ask.openstack.org/en/question/26938/virtualinterfacecreateexception-virtual-interface-creation-failed/&#34;&gt; followed the instructions from a post&lt;/a&gt; in which two lines of configurations are added to the &lt;em&gt;nova.conf&lt;/em&gt; file: &lt;strong&gt;vif_plugging_is_fatal: false&lt;/strong&gt; and &lt;strong&gt;vif_plugging_timeout: 0.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Good luck upgrading.&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Introducing Power Architecture&#39;s Assembly Language</title>
+      <link>https://openpower.ic.unicamp.br/post/assembly_introduction/</link>
+      <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/assembly_introduction/</guid>
+      <description>&lt;p&gt;As programmers, we’re fairly used to high level coding and optimization, but we rarely work on lower level languages such as assembly. Even so, understanding these languages is essential for several reasons: optimization, portability, etc. Also, the standard learning languages for assembly tend to be either for Intel’s x86 and/or ARMv7 architectures, leaving aside many others.&lt;/p&gt;
+&lt;p&gt;In this post, we’ll be introducing the Power instruction set architecture (to be precise, the PowerPC 64-bit little-endian architecture) and walking through the initial steps for studying and analysing assembly code in Power. More specifically, the code which we’ll compile and analyse is a C program with a single function which returns one or minus one given a probability (which is passed as a function parameter) using C&amp;rsquo;s standard random number generator.&lt;/p&gt;
+&lt;h2 id=&#34;compiling-for-power-processors&#34;&gt;&lt;strong&gt;Compiling for Power Processors&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Using a Power Machine&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The most simple and straightforward method for obtaining an assembler or binary code for Power architecture is using a Power machine. You can access the Minicloud website and request a free Power VM. Once you’ve setup the VM and installed GCC, all you have to do is compile it.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Unicamp-OpenPower/minicloud/wiki/Getting-Started-with-Minicloud&#34;&gt;Setting Up a Power VM at Minicloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Using GCC Packages&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To install a GCC version which can cross compile for power machines we can simply use &lt;code&gt;sudo apt install gcc-7-powerpc64le-linux-gnu&lt;/code&gt;.
+The &lt;em&gt;powerpc64le-linux-gnu&lt;/em&gt; suffix is what we call target Here we’re specifying that we want to install GCC v7 for powerpc66le architecture which  runs linux-gnu OS. Upon installing the cross compiler we can get the assembly code using &lt;code&gt;powerpc64le-linux-gnu-gcc program.c -S&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;overview-of-the-c-code&#34;&gt;&lt;strong&gt;Overview of the C code&lt;/strong&gt;&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;time.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rand_p&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; p) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; r &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;)rand()&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;)RAND_MAX;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (r &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; p) &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;; &lt;span style=&#34;color:#75715e&#34;&gt;//Returns with probability p
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;      &lt;span style=&#34;color:#75715e&#34;&gt;//Returns with probability (1-p)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;} 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Understanding the C code is quite trivial. We start with a variable ‘p’ passed as a parameter, and then we instantiate a variable ‘r’ with the casted result of the division of rand() by RAND_MAX. To wrap it up, we test if ‘r’ is smaller than ‘p’. If so, the return value is 1, and -1 otherwise. Should also be noted that the code only works because &lt;em&gt;rand()&lt;/em&gt; returns a random value between [0,RAND_MAX] with uniform probability. Now let us see if we can establish a similar analysis but with the assembly code.&lt;/p&gt;
+&lt;h2 id=&#34;overview-of-the-assembly-code&#34;&gt;&lt;strong&gt;Overview of the Assembly Code&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Since we’re starting with the basics, we’ll be skipping some lines of code which aren&amp;rsquo;t necessary for grasping the general idea of what’s happening within the program.
+We can split the code into three main blocks: directives, function call handling and the program logic.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;sectioned_asm.png&#34; alt=&#34;Assembly Code&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;a href=&#34;http://www.idc-online.com/technical_references/pdfs/electronic_engineering/Assembler_Directives.pdf&#34;&gt;directives&lt;/a&gt; (Red) assist in guiding the assembly process as well as inserting data.&lt;/li&gt;
+&lt;li&gt;Functions calls demands a series of conventions (Blue) to allow the proper integration of the code within multiple environments. These are defined by the Power’s &lt;a href=&#34;http://www.idc-online.com/technical_references/pdfs/electronic_engineering/Assembler_Directives.pdf&#34;&gt;ABI&lt;/a&gt; (Application&amp;rsquo;s Binary Interface), which has a dedicated document for it’s description.&lt;/li&gt;
+&lt;li&gt;The program logic (Black) is where the code we’ve written is translated to the assembler code. This is the section which we’ll be analysing here.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;preliminary-notes&#34;&gt;&lt;strong&gt;Preliminary Notes&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Before we can dive in, there&amp;rsquo;s a few concepts which must be known beforehand to fully understand the assembly code:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Register Types:&lt;/strong&gt; There are multiple register types within the Power architecture, the following initials will be used:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GX stands for General purpose register X.&lt;/li&gt;
+&lt;li&gt;FX stands for Floating point register X.&lt;/li&gt;
+&lt;li&gt;LR and CR refers to Linked Register and Condition Register respectively. These are considered Special Registers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Special Registers:&lt;/strong&gt; Some registers have designated functions within  the architecture, such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CR&lt;/strong&gt; which contains 8 adressable fields (with 4 bits each) for saving the result of comparison instructions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LR&lt;/strong&gt; keeps the return address of a function call when the instruction BL (Branch Linked) is used, and can be used to return to the calling point with the instruction BLR (Branch to Linked Register).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Parameters and Return Registers:&lt;/strong&gt; The Power ABI defines a set of registers (both GX and FX types) which ares used as variables when returning values or passing parameters to functions. The registers G[3,10] and F[1,13] are such registers. &lt;!-- raw HTML omitted --&gt; &lt;em&gt;Example:&lt;/em&gt; if we have &lt;code&gt;f(int w, int x, float y, double z)&lt;/code&gt;, the registers G3, G4, F1 and F2 will contain w, x, y and z respectively when &lt;code&gt;f&lt;/code&gt; is called.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Volatile and Nonvolatile Registers:&lt;/strong&gt; When a function is called, by the ABI&amp;rsquo;s specifications, &lt;em&gt;nonvolatile&lt;/em&gt; registers are presumed to remain intact, meaning that their values either won&amp;rsquo;t change or will be restored by any called function. On the other hand, &lt;em&gt;volatile&lt;/em&gt; registers must be saved by the caller if necessary, since these can be altered at will by any called function.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Table of Contents (TOC):&lt;/strong&gt; For now, all we need to know is that &lt;code&gt;RAND_MAX&lt;/code&gt; is kept here, and to access it we&amp;rsquo;ll need the address of the table plus an offset. The directives below &lt;code&gt;.LCO:&lt;/code&gt; are responsible for defining the offset.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Observation:&lt;/em&gt; These informations can be found within the &lt;a href=&#34;https://openpowerfoundation.org/?resource_lib=power-isa-version-3-0&#34;&gt;Power ISA&lt;/a&gt; and &lt;a href=&#34;http://www.idc-online.com/technical_references/pdfs/electronic_engineering/Assembler_Directives.pdf&#34;&gt;Power ABI&lt;/a&gt; specifications.&lt;/p&gt;
+&lt;h2 id=&#34;analysing-the-assembly-code&#34;&gt;&lt;strong&gt;Analysing the Assembly Code&lt;/strong&gt;&lt;/h2&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+ 7  rand_p: 
+ 8  .LCF0:
+ 9  0:	
+10      addis 2,12,.TOC.-.LCF0@ha
+11   	addi 2,2,.TOC.-.LCF0@l
+[...]
+18      stfd 1,40(31)
+19   	bl rand
+20   	nop
+21  	mr 9,3
+22  	mtvsrd 32,9
+23 	    xscvsxddp 12,32
+24  	addis 9,2,.LC0@toc@ha
+25  	addi 9,9,.LC0@toc@l
+26  	lfd 0,0(9)
+27   	fdiv 0,12,0
+28  	stfd 0,56(31)
+29  	lfd 12,56(31)
+30  	lfd 0,40(31)
+31  	fcmpu 7,12,0
+32      bnl 7,.L6
+33  	li 9,1
+34  	b .L4
+35  .L6:
+36      li 9,-1
+37  .L4:
+38      mr 3,9
+39	    addi 1,31,80
+40	    ld 0,16(1)
+41	    mtlr 0
+42	    ld 31,-8(1)
+43	    blr
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;First, let’s locate where is the parameter ‘p’. Since ‘p’ is a Float and it’s also the single parameter passed, it’s located at FPR1 (as specified by the ABI).&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;lines 10 and 11&lt;/strong&gt; initialize the &lt;strong&gt;TOC base pointer at G2&lt;/strong&gt; using the ADDIS and ADD instructions. We&amp;rsquo;ll use this value later for obtaining &lt;code&gt;RAND_MAX&lt;/code&gt; from memory. Let’s ignore the &lt;code&gt;.localentry&lt;/code&gt; directive that follows.&lt;/p&gt;
+&lt;p&gt;At line 19, the compiler calls the &lt;em&gt;rand()&lt;/em&gt; function with the BL instruction, since &lt;strong&gt;&lt;em&gt;rand()&lt;/em&gt; returns an integer, it’s return value will be placed at G3 (as specified by the ABI) and will be converted to a double at lines 22 and 23&lt;/strong&gt; which involves more complicated instructions. Also, in these lines, the value in &lt;strong&gt;G3 is transferred to F12&lt;/strong&gt;. Note that &lt;strong&gt;FPR1 is saved at line 17&lt;/strong&gt;, since FPR1 is a volatile register and can be lost during &lt;em&gt;rand()&lt;/em&gt;&amp;rsquo;s execution. The NOP instruction does literally nothing, but it does have a purpose  in the bigger picture.&lt;/p&gt;
+&lt;p&gt;At the next step, the compiler will load RAND_MAX. Lines 24 and 25 adds an offset to the TOC pointer (G2) and saves the result at G9. Now, G9 withholds the absolute address of RAND_MAX’s value. To load RAND_MAX’s value, we can use LFD (line 26) using G9 as the offset and &lt;strong&gt;setting G0 as RAND_MAX&lt;/strong&gt;. Note that the LFD instruction interprets the value 0, not as the register G0, but as the number 0, as describes the ISA.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We have &lt;em&gt;rand()&lt;/em&gt;’s return value and RAND_MAX constant&lt;/strong&gt;, both at floating point registers, therefore, we can finally &lt;strong&gt;divide these values&lt;/strong&gt; to initialize the variable ‘r’. This division is observed at line 27 by the FDIV instruction, where F12 is divided by F0 and the result saved in F0. In other words, &lt;strong&gt;F0 now stores the variable ‘r’ of our C program&lt;/strong&gt;. In line 28 and 29, the value of &lt;strong&gt;F0 is stored and then loaded in F12&lt;/strong&gt;, probably due to poor optimization.&lt;/p&gt;
+&lt;p&gt;Since F1 might have change during &lt;em&gt;rand()&lt;/em&gt;’s execution, we must restore F1 with its saved value by loading it from the memory address we saved it in line 18. This can be observed at line 30, where &lt;strong&gt;the saved value of our parameter ‘p’ is loaded into F0&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We finally have &lt;code&gt;r&lt;/code&gt; in F12 and &lt;code&gt;p&lt;/code&gt; in F0&lt;/strong&gt;, meaning that these values can be compared.The instruction FCMPU at line 31 is responsible for &lt;strong&gt;comparing F12 with F0 and storing their relation at CR&amp;rsquo;s 7th field&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;At line 32, the if-else structure is built. First, a &lt;strong&gt;BNL instruction checks if F12 is NOT smaller than F0&lt;/strong&gt; (by checking CR&amp;rsquo;s 7th field) and, if true, jumps to label .L6 loading -1 into G9, otherwise does not branch and loads 1 at G9. Note that the conditional here (‘r’ &amp;gt;=  ‘p’) is the negation of the one present in the C code.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Finally, we have the function’s return value at G9&lt;/strong&gt;. To properly end the function call, there are few rules established by the ABI which should be followed, but we won&amp;rsquo;t cover all of them here. For now, we’ll focus on two steps: &lt;strong&gt;Moving result from G9 to G3 and loading the return address&lt;/strong&gt;. The first one is relevant because the caller function will consider that our function’s return value is at G3, therefore, G9 is moved to G3 at line 38 by the MR instruction. The second step ensures that we return to the point where our function was called. For this, we’ll restore the value of the LR register at line 40 using the MTLR instruction.&lt;/p&gt;
+&lt;p&gt;To end our function’s execution, BLR is invoked at line 43 and the function call ends.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;As short and simple a C program is, when analysed by it’s assembly code, can be quite complex. As seen here, what can be described in a paragraph at high level code, can turn to a long text at low level code (not to mention that we ignored a large portion of the code). The increased complexity is mostly due to the several elements which are omitted for the programmers sake when using high level languages, but this comes at a cost. These instructions can be combined in multiple ways, and the optimal way to do so depends on the program, it’s compilation and the host architecture, resulting in countless combinations which makes the automated optimization process extremely complicated. So overall, understanding such low level code and it’s host architecture is relevant for writing efficient programs.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building Tensorflow on POWER - CPU only</title>
+      <link>https://openpower.ic.unicamp.br/post/building-tensorflow-on-power/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/building-tensorflow-on-power/</guid>
+      <description>&lt;p&gt;TensorFlow is a widespread software library for numerical computation using data flow graphs. It is very common on machine learning and deep neural networks projects. Therefore, today we are going to see how to install it on POWER with CPU only configuration.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;tf-logo.png&#34; alt=&#34;tf logo&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;update-032021&#34;&gt;&lt;em&gt;Update 03/2021&lt;/em&gt;&lt;/h2&gt;
+&lt;p&gt;If you only want to install TensorFlow on POWER (and not build it), there is an easier way which is taught in the following tutorial: &lt;a href=&#34;https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power&#34;&gt;https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;outdated-&#34;&gt;&lt;em&gt;OUTDATED&lt;/em&gt; :&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;OUTDATED 09/2020&lt;/em&gt; The following tutorial is an outdated way of building TensorFlow on Power. If you still want to build TensorFlow from source by following this tutorial, proceed with caution.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Before installing TensorFlow, there are a couple of details we have to pay attention to:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Due to Bazel, one of TF dependencies, the operating system must be Ubuntu 14.04 or Ubuntu 16.04.&lt;/li&gt;
+&lt;li&gt;We are going to use Python 2.7, since TF doesn&amp;rsquo;t seem to be supported by Python 3.5 &lt;strong&gt;on POWER&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;tensorflow-dependencies&#34;&gt;Tensorflow Dependencies&lt;/h1&gt;
+&lt;p&gt;You can use the commands below to solve most of the dependencies:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install python-numpy python-dev python-pip python-wheel
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;bazel-installation&#34;&gt;Bazel installation&lt;/h1&gt;
+&lt;p&gt;Bazel is one of the TF dependencies, but its installation is less intuitive than the others due to its community not officially supporting POWER architecture. That said, we must compile it from the Source. First of all, we need to install its own dependencies by the following commands:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install unzip build-essential python openjdk-8-jdk protobuf-compiler zip g++ zlib1g-dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It is also important to add enviroment variables on .bashrc for JDK.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vi .bashrc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export JAVA_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/usr/lib/jvm/java-8-openjdk-ppc64el
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export JRE_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JAVA_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/jre
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export CLASSPATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;.:&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JAVA_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/lib:&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JRE_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/lib
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export PATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JAVA_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/bin:$PATH
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For compiling Bazel, we are going to download and unpack its distribution archive (the zip file from the release page &lt;a href=&#34;https://github.com/bazelbuild/bazel/releases&#34;&gt;https://github.com/bazelbuild/bazel/releases&lt;/a&gt;. The .sh is not compatible with ppc64le) and compile it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir bazel
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd bazel
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget -c https://github.com/bazelbuild/bazel/releases/download/0.11.1/bazel-0.11.1-dist.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;unzip bazel-0.11.1-dist.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./compile.sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;if you want to download other version of bazel, this link must be switched by the one you are intenting to use.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Update 09/2020&lt;/em&gt;: It is also possible to perform the installation by following this &lt;a href=&#34;https://openpower.ic.unicamp.br/blog/installing-bazel-from-repository.html&#34;&gt;tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;As we can see, this tutorial was tested with bazel 0.11.1, but feel free to try other version and see if it works properly.&lt;/p&gt;
+&lt;p&gt;Also, if you are having any trouble about lack of resources, you can take a look on &amp;lsquo;Build issues and Support Websites&amp;rsquo; to see if there&amp;rsquo;s any link that could help you. Anticipating: if you don&amp;rsquo;t have memory enough and your Bazel can&amp;rsquo;t complete the compile step, you might have a problem with the garbage collector of JAVA (and there&amp;rsquo;s a link which explains how to deal with it).&lt;/p&gt;
+&lt;h1 id=&#34;installing-tensorflow&#34;&gt;Installing Tensorflow&lt;/h1&gt;
+&lt;p&gt;Since we are going to use the current version of TF, we need to clone it from the official GitHub and execute the configuration script.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/tensorflow/tensorflow
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ~/tensorflow
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;On this step, we have to specify the pathname of all relevant TF dependencies and other build configuration options. On most of them we can use the answers suggested on each question. Here, I will show how it was done for this tutorial. (Yours might be a little different, depending on the pathnames)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Please specify the location of python. &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Default is /usr/bin/python&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: /usr/bin/python2.7
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Found possible Python library paths:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  /usr/local/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  /usr/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Please input the desired Python library path to use.  Default is &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;/usr/lib/python2.7/dist-packages&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: /usr/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Using python library path: /usr/local/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Y/N Answers given: All of them as suggested in each question.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Please specify optimization flags to use during compilation when bazel option &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;--config=opt&amp;#34;&lt;/span&gt; is specified &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Default is -march&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;native&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: -mcpu&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;native
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Configuration finished
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To build and install TF, we use:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bazel build --copt&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-mcpu=native&amp;#34;&lt;/span&gt; --jobs &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; --local_resources 2048,0.5,1.0 //tensorflow/tools/pip_package:build_pip_package
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg &lt;span style=&#34;color:#75715e&#34;&gt;#creates the pip package&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install /tmp/tensorflow_pkg/tensorflow-1.5.0rc0-cp27-cp27mu-linux_ppc64le.whl &lt;span style=&#34;color:#75715e&#34;&gt;#installs the pip package.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;This name depends on your operating system, Python version and CPU only vs. GPU support. Therefore, check it out its name before this step.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;By this moment, your TF must be working. Remember not to import it into its own directory: you have to chance directory before executing Python.&lt;/p&gt;
+&lt;h1 id=&#34;build-issues-and-support-websites&#34;&gt;Build Issues and Support Websites:&lt;/h1&gt;
+&lt;p&gt;While testing this tutorial, I could separate some useful issues reports and links to help some of the troubles you might have on the way.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/14540&#34;&gt;https://github.com/tensorflow/tensorflow/issues/14540&lt;/a&gt; It solves a protobuf problem I had. It seems pretty common on PPC TF installation.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/349&#34;&gt;https://github.com/tensorflow/tensorflow/issues/349&lt;/a&gt; This one is about local resources. If you are running out of memory (your build fails on C++ compilation rules), you have to specify your resources on the command line when you build TF. On the tutorial, it is already done.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.tensorflow.org/install/install_sources&#34;&gt;https://www.tensorflow.org/install/install_sources&lt;/a&gt; An official tutorial about how to install TF from Sources&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.bazel.build/versions/master/install-compile-source.html&#34;&gt;https://docs.bazel.build/versions/master/install-compile-source.html&lt;/a&gt; An official tutorial about how to install Bazel from Sources.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ibm.com/developerworks/community/blogs/fe313521-2e95-46f2-817d-44a4f27eba32/entry/Building_TensorFlow_on_OpenPOWER_Linux_Systems?lang=en&#34;&gt;https://www.ibm.com/developerworks/community/blogs/fe313521-2e95-46f2-817d-44a4f27eba32/entry/Building_TensorFlow_on_OpenPOWER_Linux_Systems?lang=en&lt;/a&gt; IBM source about Tensorflow installation. Provides interesting information about bazel installation on PPC and how to install TF with GPU support. It also points to an IBM Bazel modified to PPC (which we are not using in this tutorial, but you can take a look on it).&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/7979#issuecomment-283559640&#34;&gt;https://github.com/tensorflow/tensorflow/issues/7979#issuecomment-283559640&lt;/a&gt; An issue about enviroment variables: on the configuration step, if it does not recognize some of the TF variables, this might help you to solve the problem.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/bazelbuild/bazel/issues/1308&#34;&gt;https://github.com/bazelbuild/bazel/issues/1308&lt;/a&gt; An issue about Bazel: &amp;ldquo;The system is out of resources&amp;rdquo;. You might need to add a command line on compile file to change the garbage collector size. On the issue on git, it&amp;rsquo;s suggested to change it to 384, but, at least on one of the computers I tried to compile, I needed to change it to 512 (in other words, change -J-Xmx384m on the solution line to -J-Xmx512m). It&amp;rsquo;s important to see that ideally we should not have to change the source code, but it solves the problem. Another option is to increase the memory of your system if it&amp;rsquo;s possible (recommended).&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

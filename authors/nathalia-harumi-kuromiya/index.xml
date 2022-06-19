@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nathalia Harumi Kuromiya | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/nathalia-harumi-kuromiya/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/nathalia-harumi-kuromiya/index.xml" rel="self" type="application/rss+xml" />
+    <description>Nathalia Harumi Kuromiya</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 16 Jan 2018 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Nathalia Harumi Kuromiya</title>
+      <link>https://openpower.ic.unicamp.br/authors/nathalia-harumi-kuromiya/</link>
+    </image>
+    
+    <item>
+      <title>Building Tensorflow on POWER - CPU only</title>
+      <link>https://openpower.ic.unicamp.br/post/building-tensorflow-on-power/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/building-tensorflow-on-power/</guid>
+      <description>&lt;p&gt;TensorFlow is a widespread software library for numerical computation using data flow graphs. It is very common on machine learning and deep neural networks projects. Therefore, today we are going to see how to install it on POWER with CPU only configuration.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;tf-logo.png&#34; alt=&#34;tf logo&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;update-032021&#34;&gt;&lt;em&gt;Update 03/2021&lt;/em&gt;&lt;/h2&gt;
+&lt;p&gt;If you only want to install TensorFlow on POWER (and not build it), there is an easier way which is taught in the following tutorial: &lt;a href=&#34;https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power&#34;&gt;https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;outdated-&#34;&gt;&lt;em&gt;OUTDATED&lt;/em&gt; :&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;OUTDATED 09/2020&lt;/em&gt; The following tutorial is an outdated way of building TensorFlow on Power. If you still want to build TensorFlow from source by following this tutorial, proceed with caution.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Before installing TensorFlow, there are a couple of details we have to pay attention to:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Due to Bazel, one of TF dependencies, the operating system must be Ubuntu 14.04 or Ubuntu 16.04.&lt;/li&gt;
+&lt;li&gt;We are going to use Python 2.7, since TF doesn&amp;rsquo;t seem to be supported by Python 3.5 &lt;strong&gt;on POWER&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&#34;tensorflow-dependencies&#34;&gt;Tensorflow Dependencies&lt;/h1&gt;
+&lt;p&gt;You can use the commands below to solve most of the dependencies:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install python-numpy python-dev python-pip python-wheel
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;bazel-installation&#34;&gt;Bazel installation&lt;/h1&gt;
+&lt;p&gt;Bazel is one of the TF dependencies, but its installation is less intuitive than the others due to its community not officially supporting POWER architecture. That said, we must compile it from the Source. First of all, we need to install its own dependencies by the following commands:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install unzip build-essential python openjdk-8-jdk protobuf-compiler zip g++ zlib1g-dev
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;It is also important to add enviroment variables on .bashrc for JDK.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;vi .bashrc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export JAVA_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/usr/lib/jvm/java-8-openjdk-ppc64el
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export JRE_HOME&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JAVA_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/jre
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export CLASSPATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;.:&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JAVA_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/lib:&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JRE_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/lib
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;	export PATH&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;${&lt;/span&gt;JAVA_HOME&lt;span style=&#34;color:#e6db74&#34;&gt;}&lt;/span&gt;/bin:$PATH
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For compiling Bazel, we are going to download and unpack its distribution archive (the zip file from the release page &lt;a href=&#34;https://github.com/bazelbuild/bazel/releases&#34;&gt;https://github.com/bazelbuild/bazel/releases&lt;/a&gt;. The .sh is not compatible with ppc64le) and compile it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir bazel
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd bazel
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;wget -c https://github.com/bazelbuild/bazel/releases/download/0.11.1/bazel-0.11.1-dist.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;unzip bazel-0.11.1-dist.zip
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./compile.sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;if you want to download other version of bazel, this link must be switched by the one you are intenting to use.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Update 09/2020&lt;/em&gt;: It is also possible to perform the installation by following this &lt;a href=&#34;https://openpower.ic.unicamp.br/blog/installing-bazel-from-repository.html&#34;&gt;tutorial&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;As we can see, this tutorial was tested with bazel 0.11.1, but feel free to try other version and see if it works properly.&lt;/p&gt;
+&lt;p&gt;Also, if you are having any trouble about lack of resources, you can take a look on &amp;lsquo;Build issues and Support Websites&amp;rsquo; to see if there&amp;rsquo;s any link that could help you. Anticipating: if you don&amp;rsquo;t have memory enough and your Bazel can&amp;rsquo;t complete the compile step, you might have a problem with the garbage collector of JAVA (and there&amp;rsquo;s a link which explains how to deal with it).&lt;/p&gt;
+&lt;h1 id=&#34;installing-tensorflow&#34;&gt;Installing Tensorflow&lt;/h1&gt;
+&lt;p&gt;Since we are going to use the current version of TF, we need to clone it from the official GitHub and execute the configuration script.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/tensorflow/tensorflow
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ~/tensorflow
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;On this step, we have to specify the pathname of all relevant TF dependencies and other build configuration options. On most of them we can use the answers suggested on each question. Here, I will show how it was done for this tutorial. (Yours might be a little different, depending on the pathnames)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Please specify the location of python. &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Default is /usr/bin/python&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: /usr/bin/python2.7
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Found possible Python library paths:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  /usr/local/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  /usr/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Please input the desired Python library path to use.  Default is &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;/usr/lib/python2.7/dist-packages&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: /usr/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Using python library path: /usr/local/lib/python2.7/dist-packages
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#Y/N Answers given: All of them as suggested in each question.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Please specify optimization flags to use during compilation when bazel option &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;--config=opt&amp;#34;&lt;/span&gt; is specified &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;Default is -march&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;native&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt;: -mcpu&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;native
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Configuration finished
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;To build and install TF, we use:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bazel build --copt&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;-mcpu=native&amp;#34;&lt;/span&gt; --jobs &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; --local_resources 2048,0.5,1.0 //tensorflow/tools/pip_package:build_pip_package
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;bazel-bin/tensorflow/tools/pip_package/build_pip_package /tmp/tensorflow_pkg &lt;span style=&#34;color:#75715e&#34;&gt;#creates the pip package&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install /tmp/tensorflow_pkg/tensorflow-1.5.0rc0-cp27-cp27mu-linux_ppc64le.whl &lt;span style=&#34;color:#75715e&#34;&gt;#installs the pip package.&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;This name depends on your operating system, Python version and CPU only vs. GPU support. Therefore, check it out its name before this step.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;By this moment, your TF must be working. Remember not to import it into its own directory: you have to chance directory before executing Python.&lt;/p&gt;
+&lt;h1 id=&#34;build-issues-and-support-websites&#34;&gt;Build Issues and Support Websites:&lt;/h1&gt;
+&lt;p&gt;While testing this tutorial, I could separate some useful issues reports and links to help some of the troubles you might have on the way.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/14540&#34;&gt;https://github.com/tensorflow/tensorflow/issues/14540&lt;/a&gt; It solves a protobuf problem I had. It seems pretty common on PPC TF installation.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/349&#34;&gt;https://github.com/tensorflow/tensorflow/issues/349&lt;/a&gt; This one is about local resources. If you are running out of memory (your build fails on C++ compilation rules), you have to specify your resources on the command line when you build TF. On the tutorial, it is already done.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.tensorflow.org/install/install_sources&#34;&gt;https://www.tensorflow.org/install/install_sources&lt;/a&gt; An official tutorial about how to install TF from Sources&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.bazel.build/versions/master/install-compile-source.html&#34;&gt;https://docs.bazel.build/versions/master/install-compile-source.html&lt;/a&gt; An official tutorial about how to install Bazel from Sources.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.ibm.com/developerworks/community/blogs/fe313521-2e95-46f2-817d-44a4f27eba32/entry/Building_TensorFlow_on_OpenPOWER_Linux_Systems?lang=en&#34;&gt;https://www.ibm.com/developerworks/community/blogs/fe313521-2e95-46f2-817d-44a4f27eba32/entry/Building_TensorFlow_on_OpenPOWER_Linux_Systems?lang=en&lt;/a&gt; IBM source about Tensorflow installation. Provides interesting information about bazel installation on PPC and how to install TF with GPU support. It also points to an IBM Bazel modified to PPC (which we are not using in this tutorial, but you can take a look on it).&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/tensorflow/tensorflow/issues/7979#issuecomment-283559640&#34;&gt;https://github.com/tensorflow/tensorflow/issues/7979#issuecomment-283559640&lt;/a&gt; An issue about enviroment variables: on the configuration step, if it does not recognize some of the TF variables, this might help you to solve the problem.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/bazelbuild/bazel/issues/1308&#34;&gt;https://github.com/bazelbuild/bazel/issues/1308&lt;/a&gt; An issue about Bazel: &amp;ldquo;The system is out of resources&amp;rdquo;. You might need to add a command line on compile file to change the garbage collector size. On the issue on git, it&amp;rsquo;s suggested to change it to 384, but, at least on one of the computers I tried to compile, I needed to change it to 512 (in other words, change -J-Xmx384m on the solution line to -J-Xmx512m). It&amp;rsquo;s important to see that ideally we should not have to change the source code, but it solves the problem. Another option is to increase the memory of your system if it&amp;rsquo;s possible (recommended).&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

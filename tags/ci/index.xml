@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CI | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/tags/ci/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/tags/ci/index.xml" rel="self" type="application/rss+xml" />
+    <description>CI</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>CI</title>
+      <link>https://openpower.ic.unicamp.br/tags/ci/</link>
+    </image>
+    
+    <item>
+      <title>POWER Builds</title>
+      <link>https://openpower.ic.unicamp.br/project/power-builds/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/project/power-builds/</guid>
+      <description>&lt;p&gt;Our infrastructure is being used to validate several Open Source projects.&lt;/p&gt;
+&lt;h1 id=&#34;open-source-projects&#34;&gt;Open-source projects&lt;/h1&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Status&lt;/th&gt;
+&lt;th&gt;Project&lt;/th&gt;
+&lt;th&gt;FTP Link (ppc64le binaries)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/bazel-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/bazel-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://bazel.build&#34;&gt;Bazel&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/conmon-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/conmon-releases.svg?branch=main&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/containers/conmon&#34;&gt;Conmon&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/conmon/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/conmon&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/containerd-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/containerd-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://containerd.io&#34;&gt;Containerd&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;http://minicloud.parqtec.unicamp.br:60000/job/containerd-cri-release/&#34;&gt;&lt;img src=&#34;http://minicloud.parqtec.unicamp.br:60000/job/containerd-cri-release/badge/icon?&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/containerd/cri&#34;&gt;Containerd-cri&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/containerd-cri&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/crio-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/crio-releases.svg?branch=main&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://cri-o.io/&#34;&gt;Crio&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/crio&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/crun-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/crun-releases.svg?branch=main&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/containers/crun&#34;&gt;Crun&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/crun/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/crun&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;http://minicloud.parqtec.unicamp.br:60000/job/docker-ce-releases/&#34;&gt;&lt;img src=&#34;http://minicloud.parqtec.unicamp.br:60000/job/docker-ce-releases/badge/icon?&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.docker.com/install&#34;&gt;Docker CE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/docker-machine-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/docker-machine-releases.svg?branch=main&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://gitlab.com/gitlab-org/ci-cd/docker-machine&#34;&gt;Docker Machine&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker-machine&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/docker-machine&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/glide-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/glide-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://github.com/Masterminds/glide&#34;&gt;Glide&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/glide&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases&#34;&gt;&lt;img src=&#34;http://minicloud.parqtec.unicamp.br:60000/job/grafana-releases/badge/icon?&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://grafana.com&#34;&gt;Grafana&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/grafana&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/kiali-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/kiali-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.kiali.io&#34;&gt;Kiali&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kiali&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/kubeadm-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/kubeadm-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/&#34;&gt;Kubeadm&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubeadm&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubeadm&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/kubectl-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/kubectl-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/#kubectl&#34;&gt;Kubectl&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubectl&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubectl&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/kubelet-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/kubelet-releases.svg?branch=main&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/&#34;&gt;Kubelet&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubelet&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/kubelet&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/matchbox-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/matchbox-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://matchbox.psdn.io/&#34;&gt;Matchbox&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/matchbox&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/minikube-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/minikube-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/tools/#minikube&#34;&gt;Minikube&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/minikube&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/minio-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/minio-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://min.io&#34;&gt;Minio&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/minio-mc-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/minio-mc-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://min.io&#34;&gt;Minio-MC&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/minio-mc&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/rclone-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/rclone-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://rclone.org/&#34;&gt;Rclone&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/rclone&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/restic-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/restic-releases.svg?token=Tyii1MpzYjhv5qLLQWj5&amp;amp;branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://restic.net&#34;&gt;Restic&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/restic&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://app.travis-ci.com/github/Unicamp-OpenPower/terraform-releases&#34;&gt;&lt;img src=&#34;https://app.travis-ci.com/Unicamp-OpenPower/terraform-releases.svg?branch=master&#34; alt=&#34;Build Status&#34;&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://www.terraform.io&#34;&gt;Terraform&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/terraform&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

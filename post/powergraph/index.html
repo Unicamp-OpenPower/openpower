@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Introduction to PowerGraph As computers evolve, people are trying new methods do analyse how good some machine is when compared to another one. The amount of energy that some machine is consuming, seems to be a nice measure, once we are willing to produce faster and cheaper. IPMI(Intelligent Platform Management Interface), on the other side, is a set of computer interface specifications for an autonomous computer subsystem that provides management and monitoring capabilities independently of the host system.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://openpower.ic.unicamp.br/post/powergraph/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.e8b81181bd18f58d8990b40dc8a5e4b8.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://openpower.ic.unicamp.br/post/powergraph/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="OpenPOWER@UNICAMP">
+  <meta property="og:url" content="https://openpower.ic.unicamp.br/post/powergraph/">
+  <meta property="og:title" content="Introduction to PowerGraph | OpenPOWER@UNICAMP">
+  <meta property="og:description" content="Introduction to PowerGraph As computers evolve, people are trying new methods do analyse how good some machine is when compared to another one. The amount of energy that some machine is consuming, seems to be a nice measure, once we are willing to produce faster and cheaper. IPMI(Intelligent Platform Management Interface), on the other side, is a set of computer interface specifications for an autonomous computer subsystem that provides management and monitoring capabilities independently of the host system."><meta property="og:image" content="https://openpower.ic.unicamp.br/img/icon-192.png">
+  <meta property="twitter:image" content="https://openpower.ic.unicamp.br/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2017-05-30T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2017-05-30T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Introduction to PowerGraph | OpenPOWER@UNICAMP</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">OpenPOWER@UNICAMP</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpower.ic.unicamp.br/minicloud/" target="_blank" rel="noopener"><span>Minicloud</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="https://oplab9.parqtec.unicamp.br/" target="_blank" rel="noopener"><span>FTP</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpowerfoundation.org/" target="_blank" rel="noopener"><span>OpenPOWER Foundation</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Introduction to PowerGraph</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2017-05-30 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2017-05-30 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>May 30, 2017</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://openpower.ic.unicamp.br/post/powergraph/&amp;text=Introduction%20to%20PowerGraph" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://openpower.ic.unicamp.br/post/powergraph/&amp;t=Introduction%20to%20PowerGraph" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Introduction%20to%20PowerGraph&amp;body=https://openpower.ic.unicamp.br/post/powergraph/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://openpower.ic.unicamp.br/post/powergraph/&amp;title=Introduction%20to%20PowerGraph" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Introduction%20to%20PowerGraph%20https://openpower.ic.unicamp.br/post/powergraph/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://openpower.ic.unicamp.br/post/powergraph/&amp;title=Introduction%20to%20PowerGraph" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <h1 id="introduction-to-powergraph">Introduction to PowerGraph</h1>
+<p>As computers evolve, people are trying new methods do analyse how good some machine
+is when compared to another one. The amount of energy that some machine is 
+consuming, seems to be a nice measure, once we are willing to produce faster and
+cheaper. 
+IPMI(Intelligent Platform Management Interface), on the other side,
+is a set of computer interface specifications for an autonomous computer 
+subsystem that provides management and monitoring capabilities independently 
+of the host system. One of the measures that IPMI allow us to do is:</p>
+<pre tabindex="0"><code>dcmi power reading
+</code></pre><p>This command shows the instant power consumption. With this tools, my team decided
+to create a software that gets informations about the consumption of a machine
+and exports it on a readable way. Thats how we did it:</p>
+<h2 id="infrastructure">Infrastructure</h2>
+<p>The infrastructure was not so complicated to configure. We have to download some
+packages and set some configurations (process we are automating with Ansible). All
+the system is deployed on Minicloud. The packages (all via apt) we are using are:</p>
+<ul>
+<li>ipmitool</li>
+<li>apache2</li>
+<li>python2.7</li>
+<li>python-pip</li>
+<li>git</li>
+<li>htop</li>
+<li>tmux</li>
+</ul>
+<p>Besides, we are using <code>crontab</code> to be sure our service is still runing, and if 
+it is not, restart it. We are doing this verification every ten minutes with the
+<code>killer.sh</code> script. 
+To solve all <code>Python</code> dependencies you can run:</p>
+<pre tabindex="0"><code>pip install -r requirements.txt
+</code></pre><h3 id="apache-configurations">Apache configurations</h3>
+<p>Here you will install two modules in your apache server and change the virtual
+host configuration file. Doing this you will be able to control your browser&rsquo;s cache.</p>
+<p>In your server terminal run:</p>
+<pre tabindex="0"><code>sudo a2enmod headers
+sudo a2enmod expires
+sudo service apache2 restart
+</code></pre><p>After that, find your virtual host configuration file
+(<em>/etc/apache2/sites-available/default/000-default.conf</em> if you are using ubuntu OS)
+and insert the following lines, adjusting the parameters according to your needs:</p>
+<pre tabindex="0"><code>&lt;Directory /var/www/html&gt;
+   ExpiresActive On
+   ExpiresDefault &#34;access plus 10 minutes&#34;
+   ExpiresByType text/html &#34;access plus 1 day&#34;
+   ExpiresByType text/javascript &#34;access plus 1 day&#34;
+
+   # if it is your interest, you can set a specific expiration time for your csv file
+   # ExpiresByType text/csv &#34;access plus 30 seconds&#34;
+
+   &lt;FilesMatch &#34;file.csv&#34;&gt;
+         Header set Cache-control &#34;no-cache&#34;
+   &lt;/FilesMatch&gt;
+&lt;/Directory&gt;
+</code></pre><h2 id="back-end-code">Back-end code</h2>
+<p>PowerGraph was totally developed using <code>Python</code>. There are three main codes:</p>
+<ul>
+<li>powergraph.py</li>
+<li>graph_csv.py</li>
+<li>csvcreator.py</li>
+</ul>
+<p>Below, I will explain each code and its function.</p>
+<h3 id="powergraphpy">powergraph.py</h3>
+<p>This is the code that keeps getting power info about a machine and save it to 
+<code>tinyDB</code> or prompt the result to user. You can run it using the command:</p>
+<pre tabindex="0"><code>python2.7 powergraph.py --host=&#34;server address&#34; --port=&#34;server port&#34; 
+--user=&#34;allowed user&#34; --passwd=&#34;password for this user&#34;
+</code></pre><p>You can use the optional parameter <code>--store</code> in order to save the infos 
+as json on tinydb. Without this parameter, the script will print on the terminal. 
+Besides, you can use <code>--feedback</code> with store in order to see the measures 
+status. 
+If you want to set the time interval that a new csv file is generated, you can 
+use the flag <code>--csv_interval</code>. The <code>--tail_length</code> is used to set the 
+number of lines the csv file will have.</p>
+<h3 id="csvcreatorpy">csvcreator.py</h3>
+<p>This is the code that converts the JSON stored on <code>tinyDB</code> for a <code>csv</code>
+file. This code is really important, cause our front end is expecting a <code>csv</code> 
+with two columns: timestamp and consumption.
+In order to run this code, you have to store the data of <code>powergraph.py</code> on the
+database, as we explained before. To run this use:</p>
+<pre tabindex="0"><code>python2.7 csvcreator.py --jsonfile=&#34;generated_json_name&#34;
+</code></pre><p>There are two optional arguments: <code>--date</code>, to create the csv only with 
+the data from a specific day and <code>--name</code>, with the name you want your 
+<code>csv</code> file.</p>
+<h3 id="graph_csvpy">graph_csv.py</h3>
+<p>This is the code that orchestrates the other ones. It is a multithread code that 
+creates one thread always running with the <code>powergraph.py</code> code and another 
+one generating a new thread with <code>csvcreator</code> running from time to time
+updating the measures. To run this code use:</p>
+<pre tabindex="0"><code>python2.7 graph_csv.py --host=&#34;server address&#34; --port=&#34;server port&#34; 
+--user=&#34;allowed user&#34; --passwd=&#34;password for this user&#34; 
+--jsonfile=&#34;path to bd jsonfile&#34;
+</code></pre><p>Besides, you can use the following optional arguments:</p>
+<ul>
+<li>interval: interval between each ipmi measure (default=10)</li>
+<li>nread: number of ipmi measures to be done (default=infinity)</li>
+<li>csv_interval: interval that a new csv file is made (deafult=300s)</li>
+<li>tail_length: size of the csv files (default=300)</li>
+</ul>
+<h2 id="front-end-code">Front-end code</h2>
+<p>In order to create an interactive website that plot a graph from the csv file,
+you first need to deal with the following dependencies:</p>
+<ul>
+<li>apache configurations</li>
+<li>javascript libraries</li>
+</ul>
+<p>After that, we have developed the code in <strong>javascript/graph.js</strong> where
+you can read and present in real time the data provided by the back-end.</p>
+<h3 id="javascript-libraries">Javascript libraries</h3>
+<p>Here we have three libraries included in our html file (index.html).</p>
+<p>The first one is the <strong>D3.js</strong> library, a worldwide known tool to create
+dynamic and interactive data visualizations, in other words, this is the engine
+of the website. Insert in your html body the <code>&lt;script src=&quot;http://d3js.org/d3.v4.min.js&quot;&gt;&lt;/script&gt;</code>
+to get the most recent code from D3.js.</p>
+<p>The next library, <strong>Moment.js</strong>, is used to manipulate date objects and in our
+case, for example, it allows us to show the time adjusted to the user&rsquo;s location.
+You can download the code from the following address <a href="https://momentjs.com/downloads/moment.min.js">https://momentjs.com/downloads/moment.min.js</a>.</p>
+<p>Finally, the <strong>D3-tip</strong> library just inserts tooltips in the graph for a better experience of use. This library was donwloaded from <a href="https://github.com/Caged/d3-tip/blob/master/index.js">https://github.com/Caged/d3-tip/blob/master/index.js</a>. It is also interesting that you take a look our style implementation for the tooltips from the file <strong>style/style.css</strong>.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>If you want to see the project working, acces this 
+<a href="http://oplab134.parqtec.unicamp.br/powergraph">link</a>. If you want to contribute, acces the 
+<a href="https://github.com/Unicamp-OpenPower/powergraph">github link</a>. Hope you all enjoy 
+it. Thanks a lot!</p>
+
+    </div>
+
+    
+
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+  
+  
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/authors/"></a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9224c1df7774818c46d3c5196c37127b.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms of Service</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Guilherme Tiaki Sato | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/guilherme-tiaki-sato/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/guilherme-tiaki-sato/index.xml" rel="self" type="application/rss+xml" />
+    <description>Guilherme Tiaki Sato</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 17 Dec 2017 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Guilherme Tiaki Sato</title>
+      <link>https://openpower.ic.unicamp.br/authors/guilherme-tiaki-sato/</link>
+    </image>
+    
+    <item>
+      <title>Integrating OpenStack Ansible with Let’s Encrypt</title>
+      <link>https://openpower.ic.unicamp.br/post/integrating-openstack-ansible-with-lets-encrypt/</link>
+      <pubDate>Sun, 17 Dec 2017 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/integrating-openstack-ansible-with-lets-encrypt/</guid>
+      <description>&lt;p&gt;Deploying HTTPS is essential for security, and OpenStack Ansible does it by default. However, if no certificates are provided, it will generate self-signed ones, which although are more secure than no SSL at all, it will trigger a warning when accessing the dashboard in the browser. Luckily, the Let’s Encrypt project provides signed SSL certificates for free.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;browser-warning.png&#34; alt=&#34;Browser Warning&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Let’s Encrypt requires your server to be validated before issuing the certificate. This means it will create a temporary file on your server and then try to access it from their servers, to verify that you control the domain you&amp;rsquo;re trying to get a certificate to.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;lets-encrypt-validation.png&#34; alt=&#34;Lets Encrypt Validation&#34;&gt;&lt;/p&gt;
+&lt;p&gt;It can launch a temporary web server to do so, however, this will require to stop your usual web server (e.g. Apache) and lead to a few seconds of downtime. Alternatively, you can provide your web root path. Let’s Encrypt will create the files there, and they will be served directly by your usual web server. This approach does not lead to downtime, but presents some additional challenges when using it with OpenStack Ansible:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;OpenStack Ansible does not have a web root path out of the box to be used by Let’s Encrypt.&lt;/li&gt;
+&lt;li&gt;SSL certificates must be provided to HAProxy, which runs on metal, while the Apache server to be used by Let’s Encrypt runs inside a container.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;openstack-ansible.png&#34; alt=&#34;Openstack Ansible&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;installing-openstack-ansible&#34;&gt;Installing OpenStack Ansible&lt;/h1&gt;
+&lt;p&gt;Install OpenStack as usual, without providing any certificates. Self-signed ones will be therefore generated, and we will replace them later.&lt;/p&gt;
+&lt;h1 id=&#34;enable-web-root&#34;&gt;Enable web root&lt;/h1&gt;
+&lt;p&gt;We will not actually create a web root. Since Let’s Encrypt only requires writing on &lt;code&gt;your-domain.com/.well-known&lt;/code&gt; directory, we will create an alias to the &lt;code&gt;.well-known&lt;/code&gt; path.&lt;/p&gt;
+&lt;p&gt;Attach to the horizon container. Replace the container name accordingly with your setup. If you don’t know the name, run &lt;code&gt;lxc-ls | grep horizon&lt;/code&gt; to get the container name.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;lxc-attach -n infra1_horizon_container-XXXXXXXX
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Add the following line to &lt;code&gt;/etc/apache2/sites-enabled/openstack-dashboard.conf&lt;/code&gt;, inside the &lt;code&gt;&amp;lt;VirtualHost *:80&amp;gt;&lt;/code&gt; tag&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Alias /.well-known /var/www/html/.well-known
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Restart the apache2 service:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;service apache2 restart
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now, we can use &lt;code&gt;/var/www/html&lt;/code&gt; as our web root, at least from the Let’s Encrypt Certbot point of view.&lt;/p&gt;
+&lt;h1 id=&#34;getting-the-certificates&#34;&gt;Getting the certificates&lt;/h1&gt;
+&lt;p&gt;Now install the Let’s Encrypt Certbot. The intention is to only get the certificates files, not configure them in Apache. Use the following commands to do so:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install software-properties-common
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;add-apt-repository ppa:certbot/certbot
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;apt-get install certbot
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;certbot certonly
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When asked to choose an authentication method, choose &lt;code&gt;2&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;How would you like to authenticate with the ACME CA?
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;1: Spin up a temporary webserver &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;standalone&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;2: Place files in webroot directory &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;webroot&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Select the appropriate number &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;1-2&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;then&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;enter&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;press &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt; to cancel&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;When asked for the webroot, input &lt;code&gt;/var/www/html&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Select the webroot &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; your-domain.com:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;1: Enter a new webroot
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Press &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;enter&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; to confirm the selection &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;press &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt; to cancel&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;: &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Input the webroot &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; unicamp.br: &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Enter &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;c&amp;#39;&lt;/span&gt; to cancel&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;: /var/www/html
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After this, the certificate files will be placed on &lt;code&gt;/etc/letsencrypt/live/your-domain.com&lt;/code&gt;&lt;/p&gt;
+&lt;h1 id=&#34;allow-the-container-to-copy-files-to-the-host&#34;&gt;Allow the container to copy files to the host&lt;/h1&gt;
+&lt;p&gt;Generate an SSH key &lt;strong&gt;inside the container&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ssh-keygen -t rsa
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Print the public key and copy it to the clipboard:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /root/.ssh/id_rsa.pub
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now append the container&amp;rsquo;s public key to the authorized_keys file &lt;strong&gt;in the host&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;echo &lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;PASTE THE COPIED KEY HERE&lt;span style=&#34;color:#f92672&#34;&gt;]&lt;/span&gt; &amp;gt;&amp;gt; /root/.ssh/authorized_keys
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This will allow the container to copy the certificates to the host using &lt;code&gt;scp&lt;/code&gt;.&lt;/p&gt;
+&lt;h1 id=&#34;applying-the-certificates-in-haproxy&#34;&gt;Applying the certificates in HAProxy&lt;/h1&gt;
+&lt;p&gt;To use them in HAProxy, we must concatenate some files. Replace &lt;code&gt;your-domain.com&lt;/code&gt; accordingly.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /etc/letsencrypt/live/your-domain.com/privkey.pem &amp;gt; /etc/letsencrypt/live/your-domain.com/haproxy.key
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /etc/letsencrypt/live/your-domain.com/cert.pem /etc/letsencrypt/live/your-domain.com/chain.pem /etc/letsencrypt/live/your-domain.com/privkey.pem &amp;gt; /etc/letsencrypt/live/your-domain.com/haproxy.pem
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Set the permissions properly:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chmod &lt;span style=&#34;color:#ae81ff&#34;&gt;640&lt;/span&gt; /etc/letsencrypt/live/your-domain.com/haproxy.key
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;chmod &lt;span style=&#34;color:#ae81ff&#34;&gt;644&lt;/span&gt; /etc/letsencrypt/live/your-domain.com/haproxy.pem
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Still inside the horizon container, copy the files we just generated to the host. Replace &lt;code&gt;your-domain.com&lt;/code&gt; and &lt;code&gt;HOST_IP_ADDRESS&lt;/code&gt; accordingly.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;scp /etc/letsencrypt/live/your-domain.com/haproxy.* HOST_IP_ADDRESS:/etc/ssl/private
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now &lt;strong&gt;exit the container&lt;/strong&gt; and apply the new certificate:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;service haproxy reload
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;secure.png&#34; alt=&#34;Secure&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;renewing-the-certificates-automatically&#34;&gt;Renewing the certificates automatically&lt;/h1&gt;
+&lt;p&gt;As Let’s Encrypt certificates are only valid for 90 days, it is highly advisable to schedule automatic renewing. We can do this using crontab inside the horizon container.&lt;/p&gt;
+&lt;p&gt;Attach to the horizon container. Replace the container name accordingly with your setup. If you don’t know the name, run &lt;code&gt;lxc-ls | grep horizon&lt;/code&gt; to get the container name.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;lxc-attach -n infra1_horizon_container-XXXXXXXX
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Open the crontab editor:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;crontab -e
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Place this line at the end of the file, replacing &lt;code&gt;your-domain.com&lt;/code&gt; and &lt;code&gt;HOST_IP_ADDRESS&lt;/code&gt; accordingly.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;26 3 * * 5 certbot renew &amp;amp;&amp;amp; cat /etc/letsencrypt/live/your-domain.com/privkey.pem &amp;gt; /etc/letsencrypt/live/your-domain.com/haproxy.key &amp;amp;&amp;amp; cat /etc/letsencrypt/live/your-domain.com/cert.pem /etc/letsencrypt/live/your-domain.com/chain.pem /etc/letsencrypt/live/your-domain.com/privkey.pem &amp;gt; /etc/letsencrypt/live/your-domain.com/haproxy.pem &amp;amp;&amp;amp; scp /etc/letsencrypt/live/your-domain.com/haproxy.* HOST_IP_ADDRESS:/etc/ssl/private &amp;amp;&amp;amp; ssh HOST_IP_ADDRESS service haproxy reload
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will run every week, but it will only actually renew the certificate at most every 60 days, as only certificates that expire in less than 30 days are renewed. Running it more often than every 60 days makes it safer, as even if it fails to run once after the 60 days window, it will still run again before the certificate expire.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building a continuous integration platform using Jenkins and GitHub</title>
+      <link>https://openpower.ic.unicamp.br/post/building-a-continuous-integration-platform-using-jenkins-and-github/</link>
+      <pubDate>Wed, 15 Jun 2016 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/building-a-continuous-integration-platform-using-jenkins-and-github/</guid>
+      <description>&lt;p&gt;Continuous integration allows code to be tested automatically every time it’s changed, detecting errors as early as possible. In this tutorial a CI using a GitHub repository will be approached.&lt;/p&gt;
+&lt;h1 id=&#34;step-1-installing-and-setting-up-jenkins-and-git&#34;&gt;Step 1: Installing and setting up Jenkins and Git&lt;/h1&gt;
+&lt;p&gt;To install Jenkins, execute the following commands:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+sudo sh -c &#39;echo deb http://pkg.jenkins.io/debian-stable binary/ &amp;gt; /etc/apt/sources.list.d/jenkins.list&#39;
+sudo apt-get update
+sudo apt-get install jenkins
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To install git, simply execute:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Access Jenkins through http://localhost:8080 and follow the instructions for the initial setup. Choose &lt;strong&gt;Install suggested plugins&lt;/strong&gt; when asked.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;plugins.png&#34; alt=&#34;Plugins&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;step-2-creating-a-job&#34;&gt;Step 2: Creating a job&lt;/h1&gt;
+&lt;p&gt;In Jenkins dashboard, click on &lt;strong&gt;New Item&lt;/strong&gt;, give your project a name and select &lt;strong&gt;Freestyle project&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;You may choose &lt;strong&gt;Discard old builds&lt;/strong&gt; in order to avoid using too much storage in the long term.&lt;/p&gt;
+&lt;p&gt;Check &lt;strong&gt;GitHub project&lt;/strong&gt; and enter the GitHub URL of the project. Use the format &lt;em&gt;&lt;a href=&#34;https://github.com/YOUR-USERNAME/YOUR-REPOSITORY&#34;&gt;https://github.com/YOUR-USERNAME/YOUR-REPOSITORY&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;In source code management section, choose &lt;strong&gt;Git&lt;/strong&gt; and enter the repository URL the same way as above.&lt;/p&gt;
+&lt;h2 id=&#34;step-21-choosing-the-build-trigger&#34;&gt;Step 2.1: Choosing the build trigger&lt;/h2&gt;
+&lt;p&gt;Under &lt;strong&gt;Build Triggers&lt;/strong&gt; it is possible to choose to build periodically or when a change is pushed into GitHub. Although building only when GitHub changes is more efficient, it is required to your Jenkins server to be accessible through the internet, and the you must own the repository. Building periodically may waste resources, but it is simpler to configure.&lt;/p&gt;
+&lt;h3 id=&#34;step-211-build-periodically&#34;&gt;Step 2.1.1: Build Periodically&lt;/h3&gt;
+&lt;p&gt;Check &lt;strong&gt;Build Periodically&lt;/strong&gt; and define the period using the proper syntax found when clicking the &lt;strong&gt;?&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Complete the job creating by adding a build step (e.g. a shell script to compile and run a test) and jump to step 4&lt;/p&gt;
+&lt;p&gt;The test input and expected output should be in the repository.&lt;/p&gt;
+&lt;h3 id=&#34;step-212-build-when-a-change-is-pushed-into-github&#34;&gt;Step 2.1.2: Build when a change is pushed into GitHub&lt;/h3&gt;
+&lt;p&gt;Check build when a change is pushed into GitHub&lt;/p&gt;
+&lt;p&gt;Complete the job creating by adding a build step (e.g. a shell script to compile and run a test) and follow to step 3&lt;/p&gt;
+&lt;p&gt;The test input and expected output should be in the repository.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;job_configuration.png&#34; alt=&#34;Job Configuration&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;step-3-configuring-github-plugin---skip-if-building-periodically&#34;&gt;Step 3: Configuring GitHub plugin - Skip if building periodically&lt;/h1&gt;
+&lt;p&gt;Go to &lt;strong&gt;Manage Jenkins&lt;/strong&gt; → &lt;strong&gt;Configure System&lt;/strong&gt; → &lt;strong&gt;GitHub&lt;/strong&gt; section → &lt;strong&gt;Advanced&lt;/strong&gt; → &lt;strong&gt;Manage additional GitHub Actions&lt;/strong&gt; → &lt;strong&gt;Convert login and password to token&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;A new sub-section will appear right above.&lt;/p&gt;
+&lt;p&gt;Select &lt;strong&gt;From login and password&lt;/strong&gt;, fill your login and password from GitHub and press &lt;strong&gt;Create token credentials&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;create_token.png&#34; alt=&#34;Create Token&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Above this sub-section, click &lt;strong&gt;Add GitHub server&lt;/strong&gt;. Keep the &lt;strong&gt;API URL&lt;/strong&gt; unchanged.&lt;/p&gt;
+&lt;p&gt;Under &lt;strong&gt;Credentials&lt;/strong&gt; dropdown menu, select the token just created and test your connection.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;github_server.png&#34; alt=&#34;Github Server&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;step-4-testing-it&#34;&gt;Step 4: Testing it&lt;/h1&gt;
+&lt;p&gt;If using periodical build, click the &lt;strong&gt;Build now&lt;/strong&gt; icon to test. If the test fails, check the console output to find the issue (e.g. missing compiler).&lt;/p&gt;
+&lt;p&gt;If using GitHub trigger, change a file in the repository. The build should start automatically in a few seconds.&lt;/p&gt;
+&lt;h1 id=&#34;step-5-adding-slave-machines---optional&#34;&gt;Step 5: Adding slave machines - Optional&lt;/h1&gt;
+&lt;p&gt;As your projects grow, you may run out of resources in your machine. A possible solution is to add one or more slave machines, which will be responsible for building your projects, while the current machine will become the master and manage everything (the master will still be able to run jobs if desired).&lt;/p&gt;
+&lt;p&gt;The slave machine doesn&amp;rsquo;t need Jenkins installed on it. There are many ways to connect the slave with the master, here, SSH will be used.&lt;/p&gt;
+&lt;p&gt;Install Java and Git in the slave using:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install default-jre
+sudo apt-get install git
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create a directory to be used by Jenkins, in this case will be the same path used by default in the master machine: /var/lib/jenkins&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo mkdir /var/lib/jenkins
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Change the ownership of the directory to the same user used to login using SSH&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;chown ubuntu:ubuntu /var/lib/jenkins
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Back to the master machine:&lt;/p&gt;
+&lt;p&gt;Go to &lt;strong&gt;Manage Jenkins&lt;/strong&gt; → &lt;strong&gt;Manage Nodes&lt;/strong&gt; → &lt;strong&gt;New Node&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Name your node and select &lt;strong&gt;Permanent Agent&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The recommended &lt;strong&gt;# of executors&lt;/strong&gt; is the number of cores in the slave machine&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;Remote root directory&lt;/strong&gt; is the path to the directory created.&lt;/p&gt;
+&lt;p&gt;If necessary to divide the slave machines into different groups, label them (e.g. the OS running in the machine, the CPU architecture)&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;Launch method&lt;/strong&gt; used here will be SSH, but other methods are also fine.&lt;/p&gt;
+&lt;p&gt;Simply enter your host and create a credential using your username and password, or username and private key.&lt;/p&gt;
+&lt;p&gt;Press &lt;strong&gt;Save&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;slave_node.png&#34; alt=&#34;Slave Node&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;step-51-restricting-machines-where-projects-can-be-run&#34;&gt;Step 5.1: Restricting machines where projects can be run&lt;/h2&gt;
+&lt;p&gt;If your slaves have different environments, your should restrict the machines where each project will run.&lt;/p&gt;
+&lt;p&gt;Under the &lt;strong&gt;project&lt;/strong&gt; settings, check &lt;strong&gt;Restrict where this project can be run&lt;/strong&gt; and type the machine name, use a label, or even use a more complex rule using logical operators (click the &lt;strong&gt;?&lt;/strong&gt; for more information)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;restrict_where_this_project_can_be_run.png&#34; alt=&#34;Restrict where this project can be run&#34;&gt;&lt;/p&gt;
+&lt;p&gt;To prevent the master machine to run projects, go to &lt;strong&gt;Manage Jenkins&lt;/strong&gt; → &lt;strong&gt;Manage Nodes&lt;/strong&gt; → &lt;strong&gt;master&lt;/strong&gt; → &lt;strong&gt;Configure&lt;/strong&gt; → &lt;strong&gt;# of executors&lt;/strong&gt; and set to 0.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

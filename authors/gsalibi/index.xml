@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gustavo Storti Salibi | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/gsalibi/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/gsalibi/index.xml" rel="self" type="application/rss+xml" />
+    <description>Gustavo Storti Salibi</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 04 Aug 2019 17:20:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Gustavo Storti Salibi</title>
+      <link>https://openpower.ic.unicamp.br/authors/gsalibi/</link>
+    </image>
+    
+    <item>
+      <title>Power Builds</title>
+      <link>https://openpower.ic.unicamp.br/talk/power-builds-linuxdevbr2019/</link>
+      <pubDate>Sun, 04 Aug 2019 17:20:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/talk/power-builds-linuxdevbr2019/</guid>
+      <description>&lt;!-- raw HTML omitted --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installing spaCy on POWER8 or POWER9.</title>
+      <link>https://openpower.ic.unicamp.br/post/installing-spacy-power/</link>
+      <pubDate>Sun, 19 May 2019 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/installing-spacy-power/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;SpaCy_logo.jpg&#34; alt=&#34;SpaCy Logo&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://spacy.io&#34;&gt;spaCy&lt;/a&gt; is an open-source software library for advanced Natural Language Processing, written in Python and Cython. The library is published under the MIT license and currently offers statistical neural network models for English, German, Spanish, Portuguese, French, Italian, Dutch and multi-language NER, as well as tokenization for various other languages.&lt;/p&gt;
+&lt;p&gt;Its installation is very straightforward using the &lt;a href=&#34;https://pypi.org/project/pip/&#34;&gt;pip&lt;/a&gt; package manager. However, you will not succeed if you try to make it into a POWER processor. This is due to a problem with the headers of the Numpy library when using the pip. Thus, the easiest way to install spaCy is by using another package manager, &lt;a href=&#34;https://www.anaconda.com&#34;&gt;Conda&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Conda is an open source, cross-platform, language-agnostic package manager and environment management system. It is released under the Berkeley Software Distribution License by Continuum Analytics.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;installing-python-37&#34;&gt;Installing Python 3.7&lt;/h1&gt;
+&lt;p&gt;To install spaCy, you will need to have python 3.7. To verify that you have it installed, simply use the command:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;python3.7 --version
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If you have not installed it, use the package manager of your system to install.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Start by updating the packages and installing the prerequisites:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo apt update
+sudo apt install software-properties-common
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;Add the deadsnakes PPA to your sources list:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo add-apt-repository ppa:deadsnakes/ppa
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;Once the repository is enabled, install Python 3.7 with:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo apt install python3.7
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h1 id=&#34;installing-conda&#34;&gt;Installing Conda&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; Download the &lt;a href=&#34;https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-ppc64le.sh&#34;&gt;Anaconda installer for POWER8 and POWER9&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; Enter the following on the download directory:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;bash Anaconda3-2019.03-Linux-ppc64le.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;3.&lt;/strong&gt; The installer prompts “In order to continue the installation process, please review the license agreement.” Click Enter to view license terms.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4.&lt;/strong&gt; Using Enter, scroll to the bottom of the license terms and enter “Yes” to agree to them.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5.&lt;/strong&gt; Click Enter to accept the default install location.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;6.&lt;/strong&gt; Enter &amp;ldquo;yes&amp;rdquo; to initialize Anaconda3 by running conda init.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;7.&lt;/strong&gt; Close and open your terminal window for the installation to take effect.&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;source ~/.bashrc.
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h1 id=&#34;installing-spacy&#34;&gt;Installing spaCy&lt;/h1&gt;
+&lt;p&gt;You only need to use the following command:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;conda install -c conda-forge spacy
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installing Bazel on Power and Other Unsupported Architectures/Systems</title>
+      <link>https://openpower.ic.unicamp.br/post/installing-bazel-power-other-architectures-systems/</link>
+      <pubDate>Wed, 07 Nov 2018 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/installing-bazel-power-other-architectures-systems/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;bazel-logo2.jpg&#34; alt=&#34;Bazel Logo&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Bazel is a free software tool that allows for the automation of building and testing of software. Similar to build tools like Make, Maven, and Gradle, Bazel builds software applications from source code using a set of rules.&lt;/p&gt;
+&lt;p&gt;It uses a human-readable, high-level build language. Bazel supports projects in multiple languages and builds outputs for multiple platforms and supports large codebases across multiple repositories, and large numbers of users.&lt;/p&gt;
+&lt;p&gt;In designing Bazel, emphasis has been placed on build speed, correctness, and reproducibility. The tool uses parallelization to speed up parts of the build process. It includes a Bazel Query language that can be used to analyze build dependencies in complex build graphs&lt;/p&gt;
+&lt;p&gt;Bazel must have Power support in the future, making its installation possible through community-supported methods. However, currently, if you want to install on Power or other architectures or systems that do not have support, you need compiling Bazel from source.&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;building-bazel-from-scratch-bootstrapping&#34;&gt;Building Bazel from scratch (bootstrapping)&lt;/h1&gt;
+&lt;p&gt;Here we will see how to do self-compilation. If you are using Ubuntu 14.04 or Ubuntu 16.04 in ppc64le, you can skip right to: &lt;a href=&#34;#ready&#34; title=&#34;Using ready binaries&#34;&gt;Using ready binaries&lt;/a&gt;.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;First, install the prerequisites:&lt;/strong&gt;&lt;br&gt;
+Pkg-config&lt;br&gt;
+Zip, Unzip&lt;br&gt;
+G++&lt;br&gt;
+Zlib1g-dev&lt;br&gt;
+JDK 8 (you must install version 8 of the JDK. Versions other than 8 are not supported)&lt;br&gt;
+Python (versions 2 and 3 are supported, installing one of them is enough)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# add-apt-repository ppa:openjdk-r/ppa  
+# apt-get update  
+# apt-get install pkg-config zip unzip g++ zlib1g-dev openjdk-8-jdk python  
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Next, download the Bazel binary installer named bazel-&lt;!-- raw HTML omitted --&gt;-dist.zip from the &lt;a href=&#34;https://github.com/bazelbuild/bazel/releases&#34;&gt;Bazel releases page on GitHub&lt;/a&gt;:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  wget https://github.com/bazelbuild/bazel/releases/download/&amp;lt;version&amp;gt;/bazel-&amp;lt;version&amp;gt;-dist.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;There is a single architecture-independent distribution archive. There are no architecture-specific or OS-specific distribution archives.&lt;/p&gt;
+&lt;p&gt;You have to use the distribution archive to bootstrap Bazel. You cannot use a source tree cloned from GitHub (the distribution archive contains generated source files that are required for bootstrapping and are not part of the normal Git source tree).&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Unpack the zip file somewhere on disk:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  unzip bazel-&amp;lt;version&amp;gt;-dist.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Run the compilation script:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  bash ./compile.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;em&gt;This may take several minutes&amp;hellip;&lt;/em&gt;&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;&lt;img src=&#34;build-successful.png&#34; alt=&#34;Bazel Logo&#34;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;using-ready-binaries&#34;&gt;Using ready binaries&lt;/h1&gt;
+&lt;p&gt;If you are using Ubuntu 14.04 or Ubuntu 16.04 in ppc64le, you can use our already compiled versions of the binaries.&lt;/p&gt;
+&lt;p&gt;Make sure you have the JDK 8 installed:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  java -version
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;If you do not have it, you need to install it:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# add-apt-repository ppa:openjdk-r/ppa
+# apt-get update
+# apt-get install openjdk-8-jdk
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;We have released the last 10 versions of Bazel already compiled in this link: &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/&#34;&gt;https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Download the desired version:&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  wget https://oplab9.parqtec.unicamp.br/pub/ppc64el/bazel/ubuntu_&amp;lt;version&amp;gt;/bazel_bin_&amp;lt;version&amp;gt;
+# mv bazel_bin_&amp;lt;version&amp;gt; bazel
+# chmod +x bazel
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h1 id=&#34;installing-bazel&#34;&gt;Installing Bazel&lt;/h1&gt;
+&lt;p&gt;Finally, the compiled output is placed into output/bazel (or it is in the current directory if you have downloaded the binary). This is a self-contained Bazel binary, without an embedded JDK. You can copy it anywhere or use it in-place. For convenience we recommend copying this binary to a directory that&amp;rsquo;s on your PATH (such as /usr/local/bin on Linux).&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# mv output/bazel /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;or&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;# mv bazel /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;When using Bazel for the first time, it will extract the installation and prepare everything. To do this, simply use the command:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;From now on, Bazel is installed and to use it simply use the command:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  bazel &amp;lt;command&amp;gt; &amp;lt;options&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h1 id=&#34;using-bazel-to-compile-bazel&#34;&gt;Using Bazel to compile Bazel&lt;/h1&gt;
+&lt;p&gt;Once installed, you can use Bazel itself to compile a new version. To do this, simply download the desired version (as seen in &lt;a href=&#34;#building&#34; title=&#34;Building Bazel from scratch&#34;&gt;Building Bazel from scratch&lt;/a&gt;) or even the developing version on &lt;a href=&#34;https://github.com/bazelbuild/bazel&#34;&gt;GitHub&lt;/a&gt; and use the following command in the directory of the downloaded files:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;  Bazel build //src:bazel
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;h3 id=&#34;references&#34;&gt;References&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.bazel.build/&#34;&gt;https://docs.bazel.build/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

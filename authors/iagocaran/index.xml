@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Iago Caran Aquino | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/iagocaran/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/iagocaran/index.xml" rel="self" type="application/rss+xml" />
+    <description>Iago Caran Aquino</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 02 Apr 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Iago Caran Aquino</title>
+      <link>https://openpower.ic.unicamp.br/authors/iagocaran/</link>
+    </image>
+    
+    <item>
+      <title>Simulating Microwatt with GHDL</title>
+      <link>https://openpower.ic.unicamp.br/post/simulating-microwatt-with-ghdl/</link>
+      <pubDate>Sat, 02 Apr 2022 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/simulating-microwatt-with-ghdl/</guid>
+      <description>&lt;p&gt;GHDL is an open-source analyzer, compiler and synthesizer for VHDL generating machine code from a Hardware Description Language. As it is not an interpreter, it allows for high speed simulation which is crucial for applications like the Microwatt, a tiny Open POWER ISA softcore.&lt;/p&gt;
+&lt;p&gt;In this tutorial you will be guided step-by-step in the setup of your environment for simulating Microwatt with GHDL.&lt;/p&gt;
+&lt;p&gt;Disclaimer: For the purpose of this tutorial I will be using an Ubuntu 20.04 system and I&amp;rsquo;ll assume you&amp;rsquo;re familiar with it.&lt;/p&gt;
+&lt;h2 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h2&gt;
+&lt;p&gt;First of all, make sure you have this packages installed:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install -y build-essential gnat zlib1g-dev llvm-dev clang git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This includes the project&amp;rsquo;s dependencies, as well as git and the basic packages to build a project.&lt;/p&gt;
+&lt;h2 id=&#34;installing-ghdl&#34;&gt;Installing GHDL&lt;/h2&gt;
+&lt;p&gt;We&amp;rsquo;ll now clone and build GHDL.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/ghdl/ghdl.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ghdl
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./configure --prefix&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/usr/local --enable-libghdl --with-llvm-config
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make install
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;install-microwatt&#34;&gt;Install Microwatt&lt;/h2&gt;
+&lt;p&gt;We are now ready to clone and build Microwatt.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/antonblanchard/microwatt.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd microwatt
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;testing&#34;&gt;Testing&lt;/h3&gt;
+&lt;p&gt;Now that everything is installed we can run some code.
+Fortunately the project already includes a hello_world ready to be executed, just change the file to be executed and then run the simulation:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ln -s hello_world/hello_world.bin main_ram.bin
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./core_tb &amp;gt; /dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;You should see a lightbulb being drawn on the terminal.
+But if you want something more substantial, you will find bundled a python runtime:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rm main_ram.bin
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ln -s micropython/firmware.bin main_ram.bin
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./core_tb &amp;gt; /dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;optional-build-micropython&#34;&gt;(Optional) Build MicroPython&lt;/h3&gt;
+&lt;p&gt;To compile code for the Power platform you will need a cross compiler, luckily it is already in the Ubuntu repository.
+With that, just compile the project normally.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install -y gcc-powerpc64le-linux-gnu
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://github.com/micropython/micropython.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd micropython/ports/powerpc
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;make -j&lt;span style=&#34;color:#66d9ef&#34;&gt;$(&lt;/span&gt;nproc&lt;span style=&#34;color:#66d9ef&#34;&gt;)&lt;/span&gt; UART&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;lpc_serial
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd ../../../
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;rm main_ram.bin
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;ln -s ../micropython/ports/powerpc/build/firmware.bin main_ram.bin
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./core_tb &amp;gt; /dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Note that it is necessary to set the UART interface to lpc_serial when simulating using GHDL.&lt;/p&gt;
+&lt;h2 id=&#34;compiling-code&#34;&gt;Compiling code&lt;/h2&gt;
+&lt;p&gt;To compile code for the Power architecture you need the cross compiler shown in the optional section on MicroPython.
+With it installed, just duplicate the hello_world folder and use it as a base for your code.
+It is important to remember that the communication should be done using the headers provided by MicroWatt, as the terminal is redirected to the UART port.&lt;/p&gt;
+&lt;h2 id=&#34;problems-using-wsl-and-windows&#34;&gt;Problems using WSL and Windows&lt;/h2&gt;
+&lt;p&gt;You can do this entire process within WSL for Windows 10 and 11, but some people will experience random crashes when using the Home version of these systems. This is due to some incompatibility of the Virtual Machine Platform component with your hardware. A possible solution is to upgrade to Windows Pro, but I opted to use Ubuntu instead.&lt;/p&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://ghdl.github.io/ghdl/development/building/index.html&#34;&gt;Building GHDL from sources&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/antonblanchard/microwatt&#34;&gt;A tiny Open POWER ISA softcore written in VHDL 2008&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

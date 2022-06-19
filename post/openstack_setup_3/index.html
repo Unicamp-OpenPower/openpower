@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="This service provides a central directory of users mapped to the OpenStack services. It&rsquo;s used to provide an authentication and authorization service for other OpenStack services. In addition to the identity service, we will install two more packages, the Apache HTTP server and the Memcahed, responsible, respectively, for receiving requests and store the authentication tokens.
+#Prerequisites
+All the keystone data will be stored in a database, acess the mysql and execute the following commands:">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://openpower.ic.unicamp.br/post/openstack_setup_3/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.e8b81181bd18f58d8990b40dc8a5e4b8.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://openpower.ic.unicamp.br/post/openstack_setup_3/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="OpenPOWER@UNICAMP">
+  <meta property="og:url" content="https://openpower.ic.unicamp.br/post/openstack_setup_3/">
+  <meta property="og:title" content="Setting up an OpenStack-based cloud with Power8 | Part 03 – Keystone | OpenPOWER@UNICAMP">
+  <meta property="og:description" content="This service provides a central directory of users mapped to the OpenStack services. It&rsquo;s used to provide an authentication and authorization service for other OpenStack services. In addition to the identity service, we will install two more packages, the Apache HTTP server and the Memcahed, responsible, respectively, for receiving requests and store the authentication tokens.
+#Prerequisites
+All the keystone data will be stored in a database, acess the mysql and execute the following commands:"><meta property="og:image" content="https://openpower.ic.unicamp.br/img/icon-192.png">
+  <meta property="twitter:image" content="https://openpower.ic.unicamp.br/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2015-09-09T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2015-09-09T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Setting up an OpenStack-based cloud with Power8 | Part 03 – Keystone | OpenPOWER@UNICAMP</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">OpenPOWER@UNICAMP</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpower.ic.unicamp.br/minicloud/" target="_blank" rel="noopener"><span>Minicloud</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="https://oplab9.parqtec.unicamp.br/" target="_blank" rel="noopener"><span>FTP</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpowerfoundation.org/" target="_blank" rel="noopener"><span>OpenPOWER Foundation</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Setting up an OpenStack-based cloud with Power8 | Part 03 – Keystone</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2015-09-09 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2015-09-09 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Sep 9, 2015</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    3 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://openpower.ic.unicamp.br/post/openstack_setup_3/&amp;text=Setting%20up%20an%20OpenStack-based%20cloud%20with%20Power8%20%7c%20Part%2003%20%e2%80%93%20Keystone" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://openpower.ic.unicamp.br/post/openstack_setup_3/&amp;t=Setting%20up%20an%20OpenStack-based%20cloud%20with%20Power8%20%7c%20Part%2003%20%e2%80%93%20Keystone" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Setting%20up%20an%20OpenStack-based%20cloud%20with%20Power8%20%7c%20Part%2003%20%e2%80%93%20Keystone&amp;body=https://openpower.ic.unicamp.br/post/openstack_setup_3/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://openpower.ic.unicamp.br/post/openstack_setup_3/&amp;title=Setting%20up%20an%20OpenStack-based%20cloud%20with%20Power8%20%7c%20Part%2003%20%e2%80%93%20Keystone" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Setting%20up%20an%20OpenStack-based%20cloud%20with%20Power8%20%7c%20Part%2003%20%e2%80%93%20Keystone%20https://openpower.ic.unicamp.br/post/openstack_setup_3/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://openpower.ic.unicamp.br/post/openstack_setup_3/&amp;title=Setting%20up%20an%20OpenStack-based%20cloud%20with%20Power8%20%7c%20Part%2003%20%e2%80%93%20Keystone" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p>This service provides a central directory of users mapped to the OpenStack services. It&rsquo;s used to provide an authentication and authorization service for other OpenStack services. In addition to the identity service, we will install two more packages, the Apache HTTP server and the Memcahed, responsible, respectively, for receiving requests and store the authentication tokens.</p>
+<p>#Prerequisites</p>
+<p>All the keystone data will be stored in a database, acess the mysql and execute the following commands:</p>
+<pre tabindex="0"><code>&gt;mysql -u root -p
+CREATE DATABASE keystone;
+GRANT ALL PRIVILEGES ON keystone.* TO &#39;keystone&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;keystone&#39;;
+GRANT ALL PRIVILEGES ON keystone.* TO &#39;keystone&#39;@&#39;%&#39; IDENTIFIED BY &#39;keystone&#39;;
+</code></pre><p>#Install and Configure</p>
+<p>The version Kilo uses a WSGI server to listen the requests to keystone, we choose to use the Apache Server running a WSGI mod.</p>
+<p>Execute the following commands to disable keystone automatic start and install the packages:</p>
+<pre tabindex="0"><code>&gt;echo &#34;manual&#34; &gt; /etc/init/keystone.override
+apt-get install keystone python-openstackclient apache2 libapache2-mod-wsgi \
+        memcached python-memcache
+</code></pre><p>Edit the following sections in the file /etc/keystone/keystone.conf:<!-- raw HTML omitted --></p>
+<pre tabindex="0"><code>&gt;[DEFAULT]
+...
+admin_token = ADMIN_TOKEN
+verbose = True
+
+[database]
+connection = mysql://keystone:KEYSTONE_DBPASS@controller/keystone
+
+[memcache]
+servers = localhost:11211
+
+[token]
+provider = keystone.token.providers.uuid.Provider
+driver = keystone.token.persistence.backends.memcache.Token
+
+[revoke]
+driver = keystone.contrib.revoke.backends.sql.Revoke
+</code></pre><p>Create the file /etc/apache2/sites-available/wsgi-keystone.conf with the following content:</p>
+<pre tabindex="0"><code>&gt;Listen 5000
+Listen 35357
+
+&lt; VirtualHost *:5000 &gt;
+    WSGIDaemonProcess keystone-public processes=5 threads=1 user=keystone display-name=%{GROUP}
+    WSGIProcessGroup keystone-public
+    WSGIScriptAlias / /var/www/cgi-bin/keystone/main
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    &lt; IfVersion &gt;= 2.4 &gt;
+      ErrorLogFormat &#34;%{cu}t %M&#34;
+    &lt; /IfVersion &gt;
+    LogLevel info
+    ErrorLog /var/log/apache2/keystone-error.log
+    CustomLog /var/log/apache2/keystone-access.log combined
+&lt; /VirtualHost &gt;
+&lt; VirtualHost *:35357 &gt;
+    WSGIDaemonProcess keystone-admin processes=5 threads=1 user=keystone display-name=%{GROUP}
+    WSGIProcessGroup keystone-admin
+    WSGIScriptAlias / /var/www/cgi-bin/keystone/admin
+    WSGIApplicationGroup %{GLOBAL}
+    WSGIPassAuthorization On
+    &lt; IfVersion &gt;= 2.4 &gt;
+      ErrorLogFormat &#34;%{cu}t %M&#34;
+    &lt; /IfVersion &gt;
+    LogLevel info
+    ErrorLog /var/log/apache2/keystone-error.log
+    CustomLog /var/log/apache2/keystone-access.log combined
+&lt; /VirtualHost &gt;
+</code></pre><p>Install and configure the WSGI mod for Apache:</p>
+<pre tabindex="0"><code>&gt;ln -s /etc/apache2/sites-available/wsgi-keystone.conf /etc/apache2/sites-enabled
+mkdir -p /var/www/cgi-bin/keystone
+curl http://git.openstack.org/cgit/openstack/keystone/plain/httpd/keystone.py?h=stable/kilo \
+     | tee /var/www/cgi-bin/keystone/main /var/www/cgi-bin/keystone/admin
+chown -R keystone:keystone /var/www/cgi-bin/keystone
+chmod 755 /var/www/cgi-bin/keystone/*
+</code></pre><p>Restart the Apache service:</p>
+<pre tabindex="0"><code>&gt;rm -f /var/lib/keystone/keystone.db
+service apache2 restart
+</code></pre><p>#Create the service endpoint</p>
+<p>To really have the Keystone service working is needed to create a service endpoint to listen requests:</p>
+<p>Export the following lines to obtain administrator privileges on Keystone:</p>
+<pre tabindex="0"><code>&gt;export OS_TOKEN=ADMIN
+export OS_URL=http://controller:35357/v2.0
+</code></pre><p>Registry the service:</p>
+<pre tabindex="0"><code>&gt;openstack service create --name keystone --description &#34;OpenStack Identity&#34; identity
+openstack endpoint create --publicurl http://controller:5000/v2.0 \
+          --internalurl http://controller:5000/v2.0 --adminurl http://controller:35357/v2.0 \
+          --region RegionOne identity
+</code></pre><p>#Create the environment entities</p>
+<p>Each of the services that compose OpenStack uses the keystone as the authentication point, this process involves a combination of various entities (users, projects, etc.). You can better understand the functioning of Keystone at the <a href="http://docs.openstack.org/kilo/install-guide/install/apt/content/keystone-concepts.html">documentation page</a>:</p>
+<p>Create the Admininstration and Demo projetct:</p>
+<pre tabindex="0"><code>&gt;openstack project create --description &#34;Admin Project&#34; admin
+openstack project create --description &#34;Demo Project&#34; demo
+</code></pre><p>Create users and roles and after make sure each user is registred in one role:</p>
+<pre tabindex="0"><code>&gt;openstack role create admin
+openstack role create user
+openstack user create --password-prompt admin
+openstack user create --password-prompt demo
+openstack role add --project admin --user admin admin
+openstack role add --project demo --user demo user
+</code></pre><p>Each service that will be installed is represent as an user in Keystone, they will be part of an project that will contain all the services:</p>
+<pre tabindex="0"><code>&gt;openstack project create --description &#34;Service Project&#34; service
+</code></pre><p>#OpenRC files</p>
+<p>To simplify the keystone authentication process create a file that contains the credenditals and export to the system.</p>
+<p>Create the file adm-credentials.sh and add the following:</p>
+<pre tabindex="0"><code>&gt;export OS_PROJECT_DOMAIN_ID=default
+export OS_USER_DOMAIN_ID=default
+export OS_PROJECT_NAME=admin
+export OS_TENANT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=SENHA_ADMIN
+export OS_AUTH_URL=http://controller:35357/v3
+</code></pre><p>Load the file content:</p>
+<pre tabindex="0"><code>&gt;source adm-credentials.sh
+</code></pre>
+    </div>
+
+    
+
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+  
+  
+
+
+
+
+
+  
+  
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/authors/"></a></h5>
+      
+      
+      <ul class="network-icon" aria-hidden="true">
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9224c1df7774818c46d3c5196c37127b.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms of Service</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Julio Kiyoshi | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/juliokiyoshi/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/juliokiyoshi/index.xml" rel="self" type="application/rss+xml" />
+    <description>Julio Kiyoshi</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 09 Apr 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Julio Kiyoshi</title>
+      <link>https://openpower.ic.unicamp.br/authors/juliokiyoshi/</link>
+    </image>
+    
+    <item>
+      <title>PowerBoard plugin for TensorBoard</title>
+      <link>https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/</link>
+      <pubDate>Fri, 09 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/powerboard-plugin-for-tensorboard/</guid>
+      <description>&lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;First we need to talk about the motivation behind this plugin. The architecture Power was designed for use in artificial intelligence and deep learning. Investigating tools for deep learning and machine learning we found TensorBoard. TensorBoard is a tool to view models which were created in TensorFlow, the TensorBoard is a toolkit that allows graphic visualization of your models, making it easier to understand the used model, debug bottlenecks and, as a result, optimize it. In this blog post, we’ll show how to use the plugin we’ve created, which adds a new feature to the TensorBoard, this plugin assists on debugging bottlenecks in conjunction with the trace-viewer.&lt;/p&gt;
+&lt;h3 id=&#34;powerboard&#34;&gt;PowerBoard&lt;/h3&gt;
+&lt;p&gt;PowerBoard is a plugin designed to show the power that is consumed while the neural network is trained, doing that  allows the trace-viewer a better understanding of the model and helps to debug the bottlenecks.&lt;/p&gt;
+&lt;p&gt;Prerequisites:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Python 3.6 &amp;gt;=&lt;/li&gt;
+&lt;li&gt;TensorFlow 2.2 &amp;gt;=&lt;/li&gt;
+&lt;li&gt;TensorBoard 2.2 &amp;gt;=&lt;/li&gt;
+&lt;li&gt;Pandas 1.2.1 &amp;gt;=&lt;/li&gt;
+&lt;li&gt;ipmitool&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;If you&amp;rsquo;re having trouble installing tensorflow follow the link to a blog post that teaches you how to install tensorflow in the Power architecture:
+&lt;a href=&#34;https://openpower.ic.unicamp.br/post/profiling-using-tensorboard-profiler/&#34;&gt;https://openpower.ic.unicamp.br/post/profiling-using-tensorboard-profiler/&lt;/a&gt;
+&lt;a href=&#34;https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power/&#34;&gt;https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power/&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;For the installation of PowerBoard Plugin acess the site  &lt;a href=&#34;https://pypi.org/project/powerboard/&#34;&gt;https://pypi.org/project/powerboard/&lt;/a&gt;, or use the following pip command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install powerboard
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now you&amp;rsquo;re able to use the powerboard. The powerboard possesses an implementation library called libipmi, which is responsible for accessing the low level register to obtain the power consumption. For this, do the following import:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; powerboard &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; libipmi
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id=&#34;libipmi&#34;&gt;libipmi:&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;The function &lt;code&gt;start() &lt;/code&gt; : This function is responsible for measuring the power consumption and time of each aquisition.&lt;/li&gt;
+&lt;li&gt;The function &lt;code&gt;stop() &lt;/code&gt; : This function is responsible for stopping the aquisition of data.&lt;/li&gt;
+&lt;li&gt;The function &lt;code&gt;dbToCSV(&amp;lt;PATH&amp;gt;)&lt;/code&gt;: The implementation of the function gets the data and saves it to a database, when the database is full the implementation saves all data in a csv file. For this, the argument PATH is the path to a directory were the data will be stored. My suggestion is to default the path to &amp;ldquo;./data&amp;rdquo; like this:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libipmi&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dbToCSV(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;./data&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now you are able to test the plugin, for this I&amp;rsquo;ll show an example of the code:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; datetime &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; datetime
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; packaging &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; version
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; tensorflow &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; tf
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; powerboard &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; libipmi 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow.keras &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; datasets, layers, models
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;stamp &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; datetime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;now()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strftime(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%Y%m&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%d&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;-%H%M%S&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;logdir &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;logs/Nfit/&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;%s&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; stamp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;writer &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;summary&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;create_file_writer(logdir)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;summary&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;trace_on(profiler&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;(train_images, train_labels), (test_images, test_labels) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; datasets&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;cifar10&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;load_data()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Normalize pixel values to be between 0 and 1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;train_images, test_images &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; train_images &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;255.0&lt;/span&gt;, test_images &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;255.0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;class_names &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;airplane&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;automobile&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bird&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;cat&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;deer&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;               &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;dog&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;frog&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;horse&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ship&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;truck&amp;#39;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; models&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Sequential()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Conv2D(&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, (&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;), activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;, input_shape&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;)))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;MaxPooling2D((&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Conv2D(&lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;, (&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;), activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;MaxPooling2D((&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Conv2D(&lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;, (&lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;3&lt;/span&gt;), activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;summary()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Flatten())
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;, activation&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;relu&amp;#39;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;add(layers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;Dense(&lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;summary()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;compile(optimizer&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;adam&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;              loss&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;keras&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;losses&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;SparseCategoricalCrossentropy(from_logits&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;True&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;              metrics&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;[&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;accuracy&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libipmi&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;start()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;history &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;fit(train_images, train_labels, epochs&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;,batch_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;64&lt;/span&gt;, 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                    validation_data&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(test_images, test_labels))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;test_loss, test_acc &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;evaluate(test_images,  test_labels, verbose&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libipmi&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;stop()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;libipmi&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;dbToCSV(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;./data&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;with&lt;/span&gt; writer&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;as_default():
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;summary&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;trace_export(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      name&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;convolution&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      step&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      profiler_outdir&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;logdir)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;before you run the script let&amp;rsquo;s make a directory in tmp files, so go to  &lt;code&gt;/tmp&lt;/code&gt; by doing &lt;code&gt; cd /tmp&lt;/code&gt; and make a directory inside. I&amp;rsquo;ll create the &amp;ldquo;teste&amp;rdquo; directory inside of tmp, as follows:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd /tmp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;mkdir teste
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now go to the directory which the script was saved and run the script. Now copy the following directory into the &lt;code&gt;/tmp/teste&lt;/code&gt; by doing:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cp -r demo_logs /tmp/teste
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cp -r logs /tmp/teste
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now run the TensorBoard:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt; tensorboard --logdir  /tmp/teste
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now let&amp;rsquo;s have some fun by cracking our heads to understand the bottlenecks using the trace-viewer and powerboard tools.
+the following image shows the powerboard.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;power2.png&#34; alt=&#34;powerboard&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 1: PowerBoard.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now I&amp;rsquo;ll show the trace-viewer overview.
+&lt;img src=&#34;trace-viewer2.png&#34; alt=&#34;TRACE-VIEWER&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 2: Trace-viewer overview.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Let&amp;rsquo;s zoom in the image. You may control the graph by clicking in the button &lt;code&gt;w&lt;/code&gt; to zoom in , &lt;code&gt;s&lt;/code&gt; to zoom out, &lt;code&gt;d&lt;/code&gt; to scroll right and &lt;code&gt;e&lt;/code&gt; to scroll left.
+&lt;img src=&#34;trace2.png&#34; alt=&#34;TRACE-VIEWER&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 3: Trace-viewer zoom in.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The trace-viewer cracks, parallels and executes all operations in CPU and/or GPU to train our neural network. If you&amp;rsquo;re using GPU the documentation of TensorBoard says &amp;ldquo;As a general rule of thumb, it is a good idea to always keep the device (GPU/TPU) active.
+Use the tf.data API to optimize the input pipeline. In this case, let&amp;rsquo;s cache the training dataset and prefetch the data to ensure that there is always data available for the GPU to process. See here for more details on using tf.data to optimize your input pipelines&amp;rdquo;. In the trace-viewer we have the trace-context to aid in a better understanding of what is happening.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Go to: &lt;a href=&#34;https://www.tensorflow.org/tensorboard/tensorboard_profiling_keras&#34;&gt;https://www.tensorflow.org/tensorboard/tensorboard_profiling_keras&lt;/a&gt; for a complete documentation.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;trace-context.png&#34; alt=&#34;TRACE-VIEWER CONTEXT&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 4: Trace-viewer: trace context.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Click on the first occurrence of the traceContext and look at &amp;lsquo;slice&amp;rsquo;, this part of the trace viewer shows all the arguments of the function, such as the time spent on this function.
+&lt;img src=&#34;traceContext.png&#34; alt=&#34;TRACE-VIEWER CONTEXT1&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 5: Trace context: inside of slice.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Note that we are at the epoch number &amp;ldquo;0&amp;rdquo; and step_name &amp;ldquo;0&amp;rdquo;, that is, in this part of the x-axis the graph indicates the first image to train our neural network. If we proceed to the next trace context it will follow to the next images to be trained. When the epoch value changes to 1 it means that we have finished training our neural network for the first time, and a new epoch will begin. Note that the size of the set of images is selected by the batch_size slice of our code, that is, we take the total number of images from the dataset and divide them by batch_size, in general the batch_size are powers of 2.
+&lt;img src=&#34;traceContext2.png&#34; alt=&#34;TRACE-VIEWER CONTEXT1&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 6: Trace context: the next interation.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now the next part is understanding the power consumption and relationships with the code. For this the following image shows the last interation of 1 complete epoch:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;traceContext3.png&#34; alt=&#34;TRACE-VIEWER CONTEXT1&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 7: Trace context: the last interation of epoch 0.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Note that a full epoch takes about 22 seconds, as shown by the powerboard tab. Symmetry in the graph is expected, but it does not occur. Also note that between times 27.31 s and 28.78 s we have a sudden increase in power, so we will go in the trace-viewer to look at what is being carried out during this interval. In the meantime, we note that there is the following set of images from the training in epoch 1 [185-258]. Returning this set to epoch 0 it corresponds to the time interval between 9.35 s and 11.13 s.
+It is possible to conclude that theoretically the epochs should be symmetrical in terms of operations, that is, the energy expenditure should be the same, but it is noticed that something beyond the code is supplying this increase in extra power consumption by the same part of operations. Perhaps a new approach at a lower level would be needed to reach better conclusions.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Installing Tensorflow on POWER</title>
+      <link>https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power/</link>
+      <pubDate>Sun, 07 Mar 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/installing-tensorflow-on-power/</guid>
+      <description>&lt;p&gt;TensorFlow is a very popular open-source library for Machine Learning and in this post we will see two ways (from a Community Supported Build and from the IBM Watson Machine Learning Community Edition) of installing it on POWER.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;tf-logo.png&#34; alt=&#34;tf logo&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;installing-tensorflow-from-the-community-supported-build&#34;&gt;&lt;em&gt;Installing TensorFlow from the Community Supported Build&lt;/em&gt;&lt;/h2&gt;
+&lt;p&gt;On the TensorFlow repository README on GitHub (&lt;a href=&#34;https://github.com/tensorflow/tensorflow&#34;&gt;https://github.com/tensorflow/tensorflow&lt;/a&gt;) there is a list of community builds of TensorFlow, in which includes CPU and GPU builds for POWER.&lt;/p&gt;
+&lt;p&gt;We will be using the links available on there to install TensorFlow on POWER.&lt;/p&gt;
+&lt;h3 id=&#34;before-installation&#34;&gt;Before Installation&lt;/h3&gt;
+&lt;p&gt;Install the build-essential package with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt-get update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt-get install build-essential
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;download-and-install-anaconda-package-manager&#34;&gt;Download and Install Anaconda package manager:&lt;/h3&gt;
+&lt;p&gt;We&amp;rsquo;ll use Anacona to install TensorFlow within a virtual environment.&lt;/p&gt;
+&lt;p&gt;Download: &lt;a href=&#34;https://www.anaconda.com/products/individual&#34;&gt;https://www.anaconda.com/products/individual&lt;/a&gt;&lt;br&gt;
+Remember to check the script sha256sum: &lt;a href=&#34;https://docs.anaconda.com/anaconda/install/hashes/&#34;&gt;https://docs.anaconda.com/anaconda/install/hashes/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To install Anaconda Individual Edition, you just need to run the script downloaded and follow the inscructions that it provides.&lt;/p&gt;
+&lt;p&gt;Create Virtual Environment and activate it:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda create --name tf_env python&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;3.6 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda activate tf_env 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We&amp;rsquo;ll be using python3.6 for this environment installation.&lt;/p&gt;
+&lt;p&gt;To install Anaconda Individual Edition, you just need to run the script downloaded and follow the inscructions that it provides.&lt;/p&gt;
+&lt;h3 id=&#34;download-and-install-a-tensorflow-build&#34;&gt;Download and Install a TensorFlow build:&lt;/h3&gt;
+&lt;p&gt;The Community Supported Builds from TensorFlow repository README provides both TF Release 1.15 and 2.x versions for both CPU-only and GPU.&lt;/p&gt;
+&lt;p&gt;In this tutorial we will be installing a 2.x CPU-only version, altough the same process can be use for the GPU version.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Access &lt;a href=&#34;https://github.com/tensorflow/tensorflow&#34;&gt;https://github.com/tensorflow/tensorflow&lt;/a&gt; and select the needed build.&lt;br&gt;
+We&amp;rsquo;ll use the Release 2.x CPU (&lt;a href=&#34;https://powerci.osuosl.org/job/TensorFlow2_PPC64LE_CPU_Release_Build/&#34;&gt;https://powerci.osuosl.org/job/TensorFlow2_PPC64LE_CPU_Release_Build/&lt;/a&gt;)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;builds.png&#34; alt=&#34;tf logo&#34;&gt;&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Download the needed version and pay attention to the requirements (for instance, our selected build was built for GLIBC 2.17 and above).&lt;br&gt;
+We&amp;rsquo;ll download the cp36 version, since we created a virtual conda environment for python 3.6.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;downloads.png&#34; alt=&#34;tf logo&#34;&gt;&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;After the .whl file was downloaded, we&amp;rsquo;ll install it with pip within our conda environment.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;attention&#34;&gt;Attention&lt;/h2&gt;
+&lt;p&gt;When installing TensorFlow, it is possible that some requirements errors occurs. If that happens, just install the missing library and try instaling TensorFlow again.&lt;/p&gt;
+&lt;p&gt;For intance, we needed to install scipy 1.4.1 and h5py before the installation succeeded, and that can be done with Anaconda with the following commands:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda install -c conda-forge scipy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;1.4.1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda install -c conda-forge h5py
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Installing TensorFlow from the .whl file with pip inside the conda environment:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;pip install tensorflow_cpu-2.2.0-cp36-cp36m-linux_ppc64le.whl
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After the installation is completed, check TensorFlow within a python shell with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; tensorflow &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; tf
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(tf&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;__version__)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;alternative-installing-tensorflow-with-watson-machine-learning-community-edition&#34;&gt;&lt;em&gt;[ALTERNATIVE] Installing TensorFlow with Watson Machine Learning Community Edition&lt;/em&gt;&lt;/h2&gt;
+&lt;p&gt;IBM Watson Machine Learning Community Edition also provides a TensorFlow installation through Anaconda, which will be taught in this tutorial.&lt;/p&gt;
+&lt;h3 id=&#34;download-and-install-anaconda-package-manager-1&#34;&gt;Download and Install Anaconda package manager:&lt;/h3&gt;
+&lt;p&gt;Download: &lt;a href=&#34;https://www.anaconda.com/products/individual&#34;&gt;https://www.anaconda.com/products/individual&lt;/a&gt;&lt;br&gt;
+Remember to check the script sha256sum: &lt;a href=&#34;https://docs.anaconda.com/anaconda/install/hashes/&#34;&gt;https://docs.anaconda.com/anaconda/install/hashes/&lt;/a&gt;&lt;br&gt;
+To install Anaconda Individual Edition, you just need to run the script downloaded and follow the inscructions that it provides.&lt;/p&gt;
+&lt;h3 id=&#34;add-wmlce-channel-to-anaconda&#34;&gt;Add WMLCE Channel to Anaconda&lt;/h3&gt;
+&lt;p&gt;After the installation, add WMLCE (IBM Watson Machine Learning Community Edition) channel:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda config --prepend channels &lt;span style=&#34;color:#ae81ff&#34;&gt;\ &lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;https://public.dhe.ibm.com/ibmdl/export/pub/software/server/ibm-ai/conda/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Create an Anaconda Python3.6 environment for WMLCE and activate it:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Currently (09/2020) WMLCE only works with python version 3.6&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda create --name wmlce_env python&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;3.6 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda activate wmlce_env 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;install-tensorflow&#34;&gt;Install TensorFlow&lt;/h3&gt;
+&lt;p&gt;For CPU-only use, install TensorFlow with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda install tensorflow
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For GPU use, install TensorFlow with:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;conda install tensorflow
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;TF is now installed and ready for use.&lt;/p&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference:&lt;/h2&gt;
+&lt;p&gt;Anaconda:&lt;br&gt;
+&lt;a href=&#34;https://www.anaconda.com/products/individual&#34;&gt;https://www.anaconda.com/products/individual&lt;/a&gt;&lt;br&gt;
+TensorFlow GitHub repository:&lt;br&gt;
+&lt;a href=&#34;https://github.com/tensorflow/tensorflow&#34;&gt;https://github.com/tensorflow/tensorflow&lt;/a&gt;&lt;br&gt;
+IBM Watson Machine Learning Community Edition:&lt;br&gt;
+&lt;a href=&#34;https://www.ibm.com/support/knowledgecenter/SS5SF7_1.6.1/navigation/welcome.html&#34;&gt;https://www.ibm.com/support/knowledgecenter/SS5SF7_1.6.1/navigation/welcome.html&lt;/a&gt;&lt;br&gt;
+WMLCE softwares list:&lt;br&gt;
+&lt;a href=&#34;https://www.ibm.com/support/knowledgecenter/SS5SF7_1.6.1/navigation/wmlce_software_pkgs.html&#34;&gt;https://www.ibm.com/support/knowledgecenter/SS5SF7_1.6.1/navigation/wmlce_software_pkgs.html&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Profiling using Tensorboard-Profiler</title>
+      <link>https://openpower.ic.unicamp.br/post/profiling-using-tensorboard-profiler/</link>
+      <pubDate>Mon, 07 Dec 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/profiling-using-tensorboard-profiler/</guid>
+      <description>&lt;p&gt;This blog post will show how to install tensorflow 2.2 in POWER, how to use profiler and make a comparison between different architectures ( x86, POWER 8 and 9).&lt;/p&gt;
+&lt;h1 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h1&gt;
+&lt;p&gt;In this part I&amp;rsquo;ll show how to setup your Virtual Machine (VM) and install tensorflow 2.2 in POWER. My PIP version is 20.3 and my version of python is 3.8.&lt;/p&gt;
+&lt;p&gt;First we need to install some libraries to install tensorflow 2.2.&lt;/p&gt;
+&lt;p&gt;Installing dependecies of scipy:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev gfortran
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Installing h5py:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    sudo apt install python3-h5py  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Installing keras using pip:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    pip3 install -U --user keras_applications --no-deps
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    pip3 install -U --user keras_preprocessing --no-deps
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we are able to install tensorflow 2.2. For this, access the site (&lt;a href=&#34;https://github.com/tensorflow/tensorflow&#34;&gt;https://github.com/tensorflow/tensorflow&lt;/a&gt;) to download .whl file (this file is used to install tensorflow using pip comand). First go in Community Supported Builds Section, and click in Artifacts release 2.x of Linux ppc64le CPU Stable Release.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;gitTensorflow.png&#34; alt=&#34;Tensorflow installation&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 1: Tensorflow 2.2 cpu- only installation.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;After clicking we are directed to jenkins, where we click in tensorflow_cpu-2.2.0-cp38-cp38-linux_ppc64le.whl. Note that &amp;ldquo;cp38&amp;rdquo; indicates that the tensorflow should be installed in python 3.8. However, if you are using different versions of python you can download the version corresponding to your python version. But in this tutorial I&amp;rsquo;ll show how to setup using python 3.8.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;Tensorflowbuild.png&#34; alt=&#34;Tensorflow installationpt2&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 2: Download .whl tensorflow 2.2 build.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;For download in VM, copy the link (tensorflow_cpu-2.2.0-cp38-cp38-linux_ppc64le.whl) and use the command below:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    wget https://powerci.osuosl.org/job/TensorFlow2_PPC64LE_CPU_Release_Build/lastSuccessfulBuild/artifact/tensorflow_pkg/tensorflow_cpu-2.2.0-cp38-cp38-linux_ppc64le.whl  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now for installation of the tensorflow using pip command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    pip3 install tensorflow_cpu-2.2.0-cp38-cp38-linux_ppc64le.whl  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;For more information you can visit &lt;a href=&#34;https://www.tensorflow.org/install/source&#34;&gt;https://www.tensorflow.org/install/source&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now we need to install tensorboard, tensorboard-plugin-profiler and tensorflow-datasets.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    pip3 install --upgrade tensorboard
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    pip3 install tensorflow-datasets
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    pip3 install -U tensorboard_plugin_profile
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;get-access-to-power-8-vm-in-minicloud&#34;&gt;Get access to POWER 8 VM in minicloud&lt;/h2&gt;
+&lt;p&gt;Here is a brief tutorial on how to access POWER 8 virtual machine in minicloud, first access &lt;a href=&#34;https://openpower.ic.unicamp.br/minicloud/&#34;&gt;https://openpower.ic.unicamp.br/minicloud/&lt;/a&gt; and click in &lt;strong&gt;Request Access&lt;/strong&gt;  and answer the google forms to get access. Here is a link that may help you to get access to an instance on minicloud &lt;a href=&#34;https://github.com/Unicamp-OpenPower/minicloud/wiki&#34;&gt;https://github.com/Unicamp-OpenPower/minicloud/wiki&lt;/a&gt;. In the next section I&amp;rsquo;ll show to access tensorboard by terminal.&lt;/p&gt;
+&lt;h2 id=&#34;ssh-connection&#34;&gt;SSH connection&lt;/h2&gt;
+&lt;p&gt;You&amp;rsquo;ll need to connect to VM via ssh using the &lt;code&gt;-L 6006:localhost:6006&lt;/code&gt; flag. To be able to use tensorboard in the terminal, your command should be like this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ssh ubuntu@minicloud.parqtec.unicamp.br -i ~/.ssh/your-key.pem -p &amp;lt;vm-port&amp;gt; -L 6006:localhost:6006&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;For using tensorboard in the terminal we use this command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    tensorboard --logdir&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&amp;lt;name_of_log_directory&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we are able to open the link in your favorite browser.&lt;/p&gt;
+&lt;h2 id=&#34;compare-tensorboard-profiler-in-different-architectures&#34;&gt;Compare Tensorboard-Profiler in different architectures&lt;/h2&gt;
+&lt;p&gt;In this section, we will be profiling using Tensorboard-Profiler in different architectures and showing the results. First, we will standardize the test file. For this, download the file available in &lt;a href=&#34;https://www.tensorflow.org/tensorboard/tensorboard_profiling_keras&#34;&gt;https://www.tensorflow.org/tensorboard/tensorboard_profiling_keras&lt;/a&gt; and modify the line:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;model.fit(ds_train,
+          epochs=2,
+          validation_data=ds_test,
+          callbacks = [tboard_callback])
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;to:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;model.fit(ds_train,
+          epochs=5,
+          validation_data=ds_test,
+          callbacks = [tboard_callback])
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Now we are ready to execute the script and debug performance bottlenecks using Tensorboard-Profiler.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Sometimes when running Tensorflow we get some errors like: AttributeError: partially initialized module &amp;rsquo;tensorflow&amp;rsquo; has no attribute &amp;lsquo;&lt;strong&gt;version&lt;/strong&gt;&amp;rsquo; (most likely due to a circular import). To fix this error you can use the flag -m.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    python3 -m &amp;lt;your-python-file&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;After running the script in different architectures we obtain the following results:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Input pipeline analyzer:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Data preprocessing (ms)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Table 1: Data preprocessing in different architectures&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;X86&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;POWER8&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;POWER9&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;390&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;180&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;164&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;Reading data from files in advance (including caching, prefetching, interleaving) (in ms):&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Table 2: Reading data from files in advance in different architectures&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;X86&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;POWER8&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;POWER9&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;6.7&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;~ 0&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;~0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Tensorflow stats:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Operations which consume more time:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Table 3: Operations which consume more time in x86&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Operation&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;Occurrences&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;total time (us)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;21&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;112,868&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch::Prefetch::ParallelMap&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;2.907&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;106,162&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch::Prefetch::ParallelMap::ParallelMap&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;2.907&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;104,103&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Decode Png&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;decode_image/cond_jpeg/else/_1/cond_png/then/_0/DecodePng&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;2.910&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;79,162&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Table 4: Operations which consume more time in POWER8&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Operation&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;Occurrences&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;total time (us)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;21&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;131,659&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch::Prefetch::ParallelMap&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;2.673&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;23,513&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;MatMul&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;gradient_tape/sequential/dense/MatMul&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;21&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;16,335&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch::Prefetch&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;2.673&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;15,375&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Table 5: Operations which consume more time in POWER9&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th style=&#34;text-align:center&#34;&gt;Operation&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;Occurrences&lt;/th&gt;
+&lt;th style=&#34;text-align:right&#34;&gt;total time (us)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;21&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;114,562&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_FusedMatMul&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;sequential/dense/Relu&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;21&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;30,306&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch::Prefetch::ParallelMap&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;2.676&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;20,957&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dataset&lt;/td&gt;
+&lt;td style=&#34;text-align:center&#34;&gt;Iterator::Model::MapAndBatch::Prefetch&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;2.675&lt;/td&gt;
+&lt;td style=&#34;text-align:right&#34;&gt;16,722&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Now we can analyze the dada and compare beteween different architectures. First we note that x86 consumes more time for data preprocessing and reading data from files in advance (Tables 1 and 2). In Tensorflow stats we can crack the entire code in operations but I&amp;rsquo;ll show only the top 4 time-consuming operations in tables 3, 4 and 5. However, you can get all operations in tensorboard-profiler in section Tensorflow Stats.
+From tables 3, 4 and 5 we obtain that the type of operation differs a little, for example in table 3 we have Decode Png in top 4, whereas in power architectures (Tables 4 and 5) we have matmul. But in all 3 architectures Dataset is highly time-consuming.&lt;/p&gt;
+&lt;p&gt;An interesting function in tensorboard-profiler is &lt;strong&gt;Recommendation for Next Step&lt;/strong&gt;. This function highlights some otimizations that could improve your program, for exemple, when I execute my program in POWER 8 we have some recommendations like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Your program is HIGHLY input-bound because 68.8% of the total step time sampled is waiting for input. Therefore, you should first focus on reducing the input time&lt;/li&gt;
+&lt;li&gt;7.3 % of the total step time sampled is spent on All Others time.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Next tools to use for reducing the input time&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;input_pipeline_analyzer (especially Section 3 for the breakdown of input operations on the Host)&lt;/li&gt;
+&lt;li&gt;trace_viewer (look at the activities on the timeline of each Host Thread near the bottom of the trace view)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>AI Profiling for POWER</title>
+      <link>https://openpower.ic.unicamp.br/post/ai-profiling-for-power/</link>
+      <pubDate>Mon, 16 Nov 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/ai-profiling-for-power/</guid>
+      <description>&lt;p&gt;Although there is plenty information on AI profiling for x86_64 and ARM architectures, there is almost none on POWER.&lt;/p&gt;
+&lt;p&gt;With that motivation in mind, this post aim to share some results on this subject.&lt;/p&gt;
+&lt;p&gt;The program profiled was a python script that had a pre-trained ResNet50 with ImageNet weights, which was obtained from TensorFlow API.&lt;br&gt;
+It aimed to classify 500 hot-dogs images downloaded from the ImageNet.&lt;br&gt;
+The profiling was done using Perf for collecting PMU data and ipmitool for energy consumption data.&lt;/p&gt;
+&lt;p&gt;Requirements for the pyhton script:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Bare-metal machine&lt;/li&gt;
+&lt;li&gt;ipmitool&lt;/li&gt;
+&lt;li&gt;python 3.6&lt;/li&gt;
+&lt;li&gt;TensorFlow 2.1.1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Machine Stats:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;POWER9 Processor&lt;/li&gt;
+&lt;li&gt;CPU(s): 128&lt;/li&gt;
+&lt;li&gt;On-line CPU(s) list: 0-127&lt;/li&gt;
+&lt;li&gt;Thread(s) per core: 4&lt;/li&gt;
+&lt;li&gt;Core(s) per socket: 16&lt;/li&gt;
+&lt;li&gt;Socket(s): 2&lt;/li&gt;
+&lt;li&gt;NUMA node(s): 2&lt;/li&gt;
+&lt;li&gt;Model: 2.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can find information on how to install TensorFlow on POWER in this post: &lt;a href=&#34;https://openpower.ic.unicamp.br/post/building-tensorflow-on-power/&#34;&gt;https://openpower.ic.unicamp.br/post/building-tensorflow-on-power/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Eleven tests were executed.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow.keras.applications.resnet50 &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; ResNet50
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow.keras.preprocessing &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; image
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; tensorflow.keras.applications.resnet50 &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; preprocess_input, decode_predictions
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; numpy &lt;span style=&#34;color:#66d9ef&#34;&gt;as&lt;/span&gt; np
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; sys
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; time
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;from&lt;/span&gt; datetime &lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; datetime
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;begin &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; time&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;time()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#folder = sys.argv[1]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;length &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;731&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;length &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(sys&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;argv[&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (length &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;731&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Using maximum length: 731&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    lenght &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;731&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;again &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; int(sys&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;argv[&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;folder_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hot_dog&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;model &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ResNet50(weights&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;imagenet&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;images &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;count &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(length):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    img_path &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; folder_name &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; str(i) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;.jpg&amp;#39;&lt;/span&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    img &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; image&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;load_img(img_path, target_size&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;224&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;224&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    images&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;append(image&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;img_to_array(img))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    images[i] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; np&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;expand_dims(images[i], axis&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    images[i] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; preprocess_input(images[i])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; j &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(again):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;in&lt;/span&gt; range(length):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        prediction &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; model&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;predict(images[i])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;#print(decode_predictions(prediction[i], top=1)[0][0][1])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        strPrediction &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; decode_predictions(prediction, top&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;)[&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;][&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;][&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (strPrediction &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;hotdog&amp;#39;&lt;/span&gt;):
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            count &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#75715e&#34;&gt;#print(str(i) + &amp;#34; -&amp;gt; &amp;#34; + strPrediction)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;pass&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Begin: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; datetime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;utcnow()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strftime(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%H:%M:%S&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;End: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; datetime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;utcnow()&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;strftime(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%H:%M:%S&amp;#34;&lt;/span&gt;))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;RIGHTS: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(count))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;WRONGS: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(again&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;length &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; count))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;ACC: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(count&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(again&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;length)))
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;print(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Time Elapsed: &lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;{}&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;s&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;format(time&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;time() &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt; begin))
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Because the model is pre-trained, it obtained the same classification accuracy for every test.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;RIGHTS: 433
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;WRONGS: 67
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;profiling-using-perf&#34;&gt;Profiling using perf.&lt;/h3&gt;
+&lt;p&gt;Perf is a profiling program included with the Linux kernel. Here it was used to instrument CPU performance counters.&lt;/p&gt;
+&lt;p&gt;PMUs used:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;branches,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;branch-misses,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cache-misses,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cache-references,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cycles,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;instructions,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;idle-cycles-backend,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;idle-cycles-frontend.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The following graphs shows the data fetched from those PMUs.&lt;br&gt;
+Graphs:&lt;br&gt;
+CPU Cycles:&lt;br&gt;
+&lt;img src=&#34;cycles.png&#34; alt=&#34;CPU Cycles&#34;&gt;
+Instructions:&lt;br&gt;
+&lt;img src=&#34;instructions.png&#34; alt=&#34;Instructions&#34;&gt;
+Cache-references:&lt;br&gt;
+&lt;img src=&#34;cache-references.png&#34; alt=&#34;Cache-references&#34;&gt;
+Cache-misses:&lt;br&gt;
+&lt;img src=&#34;cache-misses.png&#34; alt=&#34;Cache-misses&#34;&gt;
+Branches:&lt;br&gt;
+&lt;img src=&#34;branches.png&#34; alt=&#34;Branches&#34;&gt;
+Branch-misses:&lt;br&gt;
+&lt;img src=&#34;branch-misses.png&#34; alt=&#34;Branch-misses&#34;&gt;
+Time Elapsed:&lt;br&gt;
+&lt;img src=&#34;time-elapsed.png&#34; alt=&#34;Time Elapsed&#34;&gt;&lt;/p&gt;
+&lt;h3 id=&#34;energy-consumption&#34;&gt;Energy consumption.&lt;/h3&gt;
+&lt;p&gt;Make sure you are running on a bare-metal machine.&lt;/p&gt;
+&lt;p&gt;How to use the ipmitool to get power consumption data:
+Install ipmitool through:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt-get install ipmitool
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then run the command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo ipmitool dcmi power reading
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Which is going to give you the output:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Instantaneous power reading:                   262 Watts
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Minimum during sampling period:                248 Watts
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Maximum during sampling period:                263 Watts
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Average power reading over sample period:      257 Watts
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    IPMI timestamp:                           Sun Nov  8 19:51:18 2020
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Sampling period:                          00000005 Seconds.
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Power reading state is:                   activated
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;This command was executed continuosly for 1500 seconds using a python script that would parse the results into a csv file.&lt;/p&gt;
+&lt;p&gt;Altough the sampling period was used for reference in order to plot the following graph, it does not represent an accurate time series in the x axis.
+For a better undertanding of power consumption profiling on POWER with ML algorithms, see the following post: &lt;a href=&#34;https://openpower.ic.unicamp.br/post/power-consumption-on-power/&#34;&gt;https://openpower.ic.unicamp.br/post/power-consumption-on-power/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;That said, the data was used to plot the following graph:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;powerConsumption.png&#34; alt=&#34;Energy Consumption&#34;&gt;&lt;/p&gt;
+&lt;p&gt;It is possible to see the average of energy consumption for each test and, at the end, the energy consumption going back to a normal state.
+It can also be observed that there is an increase close to 100W when a test begins to run.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Building a opensuse openstack image</title>
+      <link>https://openpower.ic.unicamp.br/post/opensuse-tutorial/</link>
+      <pubDate>Tue, 06 Nov 2018 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/opensuse-tutorial/</guid>
+      <description>&lt;p&gt;This tutorial I will show how create a openstack image (.qcow2) of opensuse from a ISO image using qemu.
+In this tutorial will be used opensuse Tumbleweed ppc64 le (because it&amp;rsquo;s the most challenging), but similiar process can be done for leap (15 and 42.3) and Tumbleweed ppc64be.&lt;/p&gt;
+&lt;h2 id=&#34;preparing-environment&#34;&gt;Preparing environment&lt;/h2&gt;
+&lt;p&gt;First we need download opensuse image from repository (&lt;a href=&#34;https://software.opensuse.org/distributions/tumbleweed&#34;&gt;Tumbleweed&lt;/a&gt;, &lt;a href=&#34;https://oplab9.parqtec.unicamp.br/pub/ppc64el/opensuse/&#34;&gt; leap 15&lt;/a&gt; and  &lt;a href=&#34;http://download.opensuse.org/ports/ppc/distribution/leap/42.3/iso/&#34;&gt;leap 42.3&lt;/a&gt;) and sha256 of respective image.&lt;/p&gt;
+&lt;p&gt;Execute sha256:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sha256sum openSUSE-Tumbleweed-DVD-ppc64le-Current.iso
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Compare sha256sum output with sha256 downloaded:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;715d9f89d90eb795b6a64ffe856aa5b7f3a64c7195a9ede8abea14a9d4f69e67
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Install qemu using:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system -y
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Now we need create a disk .qcow2 to install our O.S. with this command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 5G
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Update 09/2020&lt;/em&gt;: this comand above may cause problem, try this command:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;qemu-img create -f qcow2 openSUSE-Tumbleweed-ppc64le.qcow2 6G
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Execute qemu to run the instaler:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-system-ppc64le -enable-kvm -m &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; -cdrom openSUSE-Tumbleweed-DVD-ppc64le-Current.iso -drive file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;openSUSE-Tumbleweed-ppc64le.qcow2,media&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;disk,if&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;virtio -nographic -smp cores&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;1,threads&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; -monitor pty -serial stdio -nodefaults -netdev user,id&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -device virtio-net-pci,netdev&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -boot order&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Update 09/2020&lt;/em&gt;: this comand above may not work, try this command:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo qemu-system-ppc64le -machine cap-htm&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;off -m &lt;span style=&#34;color:#ae81ff&#34;&gt;1024&lt;/span&gt; -cdrom openSUSE-Tumbleweed-DVD-ppc64le-Current.iso -drive file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;openSUSE-Tumbleweed-ppc64le.qcow2,media&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;disk,if&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;virtio -nographic -smp cores&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;1,threads&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt; -monitor pty -serial stdio -nodefaults -netdev user,id&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -device virtio-net-pci,netdev&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;enp0s1 -boot order&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;installing-opensuse&#34;&gt;Installing openSUSE&lt;/h2&gt;
+&lt;p&gt;Select your language (using tab and arrows):
+&lt;img src=&#34;Language-selection-screen.png&#34; alt=&#34;Language selection screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 1: Language selection screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select te most suitable bundle for your goal:
+&lt;img src=&#34;Bundle-selector-screen.png&#34; alt=&#34;Bundle selector screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 2: Bundle selector screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select expert partitioner:
+&lt;img src=&#34;Partioner-selection-screen.png&#34; alt=&#34;Partioner selection screen 1&#34;&gt;
+&lt;img src=&#34;Partioner-selection-screen2.png&#34; alt=&#34;Partioner selection screen 2&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 3-4: Partioner selection screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select the hard drive that you want install opensuse:
+&lt;img src=&#34;Drive-selector-screen.png&#34; alt=&#34;Drive selector screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 5: Drive selector screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Add new partition selecting &lt;code&gt;add&lt;/code&gt; button:
+&lt;img src=&#34;Partition-screen.png&#34; alt=&#34;Partition screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 6: Partition screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Set &lt;code&gt;partition size&lt;/code&gt; to &lt;code&gt;8 MiB&lt;/code&gt;:
+&lt;img src=&#34;Partition-size-screen.png&#34; alt=&#34;Partition size screen (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 7: Partition size screen (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select &lt;code&gt;raw partition&lt;/code&gt;:
+&lt;img src=&#34;Partition-role-screen.png&#34; alt=&#34;Partition role screen (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 8: Partition role screen (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select file system as &lt;code&gt;Ext4&lt;/code&gt; (or other filesystem of your preference):
+&lt;img src=&#34;File-System-type.png&#34; alt=&#34;File System type (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 9: File System type (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select partition as &lt;code&gt;PReP Boot Partition&lt;/code&gt; and &lt;code&gt;next&lt;/code&gt;:
+&lt;img src=&#34;Partition-type.png&#34; alt=&#34;Partition type (Boot)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 10: Partition type (Boot)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The boot partition was create and now we will create O.S. partition, select &lt;code&gt;add&lt;/code&gt; and inside Patition size screen select &lt;code&gt;Maximum Size&lt;/code&gt;:
+&lt;img src=&#34;Partition-size-screen-2.png&#34; alt=&#34;Partition size screen (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 11: Partition size screen (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select &lt;code&gt;Operating System&lt;/code&gt; option:
+&lt;img src=&#34;Partition-role-screen-2.png&#34; alt=&#34;Partition role screen (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 12: Partition role screen (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select file system as &lt;code&gt;Ext4&lt;/code&gt; again (or other filesystem of your preference):
+&lt;img src=&#34;File-System-type-2.png&#34; alt=&#34;File System type (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 13: File System type (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Left selected &lt;code&gt;Linux Native&lt;/code&gt;:
+&lt;img src=&#34;Partition-type-2.png&#34; alt=&#34;Partition type (O.S)&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 14: Partition type (O.S)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Left &lt;code&gt;Mount device&lt;/code&gt; as &lt;code&gt;/&lt;/code&gt; and select &lt;code&gt;next&lt;/code&gt;:
+&lt;img src=&#34;Mount-point.png&#34; alt=&#34;Mount point&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 15: Mount point&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Partition configuration will look like this:
+&lt;img src=&#34;Final-partion-configuration.png&#34; alt=&#34;Final partion configuration&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 16: Final partion configuration&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We will receive warning message but we can ignore it and select &lt;code&gt;yes&lt;/code&gt;:
+&lt;img src=&#34;Warning-message.png&#34; alt=&#34;Warning message&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 17: Warning message&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;Next&lt;/code&gt; again:
+&lt;img src=&#34;Sumary-partition-screen.png&#34; alt=&#34;Sumary partition screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 18: Sumary partition screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Select your clock and time zone:
+&lt;img src=&#34;Clock-and-time-zone-screen.png&#34; alt=&#34;Clock and time zone screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 19: Clock and time zone screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Put you username and password:
+&lt;img src=&#34;Clock-and-time-zone-screen.png&#34; alt=&#34;Local user screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 20: Local user screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Accept instalation and install:
+&lt;img src=&#34;Summary-screen.png&#34; alt=&#34;Summary screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 21: Summary screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;Instalation-screen.png&#34; alt=&#34;Instalation screen&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 22: Instalation screen&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;preparing-image&#34;&gt;Preparing image&lt;/h2&gt;
+&lt;p&gt;Update all packages and install necessary ones (you can also uninstall unnecessary packages):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo zypper update
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo zypper install cloud-init growpart yast2-network yast2-services-manager acpid
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Remove hard-coded MAC address:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo cat /dev/null &amp;gt; /etc/udev/rules.d/70-persistent-net.rules
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Enable ssh and cloud-init:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable cloud-init
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable sshd
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Disable firewall:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl stop firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl disable firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Inside &lt;code&gt;/etc/default/grub&lt;/code&gt; file, set grub timeout to 0:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;GRUB_TIMEOUT=0
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;Grub-configuration.png&#34; alt=&#34;Grub configuration&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 23: Grub configuration&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Update grub:&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;sudo exec grub2-mkconfig -o /boot/grub2/grub.cfg &amp;#34;$@&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;only-for-opensuse-tumbleweed-lebe&#34;&gt;Only for openSUSE Tumbleweed Le/Be&lt;/h2&gt;
+&lt;p&gt;Opensuse Tumbleweed ppc64 Le/Be lacks some parameters on cloud-init.service, this causes instability on boot, which, sometimes, causes network connection errors. This problem was &lt;a href=&#34;https://bugzilla.opensuse.org/show_bug.cgi?id=1111441&#34;&gt;reported&lt;/a&gt; and hopefully will be solved when you read this tutorial.&lt;/p&gt;
+&lt;p&gt;Edit &lt;code&gt;cloud-init.service&lt;/code&gt; file:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo vim /etc/systemd/system/cloud-init.target.wants/cloud-init.service
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Add lines bellow after &lt;code&gt;After=systemd-networkd-wait-online.service&lt;/code&gt; line:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Requires&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;wicked.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;After&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;wicked.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;After&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;dbus.service
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;Conflicts&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;shutdown.target
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;Configuration-of-cloud-init.service.png&#34; alt=&#34;Configuration of cloud-init.service&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figure 24: Configuration of cloud-init.service&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Reload cloud-init service:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl restart cloud-init
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl daemon-reload
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Because Leap 42.3 ppc64Le&amp;rsquo;s configuration fits better for a cloud role, so we will replace cloud.cfg of Tumbleweed by Leap42.3&amp;rsquo;s cloud.cfg:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo vim /etc/cloud/cloud.cfg
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;script type=&#34;application/javascript&#34; src=&#34;https://gist.github.com/Igortorrente/6d770e47d589db89fe2f1b49218f1c58.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;cleaning-image&#34;&gt;Cleaning image&lt;/h2&gt;
+&lt;p&gt;Now delete all remaining data:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; ~/.bash_history &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; history -c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo su
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/wtmp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/btmp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/lastlog
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/run/utmp
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/auth.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; /var/log/kern.log
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cat /dev/null &amp;gt; ~/.bash_history &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; history -c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo poweroff
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;adding-to-openstack&#34;&gt;Adding to openstack&lt;/h2&gt;
+&lt;p&gt;And finaly add image to openstack:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;glance image-create --file openSUSE-Tumbleweed-ppc64le.qcow2 --container-format bare --disk-format qcow2 --property hw_video_model&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;vga --name &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;openSUSE Tumbleweed ppc64le&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If all the steps worked, you should see these messages at the next boot.
+&lt;img src=&#34;Boot.png&#34; alt=&#34;Boot&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Figura 25: Boot&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

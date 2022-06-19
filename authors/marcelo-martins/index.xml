@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Marcelo Martins | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/marcelo-martins/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/marcelo-martins/index.xml" rel="self" type="application/rss+xml" />
+    <description>Marcelo Martins</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 04 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Marcelo Martins</title>
+      <link>https://openpower.ic.unicamp.br/authors/marcelo-martins/</link>
+    </image>
+    
+    <item>
+      <title>Upgrading to OpenStack Train</title>
+      <link>https://openpower.ic.unicamp.br/post/upgrading-to-openstack-train/</link>
+      <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/upgrading-to-openstack-train/</guid>
+      <description>&lt;p&gt;Recently, we’ve upgraded Minicloud’s (a Power architecture based server) Openstack environment to it’s latest version (Openstack Train), and this post aims to tackle some of the issues which we’ve faced.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The Minicloud Environment:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Our server holds multiple machines of two Power architectures: Power8 and Power9 servers. As for our Openstack implementation, we use a Power8 to be the controller and the remaining machines are designated as compute nodes.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Preparations:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;There are some details to consider before upgrading, these mainly revolve around softwares and firmwares versions, as well as network architecture.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;As for firmware, make sure all your machines are up to date with the latest patches&lt;/strong&gt;, otherwise there can be unforeseen errors even if Openstack is correctly installed. An example of such errors is KVM’s safe cache capability which is not supported on older firmware versions.&lt;/p&gt;
+&lt;p&gt;Before starting, format all bare metal machines to make sure you’re getting a clean install (we’ve used the Ubuntu Server 18.04 as the OS for the server).** Software versions were picked considering Openstack dependencies** and the latest release available for power architecture.&lt;/p&gt;
+&lt;p&gt;As for the network, it won’t be addressed in this post, hence, if necessary, &lt;a href=&#34;https://alta3.com/&#34;&gt;Alta3 Research&lt;/a&gt; has a handy &lt;a href=&#34;https://www.youtube.com/watch?v=8FYgmM3tUCM&#34;&gt;playlist&lt;/a&gt; addressing this matter.&lt;/p&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;Note: avoid running an apt upgrade command after the environment is set, as some packages might break or lose it’s configurations, also, disable automatic package upgrades.&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Firmware Updates:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In case of Power machines, all you’ll need to realize an firmware update is located in &lt;a href=&#34;https://www.ibm.com/support/fixcentral/&#34;&gt;IBM’s Fix Central&lt;/a&gt;. Simply find the requested hardware info (&lt;em&gt;lshw&lt;/em&gt; command should do the job) and search for your machine model. After finding your model, inserting it’s serial number and selecting the latest fix, you will find a page with all software and instruction for the update.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Adjusting Simultaneous Multithreading:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;One of the main problems you’ll face with Power8 servers is the Simultaneous Multithreading (SMT) functionality. Essentially, SMT allows a better resource usage, but it can also cause errors. In our case, the SMT was completely disabled in P8 machines and set to 4 in P9 machines.&lt;/p&gt;
+&lt;p&gt;When running Openstack with SMT enabled on Power8, we dealt with VMs being allocated but remaining in a paused state as they were unable launch due to SMT configurations.&lt;/p&gt;
+&lt;p&gt;The following settings can be used to set a service with &lt;em&gt;systemd&lt;/em&gt; which will disable SMT on power machines:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=ppc64 set SMT off
+Before=libvirt-bin.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/sbin/ppc64_cpu --smt=off
+ExecStop=/usr/sbin/ppc64_cpu --smt=on
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Installation Checklist:&lt;/strong&gt; Here’s a helpful step by step installation checklist for an environment with multiple node:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Steps to Execute&lt;/th&gt;
+&lt;th&gt;Controller&lt;/th&gt;
+&lt;th&gt;Compute&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-networking.html&#34;&gt;Host networking&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-ntp.html&#34;&gt;Network Time Protocol (NTP)&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-packages.html&#34;&gt;OpenStack packages&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-sql-database.html&#34;&gt;SQL database&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-messaging.html&#34;&gt;Message queue&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-memcached.html&#34;&gt;Memcached&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/install-guide/environment-etcd.html&#34;&gt;Etcd&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/keystone/train/install/&#34;&gt;keystone&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/glance/train/install/&#34;&gt;glance&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/placement/train/install/&#34;&gt;placement&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/nova/train/install/&#34;&gt;nova&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/neutron/train/install/&#34;&gt;neutron&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;cross.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&#34;https://docs.openstack.org/horizon/train/install/&#34;&gt;horizon&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img src=&#34;check.png&#34; alt=&#34;&#34;&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Troubleshooting:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;In this section we’ll share some of the errors we had during installation and the solutions we found to each of them. Note that these errors are not specifically of POWER architecture installations.&lt;/p&gt;
+&lt;h4 id=&#34;mariadb-note&#34;&gt;MariaDB note:&lt;/h4&gt;
+&lt;p&gt;Some SQL commands were failing due to unknown reasons even with the correct dependencies. A solution we found for this issue was bumping our mariaDB version from 10.2 to 10.4.&lt;/p&gt;
+&lt;h4 id=&#34;apache--horizon-login&#34;&gt;Apache &amp;amp; Horizon Login:&lt;/h4&gt;
+&lt;p&gt;A small change to Horizon from the previous OpenStack release was the dashboard login page URL settings. Simply using &lt;strong&gt;&lt;!-- raw HTML omitted --&gt;/horizon&lt;/strong&gt; would redirect to the login page in previous versions. This might require some redirection tweaks in the Apache server configuration file.&lt;/p&gt;
+&lt;h4 id=&#34;virtual-interface-exception&#34;&gt;Virtual Interface Exception:&lt;/h4&gt;
+&lt;p&gt;When attempting to create a VM, the following error was presented by the Nova module: &lt;em&gt;VirtualInterfaceCreateException: Virtual Interface creation failed.&lt;/em&gt;&lt;br&gt;
+To fix this, we&lt;a href=&#34;https://ask.openstack.org/en/question/26938/virtualinterfacecreateexception-virtual-interface-creation-failed/&#34;&gt; followed the instructions from a post&lt;/a&gt; in which two lines of configurations are added to the &lt;em&gt;nova.conf&lt;/em&gt; file: &lt;strong&gt;vif_plugging_is_fatal: false&lt;/strong&gt; and &lt;strong&gt;vif_plugging_timeout: 0.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Good luck upgrading.&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Introducing Power Architecture&#39;s Assembly Language</title>
+      <link>https://openpower.ic.unicamp.br/post/assembly_introduction/</link>
+      <pubDate>Wed, 18 Dec 2019 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/post/assembly_introduction/</guid>
+      <description>&lt;p&gt;As programmers, we’re fairly used to high level coding and optimization, but we rarely work on lower level languages such as assembly. Even so, understanding these languages is essential for several reasons: optimization, portability, etc. Also, the standard learning languages for assembly tend to be either for Intel’s x86 and/or ARMv7 architectures, leaving aside many others.&lt;/p&gt;
+&lt;p&gt;In this post, we’ll be introducing the Power instruction set architecture (to be precise, the PowerPC 64-bit little-endian architecture) and walking through the initial steps for studying and analysing assembly code in Power. More specifically, the code which we’ll compile and analyse is a C program with a single function which returns one or minus one given a probability (which is passed as a function parameter) using C&amp;rsquo;s standard random number generator.&lt;/p&gt;
+&lt;h2 id=&#34;compiling-for-power-processors&#34;&gt;&lt;strong&gt;Compiling for Power Processors&lt;/strong&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Using a Power Machine&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The most simple and straightforward method for obtaining an assembler or binary code for Power architecture is using a Power machine. You can access the Minicloud website and request a free Power VM. Once you’ve setup the VM and installed GCC, all you have to do is compile it.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Unicamp-OpenPower/minicloud/wiki/Getting-Started-with-Minicloud&#34;&gt;Setting Up a Power VM at Minicloud&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Using GCC Packages&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To install a GCC version which can cross compile for power machines we can simply use &lt;code&gt;sudo apt install gcc-7-powerpc64le-linux-gnu&lt;/code&gt;.
+The &lt;em&gt;powerpc64le-linux-gnu&lt;/em&gt; suffix is what we call target Here we’re specifying that we want to install GCC v7 for powerpc66le architecture which  runs linux-gnu OS. Upon installing the cross compiler we can get the assembly code using &lt;code&gt;powerpc64le-linux-gnu-gcc program.c -S&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;overview-of-the-c-code&#34;&gt;&lt;strong&gt;Overview of the C code&lt;/strong&gt;&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-C&#34; data-lang=&#34;C&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;time.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rand_p&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; p) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; r &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;)rand()&lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;)RAND_MAX;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (r &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; p) &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;; &lt;span style=&#34;color:#75715e&#34;&gt;//Returns with probability p
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;else&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;      &lt;span style=&#34;color:#75715e&#34;&gt;//Returns with probability (1-p)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;} 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Understanding the C code is quite trivial. We start with a variable ‘p’ passed as a parameter, and then we instantiate a variable ‘r’ with the casted result of the division of rand() by RAND_MAX. To wrap it up, we test if ‘r’ is smaller than ‘p’. If so, the return value is 1, and -1 otherwise. Should also be noted that the code only works because &lt;em&gt;rand()&lt;/em&gt; returns a random value between [0,RAND_MAX] with uniform probability. Now let us see if we can establish a similar analysis but with the assembly code.&lt;/p&gt;
+&lt;h2 id=&#34;overview-of-the-assembly-code&#34;&gt;&lt;strong&gt;Overview of the Assembly Code&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Since we’re starting with the basics, we’ll be skipping some lines of code which aren&amp;rsquo;t necessary for grasping the general idea of what’s happening within the program.
+We can split the code into three main blocks: directives, function call handling and the program logic.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;sectioned_asm.png&#34; alt=&#34;Assembly Code&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The &lt;a href=&#34;http://www.idc-online.com/technical_references/pdfs/electronic_engineering/Assembler_Directives.pdf&#34;&gt;directives&lt;/a&gt; (Red) assist in guiding the assembly process as well as inserting data.&lt;/li&gt;
+&lt;li&gt;Functions calls demands a series of conventions (Blue) to allow the proper integration of the code within multiple environments. These are defined by the Power’s &lt;a href=&#34;http://www.idc-online.com/technical_references/pdfs/electronic_engineering/Assembler_Directives.pdf&#34;&gt;ABI&lt;/a&gt; (Application&amp;rsquo;s Binary Interface), which has a dedicated document for it’s description.&lt;/li&gt;
+&lt;li&gt;The program logic (Black) is where the code we’ve written is translated to the assembler code. This is the section which we’ll be analysing here.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;preliminary-notes&#34;&gt;&lt;strong&gt;Preliminary Notes&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;Before we can dive in, there&amp;rsquo;s a few concepts which must be known beforehand to fully understand the assembly code:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Register Types:&lt;/strong&gt; There are multiple register types within the Power architecture, the following initials will be used:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GX stands for General purpose register X.&lt;/li&gt;
+&lt;li&gt;FX stands for Floating point register X.&lt;/li&gt;
+&lt;li&gt;LR and CR refers to Linked Register and Condition Register respectively. These are considered Special Registers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Special Registers:&lt;/strong&gt; Some registers have designated functions within  the architecture, such as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;CR&lt;/strong&gt; which contains 8 adressable fields (with 4 bits each) for saving the result of comparison instructions.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;LR&lt;/strong&gt; keeps the return address of a function call when the instruction BL (Branch Linked) is used, and can be used to return to the calling point with the instruction BLR (Branch to Linked Register).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Parameters and Return Registers:&lt;/strong&gt; The Power ABI defines a set of registers (both GX and FX types) which ares used as variables when returning values or passing parameters to functions. The registers G[3,10] and F[1,13] are such registers. &lt;!-- raw HTML omitted --&gt; &lt;em&gt;Example:&lt;/em&gt; if we have &lt;code&gt;f(int w, int x, float y, double z)&lt;/code&gt;, the registers G3, G4, F1 and F2 will contain w, x, y and z respectively when &lt;code&gt;f&lt;/code&gt; is called.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Volatile and Nonvolatile Registers:&lt;/strong&gt; When a function is called, by the ABI&amp;rsquo;s specifications, &lt;em&gt;nonvolatile&lt;/em&gt; registers are presumed to remain intact, meaning that their values either won&amp;rsquo;t change or will be restored by any called function. On the other hand, &lt;em&gt;volatile&lt;/em&gt; registers must be saved by the caller if necessary, since these can be altered at will by any called function.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Table of Contents (TOC):&lt;/strong&gt; For now, all we need to know is that &lt;code&gt;RAND_MAX&lt;/code&gt; is kept here, and to access it we&amp;rsquo;ll need the address of the table plus an offset. The directives below &lt;code&gt;.LCO:&lt;/code&gt; are responsible for defining the offset.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;Observation:&lt;/em&gt; These informations can be found within the &lt;a href=&#34;https://openpowerfoundation.org/?resource_lib=power-isa-version-3-0&#34;&gt;Power ISA&lt;/a&gt; and &lt;a href=&#34;http://www.idc-online.com/technical_references/pdfs/electronic_engineering/Assembler_Directives.pdf&#34;&gt;Power ABI&lt;/a&gt; specifications.&lt;/p&gt;
+&lt;h2 id=&#34;analysing-the-assembly-code&#34;&gt;&lt;strong&gt;Analysing the Assembly Code&lt;/strong&gt;&lt;/h2&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;[...]
+ 7  rand_p: 
+ 8  .LCF0:
+ 9  0:	
+10      addis 2,12,.TOC.-.LCF0@ha
+11   	addi 2,2,.TOC.-.LCF0@l
+[...]
+18      stfd 1,40(31)
+19   	bl rand
+20   	nop
+21  	mr 9,3
+22  	mtvsrd 32,9
+23 	    xscvsxddp 12,32
+24  	addis 9,2,.LC0@toc@ha
+25  	addi 9,9,.LC0@toc@l
+26  	lfd 0,0(9)
+27   	fdiv 0,12,0
+28  	stfd 0,56(31)
+29  	lfd 12,56(31)
+30  	lfd 0,40(31)
+31  	fcmpu 7,12,0
+32      bnl 7,.L6
+33  	li 9,1
+34  	b .L4
+35  .L6:
+36      li 9,-1
+37  .L4:
+38      mr 3,9
+39	    addi 1,31,80
+40	    ld 0,16(1)
+41	    mtlr 0
+42	    ld 31,-8(1)
+43	    blr
+[...]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;First, let’s locate where is the parameter ‘p’. Since ‘p’ is a Float and it’s also the single parameter passed, it’s located at FPR1 (as specified by the ABI).&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;lines 10 and 11&lt;/strong&gt; initialize the &lt;strong&gt;TOC base pointer at G2&lt;/strong&gt; using the ADDIS and ADD instructions. We&amp;rsquo;ll use this value later for obtaining &lt;code&gt;RAND_MAX&lt;/code&gt; from memory. Let’s ignore the &lt;code&gt;.localentry&lt;/code&gt; directive that follows.&lt;/p&gt;
+&lt;p&gt;At line 19, the compiler calls the &lt;em&gt;rand()&lt;/em&gt; function with the BL instruction, since &lt;strong&gt;&lt;em&gt;rand()&lt;/em&gt; returns an integer, it’s return value will be placed at G3 (as specified by the ABI) and will be converted to a double at lines 22 and 23&lt;/strong&gt; which involves more complicated instructions. Also, in these lines, the value in &lt;strong&gt;G3 is transferred to F12&lt;/strong&gt;. Note that &lt;strong&gt;FPR1 is saved at line 17&lt;/strong&gt;, since FPR1 is a volatile register and can be lost during &lt;em&gt;rand()&lt;/em&gt;&amp;rsquo;s execution. The NOP instruction does literally nothing, but it does have a purpose  in the bigger picture.&lt;/p&gt;
+&lt;p&gt;At the next step, the compiler will load RAND_MAX. Lines 24 and 25 adds an offset to the TOC pointer (G2) and saves the result at G9. Now, G9 withholds the absolute address of RAND_MAX’s value. To load RAND_MAX’s value, we can use LFD (line 26) using G9 as the offset and &lt;strong&gt;setting G0 as RAND_MAX&lt;/strong&gt;. Note that the LFD instruction interprets the value 0, not as the register G0, but as the number 0, as describes the ISA.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We have &lt;em&gt;rand()&lt;/em&gt;’s return value and RAND_MAX constant&lt;/strong&gt;, both at floating point registers, therefore, we can finally &lt;strong&gt;divide these values&lt;/strong&gt; to initialize the variable ‘r’. This division is observed at line 27 by the FDIV instruction, where F12 is divided by F0 and the result saved in F0. In other words, &lt;strong&gt;F0 now stores the variable ‘r’ of our C program&lt;/strong&gt;. In line 28 and 29, the value of &lt;strong&gt;F0 is stored and then loaded in F12&lt;/strong&gt;, probably due to poor optimization.&lt;/p&gt;
+&lt;p&gt;Since F1 might have change during &lt;em&gt;rand()&lt;/em&gt;’s execution, we must restore F1 with its saved value by loading it from the memory address we saved it in line 18. This can be observed at line 30, where &lt;strong&gt;the saved value of our parameter ‘p’ is loaded into F0&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;We finally have &lt;code&gt;r&lt;/code&gt; in F12 and &lt;code&gt;p&lt;/code&gt; in F0&lt;/strong&gt;, meaning that these values can be compared.The instruction FCMPU at line 31 is responsible for &lt;strong&gt;comparing F12 with F0 and storing their relation at CR&amp;rsquo;s 7th field&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;At line 32, the if-else structure is built. First, a &lt;strong&gt;BNL instruction checks if F12 is NOT smaller than F0&lt;/strong&gt; (by checking CR&amp;rsquo;s 7th field) and, if true, jumps to label .L6 loading -1 into G9, otherwise does not branch and loads 1 at G9. Note that the conditional here (‘r’ &amp;gt;=  ‘p’) is the negation of the one present in the C code.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Finally, we have the function’s return value at G9&lt;/strong&gt;. To properly end the function call, there are few rules established by the ABI which should be followed, but we won&amp;rsquo;t cover all of them here. For now, we’ll focus on two steps: &lt;strong&gt;Moving result from G9 to G3 and loading the return address&lt;/strong&gt;. The first one is relevant because the caller function will consider that our function’s return value is at G3, therefore, G9 is moved to G3 at line 38 by the MR instruction. The second step ensures that we return to the point where our function was called. For this, we’ll restore the value of the LR register at line 40 using the MTLR instruction.&lt;/p&gt;
+&lt;p&gt;To end our function’s execution, BLR is invoked at line 43 and the function call ends.&lt;/p&gt;
+&lt;h2 id=&#34;conclusion&#34;&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;&lt;/h2&gt;
+&lt;p&gt;As short and simple a C program is, when analysed by it’s assembly code, can be quite complex. As seen here, what can be described in a paragraph at high level code, can turn to a long text at low level code (not to mention that we ignored a large portion of the code). The increased complexity is mostly due to the several elements which are omitted for the programmers sake when using high level languages, but this comes at a cost. These instructions can be combined in multiple ways, and the optimal way to do so depends on the program, it’s compilation and the host architecture, resulting in countless combinations which makes the automated optimization process extremely complicated. So overall, understanding such low level code and it’s host architecture is relevant for writing efficient programs.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

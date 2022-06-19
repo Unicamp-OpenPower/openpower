@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="generator" content="Source Themes Academic 4.4.0">
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+  
+  
+    
+  
+  <meta name="description" content="In this guide, we will show how to setup a public FTP server with directory access control and disk quota per-user. We used Ubuntu Server 16.04, running on ppc64le architecture, but it should work on other architectures as well, because no exclusive software was used, only open source software.
+Disk space You will need an ext4 partition with enough space, that can be mounted on / or on /var/www. If you need help, look at this tutorial.">
+
+  
+  <link rel="alternate" hreflang="en-us" href="https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/">
+
+  
+
+
+  
+
+  
+  
+  
+  <meta name="theme-color" content="#2962ff">
+  
+
+  
+  
+  
+  
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css" integrity="sha256-uFVgMKfistnJAfoCUQigIl+JfUaP47GrRKjf6CTPVmw=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" integrity="sha256-ygkqlh3CYSUri3LhQxzdcm0n1EQvH2Y+U5S2idbLtxs=" crossorigin="anonymous">
+
+    
+    
+    
+      
+    
+    
+      
+      
+        
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css" crossorigin="anonymous" title="hl-light">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/dracula.min.css" crossorigin="anonymous" title="hl-dark" disabled>
+        
+      
+    
+
+    
+
+    
+
+  
+
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono&display=swap">
+  
+
+  
+  
+  
+  <link rel="stylesheet" href="/css/academic.min.e8b81181bd18f58d8990b40dc8a5e4b8.css">
+
+  
+
+  
+  
+  
+
+  
+
+  <link rel="manifest" href="/index.webmanifest">
+  <link rel="icon" type="image/png" href="/img/icon-32.png">
+  <link rel="apple-touch-icon" type="image/png" href="/img/icon-192.png">
+
+  <link rel="canonical" href="https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/">
+
+  
+  
+  
+  
+    
+    
+  
+  
+  <meta property="twitter:card" content="summary">
+  
+  <meta property="og:site_name" content="OpenPOWER@UNICAMP">
+  <meta property="og:url" content="https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/">
+  <meta property="og:title" content="Setting up a FTP Server with Access List and Disk Quota | OpenPOWER@UNICAMP">
+  <meta property="og:description" content="In this guide, we will show how to setup a public FTP server with directory access control and disk quota per-user. We used Ubuntu Server 16.04, running on ppc64le architecture, but it should work on other architectures as well, because no exclusive software was used, only open source software.
+Disk space You will need an ext4 partition with enough space, that can be mounted on / or on /var/www. If you need help, look at this tutorial."><meta property="og:image" content="https://openpower.ic.unicamp.br/img/icon-192.png">
+  <meta property="twitter:image" content="https://openpower.ic.unicamp.br/img/icon-192.png"><meta property="og:locale" content="en-us">
+  
+    
+      <meta property="article:published_time" content="2018-11-05T00:00:00&#43;00:00">
+    
+    <meta property="article:modified_time" content="2018-11-05T00:00:00&#43;00:00">
+  
+
+  
+
+
+  
+
+
+
+
+
+  <title>Setting up a FTP Server with Access List and Disk Quota | OpenPOWER@UNICAMP</title>
+
+</head>
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" >
+
+  <aside class="search-results" id="search">
+  <div class="container">
+    <section class="search-header">
+
+      <div class="row no-gutters justify-content-between mb-3">
+        <div class="col-6">
+          <h1>Search</h1>
+        </div>
+        <div class="col-6 col-search-close">
+          <a class="js-search" href="#"><i class="fas fa-times-circle text-muted" aria-hidden="true"></i></a>
+        </div>
+      </div>
+
+      <div id="search-box">
+        
+        <input name="q" id="search-query" placeholder="Search..." autocapitalize="off"
+        autocomplete="off" autocorrect="off" spellcheck="false" type="search">
+        
+      </div>
+
+    </section>
+    <section class="section-search-results">
+
+      <div id="search-hits">
+        
+      </div>
+
+    </section>
+  </div>
+</aside>
+
+
+  
+<nav class="navbar navbar-light fixed-top navbar-expand-lg py-0 compensate-for-scrollbar" id="navbar-main">
+  <div class="container">
+
+    
+      <a class="navbar-brand" href="/">OpenPOWER@UNICAMP</a>
+      
+      <button type="button" class="navbar-toggler" data-toggle="collapse"
+              data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fas fa-bars"></i></span>
+      </button>
+      
+
+    
+    <div class="collapse navbar-collapse" id="navbar">
+
+      
+      
+      <ul class="navbar-nav mr-auto">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#projects"><span>Projects</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#talks"><span>Talks</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+        
+        
+        
+        
+        
+          
+          
+          
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#posts"><span>Posts</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpower.ic.unicamp.br/minicloud/" target="_blank" rel="noopener"><span>Minicloud</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="https://oplab9.parqtec.unicamp.br/" target="_blank" rel="noopener"><span>FTP</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+            
+          
+        
+
+        
+        
+        
+        
+        
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="http://openpowerfoundation.org/" target="_blank" rel="noopener"><span>OpenPOWER Foundation</span></a>
+        </li>
+
+        
+        
+
+      
+      </ul>
+      <ul class="navbar-nav ml-auto">
+      
+
+        
+
+        
+        <li class="nav-item">
+          <a class="nav-link js-search" href="#"><i class="fas fa-search" aria-hidden="true"></i></a>
+        </li>
+        
+
+        
+
+        
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+
+  <article class="article" itemscope itemtype="http://schema.org/Article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1 itemprop="name">Setting up a FTP Server with Access List and Disk Quota</h1>
+
+  
+
+  
+    
+
+
+
+<meta content="2018-11-05 00:00:00 &#43;0000 UTC" itemprop="datePublished">
+<meta content="2018-11-05 00:00:00 &#43;0000 UTC" itemprop="dateModified">
+
+<div class="article-metadata">
+
+  
+  
+  
+  
+  <div>
+    
+
+
+
+  <span itemprop="author name" itemtype="http://schema.org/Person"><a href="/authors/lcnzg/">Luciano Zago</a></span>
+
+  </div>
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    <time>Nov 5, 2018</time>
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+  
+    
+<div class="share-box" aria-hidden="true">
+  <ul class="share">
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://twitter.com/intent/tweet?url=https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/&amp;text=Setting%20up%20a%20FTP%20Server%20with%20Access%20List%20and%20Disk%20Quota" target="_blank" rel="noopener" class="share-btn-twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.facebook.com/sharer.php?u=https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/&amp;t=Setting%20up%20a%20FTP%20Server%20with%20Access%20List%20and%20Disk%20Quota" target="_blank" rel="noopener" class="share-btn-facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="mailto:?subject=Setting%20up%20a%20FTP%20Server%20with%20Access%20List%20and%20Disk%20Quota&amp;body=https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/" target="_blank" rel="noopener" class="share-btn-email">
+          <i class="fas fa-envelope"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://www.linkedin.com/shareArticle?url=https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/&amp;title=Setting%20up%20a%20FTP%20Server%20with%20Access%20List%20and%20Disk%20Quota" target="_blank" rel="noopener" class="share-btn-linkedin">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://web.whatsapp.com/send?text=Setting%20up%20a%20FTP%20Server%20with%20Access%20List%20and%20Disk%20Quota%20https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+      </li>
+    
+      
+      
+      
+        
+      
+      
+      
+      <li>
+        <a href="https://service.weibo.com/share/share.php?url=https://openpower.ic.unicamp.br/post/ftp-server-setup-with-acl-and-quota/&amp;title=Setting%20up%20a%20FTP%20Server%20with%20Access%20List%20and%20Disk%20Quota" target="_blank" rel="noopener" class="share-btn-weibo">
+          <i class="fab fa-weibo"></i>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+</div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style" itemprop="articleBody">
+      <p>In this guide, we will show how to setup a public FTP server with directory access control and disk quota per-user.
+We used Ubuntu Server 16.04, running on ppc64le architecture, but it should work on other architectures as well, because no exclusive software was used, only open source software.</p>
+<h1 id="disk-space">Disk space</h1>
+<p>You will need an <code>ext4</code> partition with enough space, that can be mounted on <code>/</code> or on <code>/var/www</code>. If you need help, look at <a href="https://www.howtogeek.com/106873/how-to-use-fdisk-to-manage-partitions-on-linux/">this tutorial</a>.</p>
+<p>After that, create the directories that will be used in the web and ftp servers:</p>
+<pre tabindex="0"><code>sudo mkdir /var/www/html
+sudo mkdir /var/www/html/pub
+</code></pre><p>Set the permissions to these directories:</p>
+<pre tabindex="0"><code>sudo chown nobody:nogroup /var/www/html
+sudo chmod a-w /var/www/html
+</code></pre><h1 id="http-server-apache">HTTP Server (apache)</h1>
+<p>We intend that our files can be accessed through a web browser. In that case, we will need a HTTP Server, like Apache.</p>
+<h2 id="installation">Installation</h2>
+<p>Install the package <code>apache2</code>, with the following commands:</p>
+<pre tabindex="0"><code>sudo apt-get update
+sudo apt-get install apache2
+</code></pre><p>Restart the service to make sure that the web server works:</p>
+<pre tabindex="0"><code>sudo systemctl restart apache2
+</code></pre><h2 id="content">Content</h2>
+<p>You can create a welcome page in HTML with links to <code>/pub</code> folder, to show the files though the browser. Your page <code>index.html</code> need to be in the directory <code>/var/www/html</code>.</p>
+<p>For reference, you can look at our web page in <a href="https://oplab9.parqtec.unicamp.br/">this link</a>.</p>
+<h1 id="ssl-certificate-certbot">SSL Certificate (certbot)</h1>
+<p>Certbot is a client that deploy free SSL certificates from Let&rsquo;s Encrypt to any web server.
+If you already have a SSL certificate, you can <a href="#firewall-ufw"><em>skip this part</em></a>.</p>
+<h2 id="installation-1">Installation</h2>
+<p>Run these commands to install the package <code>certbot</code>:</p>
+<pre tabindex="0"><code>sudo apt-get update
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install python-certbot-apache
+</code></pre><h2 id="configuration">Configuration</h2>
+<p>We need to configure the web server to work with the certificate. Run this command to use the Certbot certificate with the Apache web server:</p>
+<pre tabindex="0"><code>sudo certbot --apache
+</code></pre><p>The certificate expires in 90 days, so you need to renew this certificate periodically. To schedule the execution of <code>certobot renew</code> command, we will use <code>cronjob</code>, a time-base job scheduler. To use the scheduler, run this command:</p>
+<pre tabindex="0"><code>sudo crontab -e
+</code></pre><p>And add the following line in the end of the file:</p>
+<pre tabindex="0"><code>0 0 * * * sudo certbot renew
+</code></pre><p>Save the file.
+After that, the renew command is scheduled to run everyday.</p>
+<h1 id="firewall-ufw">Firewall (ufw)</h1>
+<p>The UFW is an easy frontend interface for iptables. We need to configure the firewall to work with the other installed software.</p>
+<h2 id="installation-2">Installation</h2>
+<p>Install the package <code>ufw</code> to manage the firewall, with the following commands:</p>
+<pre tabindex="0"><code>sudo apt-get update
+sudo apt-get install ufw
+</code></pre><h2 id="configuration-1">Configuration</h2>
+<p>Forwarding the ports:</p>
+<pre tabindex="0"><code>sudo ufw allow 20/tcp
+sudo ufw allow 21/tcp
+sudo ufw allow 990/tcp
+sudo ufw allow 60000:60500/tcp
+sudo ufw allow ssh
+sudo ufw allow &#39;Apache Full&#39;
+sudo ufw status
+</code></pre><p>Restart to conclude the steps:</p>
+<pre tabindex="0"><code>sudo ufw disable
+sudo ufw enable
+</code></pre><h1 id="ftp-server-vsftpd">FTP Server (vsftpd)</h1>
+<p>We will use the vsftpd software to run the FTP server, the default in the Ubuntu, CentOS, Fedora, NimbleX, Slackware and RHEL Linux distributions.</p>
+<h2 id="installation-3">Installation</h2>
+<p>Install the package <code>vsftpd</code> with the following command:</p>
+<pre tabindex="0"><code>sudo apt-get install vsftpd
+</code></pre><h2 id="configuration-2">Configuration</h2>
+<p>Backup your original file:</p>
+<pre tabindex="0"><code>sudo cp /etc/vsftpd.conf /etc/vsftpd.orig
+</code></pre><p>Edit the configuration file with the following command:</p>
+<pre tabindex="0"><code>sudo nano /etc/vsftpd.conf
+</code></pre><p>Example config file:
+<script type="application/javascript" src="https://gist.github.com/lcnzg/233a7b406f2528cb0d517fc6fbeed5c9.js"></script>
+</p>
+<p>In the previous config, we allowed read permission for anonymous.</p>
+<p>To create the userlist that have permission to access the FTP server, and allow the anonymous user, use the following commands:</p>
+<pre tabindex="0"><code>sudo touch /etc/vsftpd.userlist
+sudo echo &#34;anonymous&#34; &gt;&gt; /etc/vsftpd.userlist
+</code></pre><h2 id="disabling-shell-for-ftp-users">Disabling shell for ftp users</h2>
+<p>With these commands, we will create a new shell with no functionalities, to restrict the access of the FTP users:</p>
+<pre tabindex="0"><code>sudo touch /bin/ftponly
+sudo echo -e &#39;#!/bin/sh\necho &#34;This account is limited to FTP access only.&#34;&#39; &gt;&gt; /bin/ftponly
+sudo chmod a+x /bin/ftponly
+sudo echo &#34;/bin/ftponly&#34; &gt;&gt; /etc/shells
+</code></pre><p>Restart the FTP server service:</p>
+<pre tabindex="0"><code>sudo systemctl restart vsftpd
+</code></pre><h1 id="disk-quota">Disk Quota</h1>
+<p>We will use a disk quota to limit the disk space used by the FTP users.</p>
+<h2 id="installation-4">Installation</h2>
+<p>Install the package <code>quota</code> with the following command:</p>
+<pre tabindex="0"><code>sudo apt install quota
+</code></pre><h2 id="configuration-3">Configuration</h2>
+<p>Edit the <code>fstab</code> file and add <code>usrquota</code> option in the partition you chose earlier:</p>
+<pre tabindex="0"><code>sudo nano /etc/fstab
+</code></pre><p>Remount partition and enable the quota:</p>
+<pre tabindex="0"><code>sudo mount -o remount /var/www
+sudo quotacheck -cum /var/www
+sudo quotaon /var/www
+</code></pre><h2 id="defining-a-default-quota">Defining a default quota</h2>
+<p>Create a new user to copy the quota settings for the new users:</p>
+<pre tabindex="0"><code>sudo adduser ftpuser
+</code></pre><p>Insert a password.</p>
+<p>After that, you will need to edit the quota of <code>ftpuser</code> with this command:</p>
+<pre tabindex="0"><code>sudo edquota ftpuser
+</code></pre><p>Put the values of soft and hard quota in these columns.</p>
+<p>Example: 10GB: 10000000 and 10485760 in block quota session.</p>
+<p>Let 0 if you don&rsquo;t want to have a limit.</p>
+<p>Set the default quota user as <code>ftpuser</code> to copy a quota for the new users:</p>
+<pre tabindex="0"><code>sudo sed -i -e &#39;s/.*QUOTAUSER=&#34;&#34;.*/QUOTAUSER=&#34;ftpuser&#34;/&#39; /etc/adduser.conf
+</code></pre><h2 id="commands">Commands</h2>
+<p>There are a few commands useful for controlling the quota:</p>
+<ul>
+<li><code>quota user</code> shows the <code>user</code> quota.</li>
+<li><code>repquota -a</code> shows the general quota report.</li>
+<li><code>edquota user</code> to edit <code>user</code> quota.</li>
+</ul>
+<h1 id="access-list-acl">Access List (acl)</h1>
+<p>We will use Access List Control, or ACL, to have a better control of file permissions. With ACL we can set different file permissions, in different directories, to each FTP user.</p>
+<h2 id="installation-5">Installation</h2>
+<p>Install the package <code>acl</code> with the following command:</p>
+<pre tabindex="0"><code>sudo apt install acl
+</code></pre><h2 id="configuration-4">Configuration</h2>
+<p>Edit the <code>fstab</code> file and add <code>acl</code> option in the <code>/var/www</code> partition:</p>
+<pre tabindex="0"><code>sudo nano /etc/fstab
+</code></pre><p>Remount the partition to apply the changes:</p>
+<pre tabindex="0"><code>sudo mount -o remount /var/www
+</code></pre><h2 id="commands-1">Commands</h2>
+<p>The commands used to enable write permission to <code>$USER</code> in <code>$DIRECTORY</code> were:</p>
+<pre tabindex="0"><code>setfacl -d -R -m u:$USER:rwX $DIRECTORY
+setfacl -R -m u:$USER:rwX $DIRECTORY
+</code></pre><h1 id="adding-new-users">Adding new users</h1>
+<p>We created the following script to manage the creation of new users:
+<script type="application/javascript" src="https://gist.github.com/lcnzg/54a44d87babcf3f33523fbcae152c47f.js"></script>
+</p>
+<pre tabindex="0"><code>chmod +x create_user.sh
+</code></pre><p>Add new users by running the script this way:</p>
+<pre tabindex="0"><code>sudo ./create_user.sh &#39;user&#39; &#39;pass&#39; &#39;directory&#39;
+</code></pre><p><strong>Directory instructions:</strong></p>
+<ul>
+<li>for the root of FTP directory, use <code>.</code> .</li>
+<li>for other directories, don&rsquo;t write the initial and final slashes (ex: ppc64el/debian for /www/html/pub/ppc64el/debian/).</li>
+</ul>
+<p>Should any problem with file permissions ocurr, use the <code>fix_acl.sh</code> script, that will remake the permissions based on <code>acl.list</code> file.</p>
+<script type="application/javascript" src="https://gist.github.com/lcnzg/51258738564989bc8e2b0b7d25397b02.js"></script>
+
+<p>Add execute permission to the script:</p>
+<pre tabindex="0"><code>chmod +x fix_acl.sh
+</code></pre><p>Run the script with sudo, this way:</p>
+<pre tabindex="0"><code>sudo ./fix_acl.sh
+</code></pre><h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-16-04">https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-16-04</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server">https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server</a></li>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04">https://www.digitalocean.com/community/tutorials/how-to-set-up-vsftpd-for-a-user-s-directory-on-ubuntu-16-04</a></li>
+</ul>
+
+    </div>
+
+    
+
+
+    
+
+
+
+    
+      
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+  
+
+
+
+
+
+  
+  
+  
+  
+  <div class="media author-card" itemscope itemtype="http://schema.org/Person">
+    
+      
+      <img class="portrait mr-3" src="/authors/lcnzg/avatar_huc024236a7014d83cde3583e95c9a2e39_78351_250x250_fill_q90_lanczos_center.jpg" itemprop="image" alt="Avatar">
+    
+
+    <div class="media-body">
+      <h5 class="card-title" itemprop="name"><a href="/authors/lcnzg/">Luciano Zago</a></h5>
+      <h6 class="card-subtitle">Computer Engineering undergrad student</h6>
+      <p class="card-text" itemprop="description">I&rsquo;m an undergrad student in Computer Engineering at UNICAMP that loves programming and solving problems.</p>
+      <ul class="network-icon" aria-hidden="true">
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://lucianozago.com/" target="_blank" rel="noopener">
+              <i class="fas fa-link"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://github.com/lcnzg" target="_blank" rel="noopener">
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+        
+          
+          
+          
+            
+          
+          
+          
+          
+          
+            
+          
+          <li>
+            <a itemprop="sameAs" href="https://twitter.com/lcnzg" target="_blank" rel="noopener">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+
+      
+      
+    
+
+    
+
+    
+
+
+  </div>
+</article>
+
+      
+
+    
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" integrity="sha256-X5PoE3KU5l+JcX+w09p/wHl9AzK333C4hJ2I9S5mD4M=" crossorigin="anonymous"></script>
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js" integrity="sha256-aYTdUrn6Ow1DDgh5JTc3aDGnnju48y/1c8s1dgkYPQ8=" crossorigin="anonymous"></script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/r.min.js"></script>
+        
+      
+
+      
+      
+    
+
+    
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    
+    
+    <script>
+      const search_index_filename = "/index.json";
+      const i18n = {
+        'placeholder': "Search...",
+        'results': "results found",
+        'no_results': "No results found"
+      };
+      const content_type = {
+        'post': "Posts",
+        'project': "Projects",
+        'publication' : "Publications",
+        'talk' : "Talks"
+        };
+    </script>
+    
+
+    
+    
+
+    
+    
+    <script id="search-hit-fuse-template" type="text/x-template">
+      <div class="search-hit" id="summary-{{key}}">
+      <div class="search-hit-content">
+        <div class="search-hit-name">
+          <a href="{{relpermalink}}">{{title}}</a>
+          <div class="article-metadata search-hit-type">{{type}}</div>
+          <p class="search-hit-description">{{snippet}}</p>
+        </div>
+      </div>
+      </div>
+    </script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.2.1/fuse.min.js" integrity="sha256-VzgmKYmhsGNNN4Ph1kMW+BjoYJM2jV5i4IlFoeZA9XI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    
+    
+    
+    <script src="/js/academic.min.9224c1df7774818c46d3c5196c37127b.js"></script>
+
+    
+
+
+
+
+
+
+  
+  <div class="container">
+    <footer class="site-footer">
+  
+  <p class="powered-by">
+    
+      <a href="/privacy/">Privacy Policy</a>
+    
+    
+       &middot; 
+      <a href="/terms/">Terms of Service</a>
+        
+  </p>
+  
+
+  <p class="powered-by">
+    
+
+    Powered by the
+    <a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener">Academic theme</a> for
+    <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a>.
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" id="back_to_top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+</footer>
+
+  </div>
+  
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

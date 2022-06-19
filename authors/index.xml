@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Authors | OpenPOWER@UNICAMP</title>
+    <link>https://openpower.ic.unicamp.br/authors/</link>
+      <atom:link href="https://openpower.ic.unicamp.br/authors/index.xml" rel="self" type="application/rss+xml" />
+    <description>Authors</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sun, 19 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>https://openpower.ic.unicamp.br/img/icon-192.png</url>
+      <title>Authors</title>
+      <link>https://openpower.ic.unicamp.br/authors/</link>
+    </image>
+    
+    <item>
+      <title>Guilherme Dobins</title>
+      <link>https://openpower.ic.unicamp.br/authors/guilhermedobins/</link>
+      <pubDate>Sun, 19 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/guilhermedobins/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m a Computer Engineering undergrad student at UNICAMP who is passionate about programming and learning more about technology related subjects.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Iago Caran Aquino</title>
+      <link>https://openpower.ic.unicamp.br/authors/iagocaran/</link>
+      <pubDate>Sat, 02 Apr 2022 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/iagocaran/</guid>
+      <description>&lt;p&gt;I’m a Computer Engineering undergrad student at UNICAMP interested in Computer Architecture and Design.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Júnior Santos</title>
+      <link>https://openpower.ic.unicamp.br/authors/jr-santos/</link>
+      <pubDate>Sat, 04 Dec 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/jr-santos/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m an undergrad student in Computer Science at UNICAMP that loves GNU/Linux and programming.&lt;/p&gt;
+&lt;p&gt;I work with Open Souce software portability for the Power architecture, As well as making these packages available to the OpenPower community. I also worked with OpenStack, configuring and installing a public cloud service called Minicloud.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Matheus Fernandes</title>
+      <link>https://openpower.ic.unicamp.br/authors/matheuscod/</link>
+      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/matheuscod/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m an undergrad student in Computer Engineering at UNICAMP.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Julio Kiyoshi</title>
+      <link>https://openpower.ic.unicamp.br/authors/juliokiyoshi/</link>
+      <pubDate>Fri, 09 Apr 2021 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/juliokiyoshi/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m an undergrad student in Computer Engineering at UNICAMP.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Vinicius Couto Espindola</title>
+      <link>https://openpower.ic.unicamp.br/authors/vcouto/</link>
+      <pubDate>Tue, 14 Apr 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/vcouto/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m an undergrad student in Computer Engineering at UNICAMP.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Luciano Zago</title>
+      <link>https://openpower.ic.unicamp.br/authors/lcnzg/</link>
+      <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/lcnzg/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m an undergrad student in Computer Engineering at UNICAMP that loves programming and solving problems.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;ve designed a solution to distribute POWER builds worldwide, along with some CI recipes to build Open Source software. I also worked with OpenStack, configuring and installing a public cloud service called Minicloud.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Marcelo Martins</title>
+      <link>https://openpower.ic.unicamp.br/authors/marcelo-martins/</link>
+      <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/marcelo-martins/</guid>
+      <description>&lt;p&gt;I&amp;rsquo;m an undergrad student in Computer Engineering at UNICAMP.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Rafael Sene</title>
+      <link>https://openpower.ic.unicamp.br/authors/rpsene/</link>
+      <pubDate>Mon, 19 Aug 2019 13:05:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/rpsene/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gustavo Storti Salibi</title>
+      <link>https://openpower.ic.unicamp.br/authors/gsalibi/</link>
+      <pubDate>Sun, 04 Aug 2019 17:20:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/gsalibi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Igor Matheus Andrade Torrente</title>
+      <link>https://openpower.ic.unicamp.br/authors/igor-matheus-andrade-torrente/</link>
+      <pubDate>Mon, 01 Apr 2019 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/igor-matheus-andrade-torrente/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Nathalia Harumi Kuromiya</title>
+      <link>https://openpower.ic.unicamp.br/authors/nathalia-harumi-kuromiya/</link>
+      <pubDate>Tue, 16 Jan 2018 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/nathalia-harumi-kuromiya/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Guilherme Tiaki Sato</title>
+      <link>https://openpower.ic.unicamp.br/authors/guilherme-tiaki-sato/</link>
+      <pubDate>Sun, 17 Dec 2017 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/guilherme-tiaki-sato/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Everton Constantino</title>
+      <link>https://openpower.ic.unicamp.br/authors/everton/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/everton/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Jose Bertolini</title>
+      <link>https://openpower.ic.unicamp.br/authors/bertolini/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/bertolini/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Klaus Kiwi</title>
+      <link>https://openpower.ic.unicamp.br/authors/klauskiwi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/klauskiwi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lucas Wanner</title>
+      <link>https://openpower.ic.unicamp.br/authors/lfwanner/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/lfwanner/</guid>
+      <description>&lt;p&gt;I am an Assistant Professor in the &lt;a href=&#34;http://www.ic.unicamp.br/&#34;&gt;Institute of Computing&lt;/a&gt; at the University of Campinas (&lt;a href=&#34;http://www.unicamp.br/&#34;&gt;Unicamp&lt;/a&gt;). My interests are in the intersection of hardware and software systems, particularly in runtime systems for embedded applications, energy optimizations, and handling of heterogeneity and variability in hardware.&lt;/p&gt;
+&lt;p&gt;I graduated with a Ph.D. in Computer Science from the University of California, Los Angeles (&lt;a href=&#34;http://www.ucla.edu/&#34;&gt;UCLA&lt;/a&gt;) in 2014. During my Ph.D. I worked with &lt;a href=&#34;http://nesl.ee.ucla.edu/person/show/1&#34;&gt;Mani Srivastava&lt;/a&gt; in the Networked and Embedded Systems Lab (&lt;a href=&#34;http://nesl.ee.ucla.edu/&#34;&gt;NESL&lt;/a&gt;) and was funded in part with a &lt;a href=&#34;http://fulbright.org/&#34;&gt;Fulbright&lt;/a&gt; Fellowship. In the latter part of my time at UCLA I served as Executive Director of the NSF Expedition in &lt;a href=&#34;http://variability.org/&#34;&gt;Variability-Aware Software&lt;/a&gt;. Before joining UCLA I graduated with a BS and MS in Computer Science from the Federal University of Santa Catarina (&lt;a href=&#34;http://www.ufsc.br/&#34;&gt;UFSC&lt;/a&gt;), where I worked in the Software/Hardware Integration Lab (&lt;a href=&#34;http://www.lisha.ufsc.br/&#34;&gt;LISHA&lt;/a&gt;).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Pedro Caldeira</title>
+      <link>https://openpower.ic.unicamp.br/authors/pcaldeira/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/pcaldeira/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sandro Rigo</title>
+      <link>https://openpower.ic.unicamp.br/authors/srigo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://openpower.ic.unicamp.br/authors/srigo/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Interests:&lt;/strong&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Compilers and Programming Languages&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;li&gt;Computer Architecture&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;li&gt;Computer Systems Design&lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
